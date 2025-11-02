@@ -47,14 +47,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en" dir="ltr">
       <body className={`${yekanBakh.className} antialiased`}>
         <Navbar />
-        <main className="container">{children}</main>
+        <main className="container">
+          {modal}
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

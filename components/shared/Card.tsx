@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 function Card({
   data,
@@ -12,7 +13,7 @@ function Card({
   };
 }) {
   return (
-    <div className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none group">
+    <div className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none! group">
       <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center likeBox">
         {data.likes} liked
       </div>
@@ -28,7 +29,9 @@ function Card({
         {data.title}
       </div>
       <button className="absolute z-50 md:top-0 bottom-4 md:bottom-0 left-1/2 h-fit font-medium text-lg p-1 px-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 cursor-pointer text-white rounded-sm m-auto md:left-0 right-0 w-fit bg-transparent border border-white">
-        select
+        <Link href={{ pathname: `/ai-image`, query: { prompt: data.prompt } }}>
+          select
+        </Link>
       </button>
     </div>
   );
