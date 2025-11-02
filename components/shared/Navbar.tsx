@@ -1,6 +1,6 @@
 const navDetail = [
-  { id: 1, label: "صفحه اصلی", link: "/" },
-  { id: 2, label: "درباره من", link: "/about" },
+  { id: 1, label: "home", link: "/" },
+  { id: 2, label: "about me", link: "/about" },
 ];
 
 export default function Navbar() {

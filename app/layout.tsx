@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 const yekanBakh = localFont({
   src: [
@@ -54,6 +55,7 @@ export default function RootLayout({
       <body className={`${yekanBakh.className} antialiased`}>
         <Navbar />
         <main className="container">{children}</main>
+        <Footer />
       </body>
     </html>
   );
