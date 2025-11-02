@@ -50,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="en" dir="ltr">
       <body className={`${yekanBakh.className} antialiased`}>
         <Navbar />
         <main className="container">{children}</main>
