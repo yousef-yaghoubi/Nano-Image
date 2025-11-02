@@ -12,7 +12,7 @@ function Card({
   };
 }) {
   return (
-    <div className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-3xl rounded-tl-none group">
+    <div className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none group">
       <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center likeBox">
         {data.likes} liked
       </div>
