@@ -1,16 +1,19 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
 type ModalProps = {
   open: boolean;
-  onClose: () => void;
   children: React.ReactNode;
 };
 
-export default function Modal({ open, onClose, children }: ModalProps) {
+export default function Modal({ open, children }: ModalProps) {
   const [mounted] = useState(() => typeof window !== "undefined");
+  const router = useRouter();
+
+  const onClose = () => router.push("/");
 
   if (!mounted || !open) return null;
 

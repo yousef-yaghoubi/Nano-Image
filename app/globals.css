@@ -125,6 +125,7 @@
   width: 80%;
   max-width: 100rem;
   margin: 5em auto;
+  min-height: calc(65dvh);
 }
 
 .likeBox {
