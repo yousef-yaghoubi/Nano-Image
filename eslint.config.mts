@@ -16,7 +16,7 @@ export default defineConfig([
   globalIgnores(['node_modules/*', '.next/*', 'build/**/*']),
   {
     rules: {
-      'react/react-in-jsx-scope': 'off'
+      'react/react-in-jsx-scope': 'off',
     },
   },
 ]);

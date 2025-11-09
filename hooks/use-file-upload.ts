@@ -54,7 +54,8 @@ export type FileUploadActions = {
   getInputProps: (
     props?: InputHTMLAttributes<HTMLInputElement>,
   ) => InputHTMLAttributes<HTMLInputElement> & {
-    ref: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ref: any;
   };
 };
 
