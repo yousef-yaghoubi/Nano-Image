@@ -46,7 +46,7 @@ export async function GET() {
         select: { title: true },
       });
 
-      const existingTitles = new Set(existing.map((e) => e.title as string));
+      const existingTitles = new Set(existing.map((e: { title: string }) => e.title));
       const newPrompts = batch.filter((p: { title: string }) => !existingTitles.has(p.title));
 
       if (newPrompts.length > 0) {
