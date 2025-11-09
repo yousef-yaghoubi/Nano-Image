@@ -1,4 +1,4 @@
-import { getBaseUrl } from "@/lib/getBaseUrl";
+import { getBaseUrl } from '@/lib/getBaseUrl';
 
 export default async function getUniqePrompt({ id }: { id: string }) {
   const api = `${getBaseUrl()}/api/prompts/uniqePrompt?id=${id}`;

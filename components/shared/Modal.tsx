@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type ModalProps = {
   open: boolean;
@@ -10,10 +10,10 @@ type ModalProps = {
 };
 
 export default function Modal({ open, children }: ModalProps) {
-  const [mounted] = useState(() => typeof window !== "undefined");
+  const [mounted] = useState(() => typeof window !== 'undefined');
   const router = useRouter();
 
-  const onClose = () => router.push("/");
+  const onClose = () => router.back();
 
   if (!mounted || !open) return null;
 
@@ -29,11 +29,8 @@ export default function Modal({ open, children }: ModalProps) {
           ✕
         </button>
       </div>
-      <div
-        className="absolute inset-0 backdrop-blur-md"
-        onClick={onClose}
-      ></div>
+      <div className="absolute inset-0 backdrop-blur-md" onClick={onClose}></div>
     </div>,
-    document.body
+    document.body,
   );
 }

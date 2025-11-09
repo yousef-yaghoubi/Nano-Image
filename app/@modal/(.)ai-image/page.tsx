@@ -1,6 +1,6 @@
-"use client";
-import Modal from "@/components/shared/Modal";
-import SendDataPage from "@/components/shared/SendDataPage";
+'use client';
+import Modal from '@/components/shared/Modal';
+import SendDataPage from '@/components/shared/SendDataPage';
 
 function Page() {
   return (

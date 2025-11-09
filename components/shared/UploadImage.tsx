@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
-import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react";
+import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from 'lucide-react';
+import { FileWithPreview, useFileUpload } from '@/hooks/use-file-upload';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
-import { useFileUpload } from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-
-export default function UploadImage() {
+export default function UploadImage({
+  onFilesChange,
+}: {
+  onFilesChange?: (files: FileWithPreview[]) => void;
+}) {
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
   const maxFiles = 6;
@@ -23,10 +26,11 @@ export default function UploadImage() {
       getInputProps,
     },
   ] = useFileUpload({
-    accept: "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
+    accept: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif',
     maxSize,
     multiple: false,
     maxFiles,
+    onFilesChange,
   });
 
   return (
@@ -41,37 +45,25 @@ export default function UploadImage() {
         data-files={files.length > 0 || undefined}
         className="relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed border-input p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:border-ring has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50"
       >
-        <input
-          {...getInputProps()}
-          className="sr-only"
-          aria-label="Upload image file"
-        />
+        <input {...getInputProps()} className="sr-only" aria-label="Upload image file" />
         {files.length > 0 ? (
           <div className="flex w-full flex-col gap-3">
             <div className="flex items-center justify-between gap-2">
-              <h3 className="truncate text-sm font-medium">
-                Uploaded Files ({files.length})
-              </h3>
+              <h3 className="truncate text-sm font-medium">Uploaded Files ({files.length})</h3>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={openFileDialog}
                 disabled={files.length >= maxFiles}
               >
-                <UploadIcon
-                  className="-ms-0.5 size-3.5 opacity-60"
-                  aria-hidden="true"
-                />
+                <UploadIcon className="-ms-0.5 size-3.5 opacity-60" aria-hidden="true" />
                 Add more
               </Button>
             </div>
 
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {files.map((file) => (
-                <div
-                  key={file.id}
-                  className="relative aspect-square rounded-md bg-accent"
-                >
+                <div key={file.id} className="relative aspect-square rounded-md bg-accent">
                   <Image
                     src={file.preview as string}
                     alt={file.file.name}
@@ -112,10 +104,7 @@ export default function UploadImage() {
       </div>
 
       {errors.length > 0 && (
-        <div
-          className="flex items-center gap-1 text-xs text-destructive"
-          role="alert"
-        >
+        <div className="flex items-center gap-1 text-xs text-destructive" role="alert">
           <AlertCircleIcon className="size-3 shrink-0" />
           <span>{errors[0]}</span>
         </div>

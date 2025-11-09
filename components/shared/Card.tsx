@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 function Card({
   data,
@@ -29,9 +29,7 @@ function Card({
         {data.title}
       </div>
       <button className="absolute z-50 md:top-0 bottom-4 md:bottom-0 left-1/2 h-fit font-medium text-lg p-1 px-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 cursor-pointer text-white rounded-sm m-auto md:left-0 right-0 w-fit bg-transparent border border-white">
-        <Link href={{ pathname: `/ai-image`, query: { product: data.id } }}>
-          select
-        </Link>
+        <Link href={{ pathname: `/ai-image`, query: { product: data.id } }}>select</Link>
       </button>
     </div>
   );

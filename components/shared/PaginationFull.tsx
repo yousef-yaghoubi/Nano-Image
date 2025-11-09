@@ -1,4 +1,4 @@
-import { usePagination } from "@/hooks/use-pagination";
+import { usePagination } from '@/hooks/use-pagination';
 import {
   Pagination,
   PaginationContent,
@@ -7,7 +7,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 
 type PaginationProps = {
   currentPage: number;
@@ -35,7 +35,7 @@ export default function PaginationFull({
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
             href={currentPage === 1 ? undefined : `?page=${currentPage - 1}`}
             aria-disabled={currentPage === 1 ? true : undefined}
-            role={currentPage === 1 ? "link" : undefined}
+            role={currentPage === 1 ? 'link' : undefined}
           />
         </PaginationItem>
 
@@ -49,10 +49,7 @@ export default function PaginationFull({
         {/* Page number links */}
         {pages.map((page) => (
           <PaginationItem key={page}>
-            <PaginationLink
-              href={`?page=${page}`}
-              isActive={page === currentPage}
-            >
+            <PaginationLink href={`?page=${page}`} isActive={page === currentPage}>
               {page}
             </PaginationLink>
           </PaginationItem>
@@ -69,13 +66,9 @@ export default function PaginationFull({
         <PaginationItem>
           <PaginationNext
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            href={
-              currentPage === totalPages
-                ? undefined
-                : `?page=${currentPage + 1}`
-            }
+            href={currentPage === totalPages ? undefined : `?page=${currentPage + 1}`}
             aria-disabled={currentPage === totalPages ? true : undefined}
-            role={currentPage === totalPages ? "link" : undefined}
+            role={currentPage === totalPages ? 'link' : undefined}
           />
         </PaginationItem>
       </PaginationContent>

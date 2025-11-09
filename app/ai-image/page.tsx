@@ -1,5 +1,5 @@
-import SendDataPage from "@/components/shared/SendDataPage";
-import { Suspense } from "react";
+import SendDataPage from '@/components/shared/SendDataPage';
+import { Suspense } from 'react';
 
 function Page() {
   return (

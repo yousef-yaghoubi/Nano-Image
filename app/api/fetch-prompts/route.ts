@@ -1,30 +1,27 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/prisma/prismaClient";
-import { PromptType } from "@/types/data";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/prisma/prismaClient';
+import { PromptType } from '@/types/data';
 
 export async function GET() {
   try {
-    console.log("🚀 Fetching prompts from Prompts API...");
+    console.log('🚀 Fetching prompts from Prompts API...');
 
     const res = await fetch(`${process.env.API_PROMPT}/api/prompts?limit=2000`);
     const data = await res.json();
 
     if (!Array.isArray(data?.items)) {
-      return NextResponse.json(
-        { error: "Invalid data format from API" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid data format from API' }, { status: 400 });
     }
 
     const prompts = data.items.map((item: PromptType) => ({
       title: item.title,
-      prompt: item.prompt ?? "",
-      image: item.image ?? "",
+      prompt: item.prompt ?? '',
+      image: item.image ?? '',
       likes: item.likes ?? 0,
       layout: item.layout,
-      creatorName: item.creatorName ?? "yousef",
-      model: item.model ?? "",
-      notes: item.notes ?? "",
+      creatorName: item.creatorName ?? 'yousef',
+      model: item.model ?? '',
+      notes: item.notes ?? '',
       tags: item.tags ?? [],
       isLiked: item.isLiked ?? false,
       isPremium: item.isPremium ?? false,
@@ -49,10 +46,8 @@ export async function GET() {
         select: { title: true },
       });
 
-      const existingTitles = new Set(existing.map((e) => e.title));
-      const newPrompts = batch.filter(
-        (p: { title: string }) => !existingTitles.has(p.title)
-      );
+      const existingTitles = new Set(existing.map((e) => e.title as string));
+      const newPrompts = batch.filter((p: { title: string }) => !existingTitles.has(p.title));
 
       if (newPrompts.length > 0) {
         await prisma.prompts.createMany({ data: newPrompts });
@@ -64,7 +59,7 @@ export async function GET() {
       console.log(
         `✅ Batch ${i / batchSize + 1}: Inserted ${
           newPrompts.length
-        }, Skipped ${batch.length - newPrompts.length}`
+        }, Skipped ${batch.length - newPrompts.length}`,
       );
     }
 
@@ -72,13 +67,10 @@ export async function GET() {
       success: true,
       inserted: insertedCount,
       skipped: skippedCount,
-      message: "Prompts synced successfully 🚀",
+      message: 'Prompts synced successfully 🚀',
     });
   } catch (error) {
-    console.error("❌ Error fetching/saving prompts:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch or save data" },
-      { status: 500 }
-    );
+    console.error('❌ Error fetching/saving prompts:', error);
+    return NextResponse.json({ error: 'Failed to fetch or save data' }, { status: 500 });
   }
 }
