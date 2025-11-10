@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 
 export async function POST(req: Request) {
   try {
@@ -14,23 +14,26 @@ export async function POST(req: Request) {
     if (!base64Image) {
       return NextResponse.json({ error: 'Image Base64 is required' }, { status: 400 });
     }
-
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
-    const result = await model.generateContent([
+    const content = [
+      { text: prompt },
       {
         inlineData: {
-          mimeType,
           data: base64Image,
         },
       },
-      prompt,
-    ]);
+    ];
+
+    const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+    // const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-image' });
+
+    const result = await genAI.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: content,
+    });
 
     const responseText = result.response.text();
 
-    console.log(responseText);
+    console.log(result);
     if (!responseText) {
       return NextResponse.json({ error: 'No response generated' }, { status: 500 });
     }
