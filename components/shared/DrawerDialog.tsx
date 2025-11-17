@@ -1,13 +1,10 @@
 'use client';
 import * as React from 'react';
-import { Button } from '@/components/ui/button';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import {
-  DialogClose,
   DialogTrigger,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   Dialog,
@@ -19,8 +16,6 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-  DrawerFooter,
-  DrawerClose,
 } from '@/components/ui/drawer';
 
 export function DrawerDialog({ children }: { children: React.ReactNode }) {

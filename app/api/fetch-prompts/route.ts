@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { PromptType } from '@/types/data';
+import type { Prompts } from '@prisma/client';
 
 export async function GET() {
   try {
@@ -10,7 +11,10 @@ export async function GET() {
     const data = await res.json();
 
     if (!Array.isArray(data?.items)) {
-      return NextResponse.json({ error: 'Invalid data format from API' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid data format from API' },
+        { status: 400 }
+      );
     }
 
     const prompts = data.items.map((item: PromptType) => ({
@@ -43,11 +47,13 @@ export async function GET() {
             in: batch.map((p: { title: unknown }) => p.title),
           },
         },
-        select: { title: true },
+        // select: { title: true },
       });
 
-      const existingTitles = new Set(existing.map((e: { title: string }) => e.title));
-      const newPrompts = batch.filter((p: { title: string }) => !existingTitles.has(p.title));
+      const existingTitles = new Set(existing.map((e: Prompts) => e.title));
+      const newPrompts = batch.filter(
+        (p: { title: string }) => !existingTitles.has(p.title)
+      );
 
       if (newPrompts.length > 0) {
         await prisma.prompts.createMany({ data: newPrompts });
@@ -59,7 +65,7 @@ export async function GET() {
       console.log(
         `✅ Batch ${i / batchSize + 1}: Inserted ${
           newPrompts.length
-        }, Skipped ${batch.length - newPrompts.length}`,
+        }, Skipped ${batch.length - newPrompts.length}`
       );
     }
 
@@ -71,6 +77,9 @@ export async function GET() {
     });
   } catch (error) {
     console.error('❌ Error fetching/saving prompts:', error);
-    return NextResponse.json({ error: 'Failed to fetch or save data' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to fetch or save data' },
+      { status: 500 }
+    );
   }
 }

@@ -2,6 +2,7 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -158,7 +159,7 @@ export async function POST(req: Request) {
 
     return new Response('Webhook processed successfully', { status: 200 });
   } catch (err) {
-    console.log(err);
+    return NextResponse.json({'error' : err})
   }
 }
 // 5. For Pages Router (pages/api/webhooks/clerk.ts):
