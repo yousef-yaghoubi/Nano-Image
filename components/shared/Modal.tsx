@@ -1,25 +1,23 @@
 'use client';
-
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type ModalProps = {
   open: boolean;
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-export default function Modal({ open, children }: ModalProps) {
+export default function Modal({ open, onClose, children }: ModalProps) {
   const [mounted] = useState(() => typeof window !== 'undefined');
-  const router = useRouter();
 
-  const onClose = () => router.back();
+  // const onClose = () => setMounted(false);
 
   if (!mounted || !open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-2xl p-6 shadow-lg relative w-full max-w-md z-50">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50">
+      <div className="bg-white rounded-2xl overflow-scroll p-6 shadow-lg relative w-full max-w-lg max-h-4/5 z-50">
         {children}
 
         <button

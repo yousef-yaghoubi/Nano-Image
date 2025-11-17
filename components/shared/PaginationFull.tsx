@@ -1,3 +1,4 @@
+'use client';
 import { usePagination } from '@/hooks/use-pagination';
 import {
   Pagination,
@@ -8,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useSearchParams } from 'next/navigation';
 
 type PaginationProps = {
   currentPage: number;
@@ -26,49 +28,60 @@ export default function PaginationFull({
     paginationItemsToDisplay,
   });
 
+  const searchParams = useSearchParams();
+
+  // تابع helper برای ساخت query جدید بدون پاک شدن باقی پارامترها
+  const getHrefWithPage = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (page === 1) {
+      params.delete('page'); // برای صفحه 1، page رو پاک کن
+    } else {
+      params.set('page', page?.toString());
+    }
+    return `?${params.toString()}`;
+  };
+
   return (
     <Pagination>
       <PaginationContent>
-        {/* Previous page button */}
+        {/* Previous page */}
         <PaginationItem>
           <PaginationPrevious
+            href={getHrefWithPage(currentPage > 1 ? currentPage - 1 : 1)}
+            aria-disabled={currentPage === 1}
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            href={currentPage === 1 ? undefined : `?page=${currentPage - 1}`}
-            aria-disabled={currentPage === 1 ? true : undefined}
-            role={currentPage === 1 ? 'link' : undefined}
           />
         </PaginationItem>
 
-        {/* Left ellipsis (...) */}
+        {/* Left ellipsis */}
         {showLeftEllipsis && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
         )}
 
-        {/* Page number links */}
-        {pages.map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink href={`?page=${page}`} isActive={page === currentPage}>
-              {page}
+        {/* Page numbers */}
+        {pages.map((p) => (
+          <PaginationItem key={p}>
+            <PaginationLink href={getHrefWithPage(p)} isActive={p === currentPage}>
+              {p}
             </PaginationLink>
           </PaginationItem>
         ))}
 
-        {/* Right ellipsis (...) */}
+        {/* Right ellipsis */}
         {showRightEllipsis && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
         )}
 
-        {/* Next page button */}
+        {/* Next page */}
         <PaginationItem>
           <PaginationNext
+            href={getHrefWithPage(currentPage < totalPages ? currentPage + 1 : totalPages)}
+            aria-disabled={currentPage === totalPages}
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            href={currentPage === totalPages ? undefined : `?page=${currentPage + 1}`}
-            aria-disabled={currentPage === totalPages ? true : undefined}
-            role={currentPage === totalPages ? 'link' : undefined}
           />
         </PaginationItem>
       </PaginationContent>

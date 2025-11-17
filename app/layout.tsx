@@ -3,6 +3,10 @@ import './globals.css';
 import localFont from 'next/font/local';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
+import { Toaster } from '@/components/ui/sonner';
+import {
+  ClerkProvider,
+} from '@clerk/nextjs';
 
 const yekanBakh = localFont({
   src: [
@@ -47,21 +51,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr">
-      <body className={`${yekanBakh.className} antialiased`}>
-        <Navbar />
-        <main className="container">
-          {modal}
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" dir="ltr">
+        <body className={`${yekanBakh.className} antialiased`}>
+          <Toaster position="top-right" />
+          <Navbar />
+          <main className="container">{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

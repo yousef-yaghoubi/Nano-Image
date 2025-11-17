@@ -1,3 +1,5 @@
+import { SignOutButton, SignUpButton } from '@clerk/nextjs';
+
 const navDetail = [
   { id: 1, label: 'home', link: '/' },
   { id: 2, label: 'about me', link: '/about' },
@@ -14,6 +16,8 @@ export default function Navbar() {
           ))}
         </ul>
       </nav>
+      <SignUpButton />
+      <SignOutButton />
     </div>
   );
 }
