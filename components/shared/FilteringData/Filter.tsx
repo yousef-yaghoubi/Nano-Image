@@ -7,7 +7,6 @@ import SearchBox from '../SearchBox';
 import { ActiveFilter, FilterOption } from '@/types/filter';
 import { useFilterState } from '@/hooks/useFilterState';
 import { DrawerDialog } from '../DrawerDialog';
-
 const FILTERING_OPTIONS: FilterOption[] = [
   {
     id: 1,
@@ -64,8 +63,13 @@ const FILTERING_OPTIONS: FilterOption[] = [
 function Filter() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { selectedTags, setSelectedTags, searchQuery, setSearchQuery, activeFilters } =
-    useFilterState();
+  const {
+    selectedTags,
+    setSelectedTags,
+    searchQuery,
+    setSearchQuery,
+    activeFilters,
+  } = useFilterState();
 
   // Handle filter removal
   const handleRemoveFilter = useCallback(
@@ -76,7 +80,7 @@ function Filter() {
         setSelectedTags((prev) => prev.filter((tag) => tag !== filter.value));
       }
     },
-    [setSearchQuery, setSelectedTags],
+    [setSearchQuery, setSelectedTags]
   );
 
   // Handle clear all filters
@@ -98,7 +102,7 @@ function Filter() {
 
       {/* Filter Modal */}
       <DrawerDialog>
-        <section className="px-10 py-6 z-10">
+        <section className="px-10 py-6 z-10 overflow-scroll">
           {/* Search Box */}
           <SearchBox
             value={searchQuery}

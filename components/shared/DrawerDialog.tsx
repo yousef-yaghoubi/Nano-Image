@@ -17,6 +17,7 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
+import { Filter } from 'lucide-react';
 
 export function DrawerDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(false);
@@ -25,25 +26,30 @@ export function DrawerDialog({ children }: { children: React.ReactNode }) {
   const BtnFilter = () => {
     return (
       <button
-        className="mb-5 rounded-full bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20 transition-colors duration-200"
+        className="mb-5 text-lg flex gap-2 items-center font-medium"
         onClick={() => setOpen(true)}
         aria-label="Open filters"
       >
-        Open Filters
+        <Filter size={20} />
+        Filters
       </button>
     );
   };
+
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <BtnFilter />
-        </DialogTrigger>
+        <div className="w-full border-b border-primary">
+          <DialogTrigger asChild>
+            <BtnFilter />
+          </DialogTrigger>
+        </div>
         <DialogContent className="w-full max-h-4/5 overflow-scroll">
           <DialogHeader className="text-left">
             <DialogTitle>Filter Prompts</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
+              Make changes to your profile here. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
           {children}
@@ -59,10 +65,12 @@ export function DrawerDialog({ children }: { children: React.ReactNode }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <BtnFilter />
-      </DrawerTrigger>
-      <DrawerContent className="overflow-scroll!">
+      <div className="w-full border-b border-primary">
+        <DrawerTrigger asChild>
+          <BtnFilter />
+        </DrawerTrigger>
+      </div>
+      <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>Filter Prompts</DrawerTitle>
           <DrawerDescription>
@@ -70,11 +78,6 @@ export function DrawerDialog({ children }: { children: React.ReactNode }) {
           </DrawerDescription>
         </DrawerHeader>
         {children}
-        {/* <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
   );

@@ -4,10 +4,8 @@ import localFont from 'next/font/local';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
 import { Toaster } from '@/components/ui/sonner';
-import {
-  ClerkProvider,
-} from '@clerk/nextjs';
-
+import { ClerkProvider } from '@clerk/nextjs';
+import NextTopLoader from 'nextjs-toploader';
 const yekanBakh = localFont({
   src: [
     {
@@ -59,6 +57,7 @@ export default function RootLayout({
       <html lang="en" dir="ltr">
         <body className={`${yekanBakh.className} antialiased`}>
           <Toaster position="top-right" />
+          <NextTopLoader color="var(--primary)" />
           <Navbar />
           <main className="container">{children}</main>
           <Footer />

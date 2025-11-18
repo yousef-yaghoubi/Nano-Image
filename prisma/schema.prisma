@@ -20,7 +20,7 @@ model Prompts {
   tags        String[]
   isPremium   Boolean
 
-  favorites   PromptFavorite[]
+  favorites PromptFavorite[]
 }
 
 model Users {
@@ -30,23 +30,23 @@ model Users {
   role      Role      @default(MEMBER)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-
+  image     String?
   favorite  Favorite?
 }
 
 model Favorite {
-  id      String            @id @default(auto()) @map("_id") @db.ObjectId
-  user    Users             @relation(fields: [userId], references: [id])
-  userId  String            @unique @db.ObjectId
+  id      String           @id @default(auto()) @map("_id") @db.ObjectId
+  user    Users            @relation(fields: [userId], references: [id])
+  userId  String           @unique @db.ObjectId
   prompts PromptFavorite[]
 }
 
 model PromptFavorite {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  prompt     Prompts   @relation(fields: [promptId], references: [id])
-  promptId   String    @db.ObjectId
-  favorite   Favorite  @relation(fields: [favoriteId], references: [id])
-  favoriteId String    @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  prompt     Prompts  @relation(fields: [promptId], references: [id])
+  promptId   String   @db.ObjectId
+  favorite   Favorite @relation(fields: [favoriteId], references: [id])
+  favoriteId String   @db.ObjectId
 }
 
 enum Role {

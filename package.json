@@ -46,6 +46,7 @@
     "eslint-plugin-tailwindcss": "^3.18.2",
     "globals": "^16.5.0",
     "jiti": "^2.6.1",
+    "nextjs-toploader": "^3.9.17",
     "prettier": "^3.6.2",
     "prisma": "^6.19.0",
     "svix": "^1.81.0",

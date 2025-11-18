@@ -21,7 +21,9 @@ export async function GET(req: Request) {
 
   const searchRaw = searchParams.get('search');
   const search =
-    searchRaw && searchRaw !== 'undefined' && searchRaw.trim() !== '' ? searchRaw : null;
+    searchRaw && searchRaw !== 'undefined' && searchRaw.trim() !== ''
+      ? searchRaw
+      : null;
 
   const skip = (page - 1) * limit;
 
