@@ -1,6 +1,7 @@
 import Card from '@/components/shared/Card';
 import Filter from '@/components/shared/FilteringData/Filter';
 import PaginationFull from '@/components/shared/PaginationFull';
+import { Sort } from '@/components/shared/SortingData/Sort';
 import getPrompts from '@/services/getPrompts';
 import { DataFullType } from '@/types/data';
 
@@ -16,8 +17,16 @@ export default async function Home({
 
   return (
     <div className="font-extrabold text-3xl">
-      <Filter />
-      
+      <div className="flex w-full justify-between items-center border-b">
+        <Filter />
+        <div className="flex w-fit gap-4 mb-5 items-center">
+          <button className="rounded-md px-4 py-2 border text-lg flex gap-2 items-center font-medium">
+            Toggle Dir
+          </button>
+          <Sort />
+        </div>
+      </div>
+
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 justify-items-center mt-10">
         {prompt?.data?.map(
           (item: {

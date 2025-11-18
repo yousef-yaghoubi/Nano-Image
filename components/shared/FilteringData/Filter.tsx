@@ -7,6 +7,7 @@ import SearchBox from '../SearchBox';
 import { ActiveFilter, FilterOption } from '@/types/filter';
 import { useFilterState } from '@/hooks/useFilterState';
 import { DrawerDialog } from '../DrawerDialog';
+import { FilterIcon } from 'lucide-react';
 const FILTERING_OPTIONS: FilterOption[] = [
   {
     id: 1,
@@ -91,17 +92,17 @@ function Filter() {
 
   return (
     <>
-      {/* Open Filter Button */}
-      {/* <button
-        className="mb-5 rounded-full bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20 transition-colors duration-200"
-        onClick={() => setIsModalOpen(true)}
-        aria-label="Open filters"
+      <DrawerDialog
+        trigger={
+          <button
+            className="mb-5 text-lg flex gap-2 items-center font-medium"
+            aria-label="Open filters"
+          >
+            <FilterIcon size={20} />
+            Filters
+          </button>
+        }
       >
-        Open Filters
-      </button> */}
-
-      {/* Filter Modal */}
-      <DrawerDialog>
         <section className="px-10 py-6 z-10 overflow-scroll">
           {/* Search Box */}
           <SearchBox
@@ -123,8 +124,7 @@ function Filter() {
           </div>
         </section>
       </DrawerDialog>
-
-      {/* Active Filters Display */}
+      
       {activeFilters.length > 0 && (
         <div className="mt-5">
           <div className="flex items-center justify-between mb-3">
