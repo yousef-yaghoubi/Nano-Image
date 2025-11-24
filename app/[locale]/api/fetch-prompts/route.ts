@@ -51,13 +51,15 @@ export async function GET() {
 
       // ========= FIX #2 — detect duplicates first =========
       const exists = await Prompts.find({
-        title: { $in: batch.map((p) => p.title) },
+        title: { $in: batch.map((p: { title: string }) => p.title) },
       })
         .select('title')
         .lean();
 
       const existsSet = new Set(exists.map((e) => e.title));
-      const newDocs = batch.filter((p) => !existsSet.has(p.title));
+      const newDocs = batch.filter(
+        (p: { title: string }) => !existsSet.has(p.title)
+      );
 
       if (newDocs.length === 0) {
         skipped += batch.length;
@@ -69,7 +71,7 @@ export async function GET() {
         await Prompts.insertMany(newDocs, { ordered: false });
         inserted += newDocs.length;
       } catch (err) {
-        console.error('⚠️ Bulk insert failed, retrying...', err?.message);
+        console.error('⚠️ Bulk insert failed, retrying...', err);
 
         // retry once
         try {
@@ -101,11 +103,11 @@ export async function GET() {
       inserted,
       skipped,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Error in fetch-prompts:', error);
 
     return NextResponse.json(
-      { error: error.message || 'Failed to process data' },
+      { error: error || 'Failed to process data' },
       { status: 500 }
     );
   }

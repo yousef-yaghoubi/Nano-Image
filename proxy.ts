@@ -6,7 +6,7 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 // export default function proxy(request: Request) {
-export default clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (_auth, req) => {
   // first let clerk run, then pass request to intl
   return intlMiddleware(req);
 });
