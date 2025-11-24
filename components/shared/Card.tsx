@@ -1,5 +1,6 @@
 'use client';
-import { Copy } from 'lucide-react';
+import { Copy, Heart } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
@@ -14,15 +15,21 @@ function Card({
     likes: number;
   };
 }) {
+  const t = useTranslations('Product');
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(data.prompt);
-    toast.success('Prompt copied to clipboard!');
+    toast.success(t('toastCopy'));
   };
 
   return (
-    <div className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none! group">
-      <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center likeBox">
-        {data.likes} liked
+    <div
+      className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none! group"
+      dir="ltr"
+    >
+      <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center gap-2 likeBox">
+        <span>{data.likes}</span>
+        <Heart size={15} className="mb-1" />
       </div>
       <Image
         src={data.image}
@@ -37,10 +44,10 @@ function Card({
       </div>
       <button
         className="absolute flex items-center gap-2 z-50 md:top-0 bottom-4 md:bottom-0 left-1/2 h-fit font-medium text-lg p-1 px-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 cursor-pointer text-white rounded-sm m-auto md:left-0 right-0 w-fit bg-transparent border border-white"
-        onClick={handleCopy}
+        onClick={() => handleCopy()}
       >
         <Copy size={15} />
-        <span>Copy</span>
+        <span>{t('copy')}</span>
       </button>
     </div>
   );

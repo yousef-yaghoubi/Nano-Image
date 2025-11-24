@@ -1,0 +1,42 @@
+{
+  "data": {
+    "filter": "فیلتر",
+    "sort": "ترتیب",
+    "activeFilter": "همه فیلترها",
+    "clearAll": "حذف همه"
+  },
+  "Pagination": {
+    "next": "بعدی",
+    "previous": "قبلی"
+  },
+  "Navbar": {
+    "home": "خانه",
+    "about": "درباره من",
+    "favorite": "علاقه مندی ها"
+  },
+  "Auth": {
+    "signup": "ثبت نام",
+    "signin": "ورود",
+    "signout": "خروج"
+  },
+  "Footer": {
+    "copyright": "ساخته شده با ❤️ توسط",
+    "name": "یوسف یعقوبی"
+  },
+  "Languages": {
+    "fa": "فارسی",
+    "en": "انگلیسی"
+  },
+  "Filter": {
+    "sorts": {
+      "likeDesc": "بیشترین لایک",
+      "likeAsc": "کمترین لایک",
+      "dateDesc": "جدیدترین",
+      "dateAsc": "قدیمی ترین"
+    }
+  },
+  "Product": {
+    "copy": "کپی",
+    "toastCopy": "پرامپت در کلیپ بورد کپی شد."
+  }
+}

@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -6,6 +12,8 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+
 
 model Prompts {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -19,8 +27,9 @@ model Prompts {
   notes       String?
   tags        String[]
   isPremium   Boolean
-
-  favorites PromptFavorite[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  favorites   PromptFavorite[]
 }
 
 model Users {
@@ -31,6 +40,7 @@ model Users {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   image     String?
+  waitForSuperAdmin Boolean @default(false)
   favorite  Favorite?
 }
 

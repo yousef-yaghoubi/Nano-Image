@@ -1,8 +1,13 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoreHorizontalIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
@@ -16,7 +21,10 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   );
 }
 
-function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) {
+function PaginationContent({
+  className,
+  ...props
+}: React.ComponentProps<'ul'>) {
   return (
     <ul
       data-slot="pagination-content"
@@ -51,39 +59,43 @@ const PaginationLink = React.forwardRef<HTMLAnchorElement, PaginationLinkProps>(
             size,
           }),
           isDisabled && 'pointer-events-none opacity-50',
-          className,
+          className
         )}
         {...props}
       />
     );
-  },
+  }
 );
 PaginationLink.displayName = 'PaginationLink';
 
 type PaginationPreviousProps = Omit<PaginationLinkProps, 'size'>;
 
-const PaginationPrevious = React.forwardRef<HTMLAnchorElement, PaginationPreviousProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <PaginationLink
-        ref={ref}
-        aria-label="Go to previous page"
-        size="default"
-        className={cn('gap-1 px-2.5 sm:pe-4', className)}
-        {...props}
-      >
-        <ChevronLeftIcon size={16} />
-        <span>Previous</span>
-      </PaginationLink>
-    );
-  },
-);
+const PaginationPrevious = React.forwardRef<
+  HTMLAnchorElement,
+  PaginationPreviousProps
+>(({ className, ...props }, ref) => {
+  const t = useTranslations('Pagination');
+  return (
+    <PaginationLink
+      ref={ref}
+      aria-label="Go to previous page"
+      size="default"
+      className={cn('gap-1 px-2.5 sm:pe-4', className)}
+      {...props}
+    >
+      <ChevronLeftIcon size={16} />
+      <span>{t('previous')}</span>
+    </PaginationLink>
+  );
+});
 PaginationPrevious.displayName = 'PaginationPrevious';
 
 type PaginationNextProps = Omit<PaginationLinkProps, 'size'>;
 
 const PaginationNext = React.forwardRef<HTMLAnchorElement, PaginationNextProps>(
   ({ className, ...props }, ref) => {
+    const t = useTranslations('Pagination');
+
     return (
       <PaginationLink
         ref={ref}
@@ -92,15 +104,18 @@ const PaginationNext = React.forwardRef<HTMLAnchorElement, PaginationNextProps>(
         className={cn('gap-1 px-2.5 sm:ps-4', className)}
         {...props}
       >
-        <span>Next</span>
+        <span>{t('next')}</span>
         <ChevronRightIcon size={16} />
       </PaginationLink>
     );
-  },
+  }
 );
 PaginationNext.displayName = 'PaginationNext';
 
-function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
+function PaginationEllipsis({
+  className,
+  ...props
+}: React.ComponentProps<'span'>) {
   return (
     <span
       aria-hidden

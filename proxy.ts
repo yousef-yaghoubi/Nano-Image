@@ -1,6 +1,16 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
-export default clerkMiddleware();
+// export default clerkMiddleware();
+const intlMiddleware = createMiddleware(routing);
+
+// export default function proxy(request: Request) {
+export default clerkMiddleware(async (auth, req) => {
+  // first let clerk run, then pass request to intl
+  return intlMiddleware(req);
+});
+// }
 
 export const config = {
   matcher: [

@@ -1,0 +1,42 @@
+{
+  "data": {
+    "filter": "Filter",
+    "sort": "Sort",
+    "activeFilter": "Activity Filters",
+    "clearAll": "Clear All"
+  },
+  "Pagination": {
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About Me",
+    "favorite": "Favorites"
+  },
+  "Auth": {
+    "signup": "Sign Up",
+    "signin": "Login",
+    "signout": "Sign Out"
+  },
+  "Footer": {
+    "copyright": "Built with ❤️ by",
+    "name": "Yousef Yaghoubi"
+  },
+  "Languages": {
+    "fa": "Persian",
+    "en": "English"
+  },
+  "Filter": {
+    "sorts": {
+      "likeDesc": "Like Desc",
+      "likeAsc": "Like Asc",
+      "dateDesc": "Date Desc",
+      "dateAsc": "Date Asc"
+    }
+  },
+  "Product": {
+    "copy": "copy",
+    "toastCopy": "Prompt copied to clipboard!"
+  }
+}

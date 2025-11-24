@@ -1,4 +1,5 @@
 export interface PromptType {
+  blurhash: any;
   id: string;
   title: string;
   prompt: string;

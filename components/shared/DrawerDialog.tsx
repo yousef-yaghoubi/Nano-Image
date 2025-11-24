@@ -17,6 +17,7 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
+import { useParams } from 'next/navigation';
 
 export function DrawerDialog({
   children,
@@ -27,14 +28,19 @@ export function DrawerDialog({
 }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const params = useParams();
+  const locale = params.locale;
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         {/* <div className="w-full border-b border-primary"> */}
-          <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
         {/* </div> */}
-        <DialogContent className="w-full max-h-4/5 overflow-scroll">
+        <DialogContent
+          className="w-full max-h-4/5 overflow-scroll"
+          dir={locale == 'fa' ? 'rtl' : 'ltr'}
+        >
           <DialogHeader className="text-left">
             <DialogTitle>Filter Prompts</DialogTitle>
             <DialogDescription>
@@ -50,10 +56,10 @@ export function DrawerDialog({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <div className="w-full border-b border-primary">
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      </div>
-      <DrawerContent>
+      {/* <div className="w-full border-b border-primary"> */}
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      {/* </div> */}
+      <DrawerContent dir={locale == 'fa' ? 'rtl' : 'ltr'}>
         <DrawerHeader className="text-left">
           <DrawerTitle>Filter Prompts</DrawerTitle>
           <DrawerDescription>

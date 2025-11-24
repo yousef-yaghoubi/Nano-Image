@@ -1,30 +1,42 @@
 import Card from '@/components/shared/Card';
-import Filter from '@/components/shared/FilteringData/Filter';
+import { FilterSort } from '@/components/shared/FilteringData/Filter';
 import PaginationFull from '@/components/shared/PaginationFull';
-import { Sort } from '@/components/shared/SortingData/Sort';
 import getPrompts from '@/services/getPrompts';
 import { DataFullType } from '@/types/data';
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; tags?: string; search?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    tags?: string;
+    search?: string;
+    sort?: string;
+  }>;
 }) {
-  const page = (await searchParams).page || '1';
-  const search = (await searchParams).search;
-  const tags = (await searchParams).tags;
-  const prompt = (await getPrompts({ page, tags, search })) as DataFullType;
+  const {
+    page: rawPage,
+    search: rawSearch,
+    tags: rawTags,
+    sort: rawSort,
+  } = await searchParams;
+
+  const page = rawPage || '1';
+  const search = rawSearch && rawSearch !== 'undefined' ? rawSearch : '';
+  const tags = rawTags && rawTags !== 'undefined' ? rawTags : '';
+  const sort = rawSort && rawSort !== 'undefined' ? rawSort : '';
+
+  const prompt = (await getPrompts({
+    page,
+    tags,
+    search,
+    sort,
+  })) as DataFullType;
 
   return (
     <div className="font-extrabold text-3xl">
-      <div className="flex w-full justify-between items-center border-b">
-        <Filter />
-        <div className="flex w-fit gap-4 mb-5 items-center">
-          <button className="rounded-md px-4 py-2 border text-lg flex gap-2 items-center font-medium">
-            Toggle Dir
-          </button>
-          <Sort />
-        </div>
+      <div className="flex w-full justify-between items-center border-b pb-5">
+        <FilterSort />
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 justify-items-center mt-10">
@@ -36,7 +48,7 @@ export default async function Home({
             title: string;
             likes: number;
           }) => (
-            <Card data={item} key={item.id} />
+            <Card data={item} key={item.title} />
           )
         )}
       </div>

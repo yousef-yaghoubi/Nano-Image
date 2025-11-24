@@ -42,7 +42,7 @@ export default function PaginationFull({
   };
 
   return (
-    <Pagination>
+    <Pagination dir='ltr'>
       <PaginationContent>
         {/* Previous page */}
         <PaginationItem>

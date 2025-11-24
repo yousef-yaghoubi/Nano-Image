@@ -6,40 +6,70 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Heart, SortDesc, TimerIcon } from 'lucide-react';
-import { useState } from 'react';
+import {
+  ClockArrowDown,
+  ClockArrowUp,
+  SortDesc,
+  ThumbsDown,
+  ThumbsUp,
+} from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
 
-export function Sort() {
-  const [titleSort, setTitleSort] = useState<string>('');
-  const OPTIONS = [
-    { id: 1, title: 'Like', icon: <Heart size={20} /> },
-    { id: 2, title: 'Create', icon: <TimerIcon size={20} /> },
-  ];
+interface SortDropdownProps {
+  sortQuery: string;
+  setSortQuery: (value: string) => void;
+}
+
+export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
+  const t = useTranslations('Filter.sorts');
+  const tData = useTranslations('data');
+  const SORT_OPTIONS = [
+    { id: 1, title: t('likeDesc'), value: 'Like Desc', icon: ThumbsUp },
+    { id: 2, title: t('likeAsc'), value: 'Like Asc', icon: ThumbsDown },
+    { id: 3, title: t('dateDesc'), value: 'Date Desc', icon: ClockArrowDown },
+    { id: 4, title: t('dateAsc'), value: 'Date Asc', icon: ClockArrowUp },
+  ] as const;
+  const params = useParams();
+  const locale = params.locale;
+
+  const currentSortOption = useMemo(
+    () =>
+      SORT_OPTIONS.find(
+        (item) => item.value.toLowerCase() === sortQuery?.toLowerCase()
+      ),
+    [sortQuery]
+  );
+  const CurrentIcon = currentSortOption?.icon || SortDesc;
+  const displaySortText = currentSortOption?.title || tData('sort');
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none" asChild>
+    <DropdownMenu dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+      <DropdownMenuTrigger className="outline-none cursor-pointer" asChild>
         <button
-          className="text-lg flex gap-2 items-center font-medium"
-          aria-label="Open filters"
+          className="text-lg flex gap-2 items-center font-medium min-w-fit"
+          aria-label="Sort options"
         >
-          {OPTIONS.find((item) => item.title == titleSort)?.icon || (
-            <SortDesc size={20} />
-          )}
-          {titleSort.trim() || 'Sort'}
+          <CurrentIcon size={20} />
+          {displaySortText}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="center">
-        <DropdownMenuRadioGroup value={titleSort} onValueChange={setTitleSort}>
-          {OPTIONS.map((option) => (
-            <DropdownMenuRadioItem
-              key={option.id}
-              value={option.title}
-              className="flex items-center justify-start"
-            >
-              {option.icon}
-              {option.title}
-            </DropdownMenuRadioItem>
-          ))}
+        <DropdownMenuRadioGroup value={sortQuery} onValueChange={setSortQuery}>
+          {SORT_OPTIONS.map((option) => {
+            const OptionIcon = option.icon;
+            return (
+              <DropdownMenuRadioItem
+                key={option.id}
+                value={option.value}
+                className="flex items-center justify-start gap-2"
+              >
+                <OptionIcon size={20} />
+                {option.title}
+              </DropdownMenuRadioItem>
+            );
+          })}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
