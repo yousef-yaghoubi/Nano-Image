@@ -55,7 +55,7 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
           {displaySortText}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="center">
+      <DropdownMenuContent align="center">
         <DropdownMenuRadioGroup value={sortQuery} onValueChange={setSortQuery}>
           {SORT_OPTIONS.map((option) => {
             const OptionIcon = option.icon;
