@@ -5,10 +5,9 @@ import { Input } from '@/components/ui/input';
 export default function SearchBox(control: React.ComponentProps<'input'>) {
   return (
     <div className="*:not-first:mt-2 mb-2">
-      {/* <Label htmlFor={id}>Search input with icon and button</Label> */}
       <div className="relative">
         <Input
-          className="peer ps-9 pe-9 font-medium"
+          className="peer ps-8 font-medium"
           placeholder="Search in title and prompt..."
           type="search"
           {...control}

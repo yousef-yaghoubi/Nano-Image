@@ -18,6 +18,7 @@ import {
   DrawerDescription,
 } from '@/components/ui/drawer';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export function DrawerDialog({
   children,
@@ -30,23 +31,20 @@ export function DrawerDialog({
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const params = useParams();
   const locale = params.locale;
+  const t = useTranslations('Filter.filter');
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        {/* <div className="w-full border-b border-primary"> */}
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         {/* </div> */}
         <DialogContent
           className="w-full max-h-4/5 overflow-scroll"
           dir={locale == 'fa' ? 'rtl' : 'ltr'}
         >
-          <DialogHeader className="text-left">
-            <DialogTitle>Filter Prompts</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription>
+          <DialogHeader dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+            <DialogTitle>{t('title')}</DialogTitle>
+            <DialogDescription>{t('description')}</DialogDescription>
           </DialogHeader>
           {children}
         </DialogContent>
@@ -56,15 +54,11 @@ export function DrawerDialog({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      {/* <div className="w-full border-b border-primary"> */}
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      {/* </div> */}
       <DrawerContent dir={locale == 'fa' ? 'rtl' : 'ltr'}>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Filter Prompts</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
-          </DrawerDescription>
+        <DrawerHeader>
+          <DrawerTitle>{t('title')}</DrawerTitle>
+          <DrawerDescription>{t('description')}</DrawerDescription>
         </DrawerHeader>
         {children}
       </DrawerContent>

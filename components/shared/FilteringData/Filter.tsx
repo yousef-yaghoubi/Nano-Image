@@ -95,6 +95,7 @@ function FilterDrawer({
     [setSearchQuery]
   );
   const t = useTranslations('data');
+  const tFilter = useTranslations('Filter.filter');
 
   return (
     <DrawerDialog
@@ -117,7 +118,7 @@ function FilterDrawer({
         <SearchBox
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Search..."
+          placeholder={tFilter('searchPlaceholder')}
         />
         <div className="mt-6 space-y-6">
           {FILTERING_OPTIONS.map((filterGroup) => (

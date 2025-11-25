@@ -1,6 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction } from 'react';
 
 function ButtonFilter({
@@ -24,6 +25,8 @@ function ButtonFilter({
     }
   };
 
+  const t = useTranslations('Filter.filter.tag');
+
   return (
     <button
       key={option}
@@ -35,7 +38,7 @@ function ButtonFilter({
       )}
       onClick={handleTagClick.bind(null, option)}
     >
-      <span>{option}</span>
+      <span>{t(option)}</span>
       <span>{tags.includes(option) && <X size={15} />}</span>
     </button>
   );
