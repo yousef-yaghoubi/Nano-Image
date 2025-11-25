@@ -26,6 +26,11 @@ export function useFilterState() {
   const debouncedSort = useDebounce(sortQuery, 500);
 
   const pathName = usePathname();
+
+
+  useEffect(() => {
+    setSortQuery(searchParams.get('sort') || 'likes desc');  
+  }, [searchParams.get('sort')]);
   // Sync URL with state
   useEffect(() => {
     // Skip URL update on initial mount to prevent unnecessary navigation
@@ -116,7 +121,6 @@ export function useFilterState() {
     sortQuery,
     setSortQuery,
     activeFilters,
-    // Helper functions
     removeFilter,
     clearAllFilters,
     toggleTag,

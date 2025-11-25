@@ -1,16 +1,17 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { Heart, House, Users } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 function NavList({ isDesktop }: { isDesktop: boolean }) {
   const t = useTranslations('Navbar');
+  const locale = useLocale();
   const navDetail = [
-    { id: 1, label: t('home'), link: '/', icon: House },
-    { id: 2, label: t('favorite'), link: '/favorites', icon: Heart },
-    { id: 3, label: t('about'), link: '/about', icon: Users },
+    { id: 1, label: t('home'), link: `/${locale}`, icon: House },
+    { id: 2, label: t('favorite'), link: `/${locale}/favorites`, icon: Heart },
+    { id: 3, label: t('about'), link: `/${locale}/about`, icon: Users },
   ];
   const pathName = usePathname();
 
@@ -22,6 +23,8 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
         {navDetail.map((li) => {
           const CurrentIcon = li.icon;
           const isAcive = pathName == li.link;
+
+          console.log(li.link, pathName);
           return (
             <li key={li.id}>
               <Link

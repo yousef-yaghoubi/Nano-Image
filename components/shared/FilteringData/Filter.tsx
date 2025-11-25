@@ -68,10 +68,6 @@ const FILTERING_OPTIONS: FilterOption[] = [
 ];
 
 // ==========================
-// SortDropdown Component
-// ==========================
-
-// ==========================
 // FilterDrawer Component
 // ==========================
 interface FilterDrawerProps {

@@ -1,8 +1,15 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { MenuIcon } from "lucide-react";
-import NavList from "./Nav";
-import { UserAvatar } from "@clerk/nextjs";
-import AuthButtons from "../AuthButtons";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { MenuIcon } from 'lucide-react';
+import NavList from './Nav';
+import { UserAvatar } from '@clerk/nextjs';
+import AuthButtons from '../AuthButtons';
+import { useParams } from 'next/navigation';
 
 export function MobileMenu({
   isAuthenticated,
@@ -11,13 +18,16 @@ export function MobileMenu({
   isAuthenticated: boolean;
   userEmail?: string;
 }) {
+  const params = useParams();
+  const locale = params.locale;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <MenuIcon className="cursor-pointer" />
       </SheetTrigger>
 
-      <SheetContent dir="rtl" side="right">
+      <SheetContent dir={locale == 'fa' ? 'rtl' : 'ltr'} side={locale == 'fa' ? 'right' : 'left'}>
         <SheetHeader>
           <SheetTitle className="border-b pb-4">
             <span className="text-2xl lg:text-3xl font-extrabold text-gray-600">

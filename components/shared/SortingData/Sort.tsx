@@ -9,7 +9,6 @@ import {
 import {
   ClockArrowDown,
   ClockArrowUp,
-  SortDesc,
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react';
@@ -26,37 +25,45 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const t = useTranslations('Filter.sorts');
   const tData = useTranslations('data');
   const SORT_OPTIONS = [
-    { id: 1, title: t('likeDesc'), value: 'Like Desc', icon: ThumbsUp },
-    { id: 2, title: t('likeAsc'), value: 'Like Asc', icon: ThumbsDown },
-    { id: 3, title: t('dateDesc'), value: 'Date Desc', icon: ClockArrowDown },
-    { id: 4, title: t('dateAsc'), value: 'Date Asc', icon: ClockArrowUp },
+    { id: 1, title: t('likeDesc'), value: 'likes desc', icon: ThumbsUp },
+    { id: 2, title: t('likeAsc'), value: 'likes asc', icon: ThumbsDown },
+    { id: 3, title: t('dateDesc'), value: 'date desc', icon: ClockArrowDown },
+    { id: 4, title: t('dateAsc'), value: 'date asc', icon: ClockArrowUp },
   ] as const;
   const params = useParams();
   const locale = params.locale;
 
-  const currentSortOption = useMemo(
-    () =>
-      SORT_OPTIONS.find(
-        (item) => item.value.toLowerCase() === sortQuery?.toLowerCase()
-      ),
-    [sortQuery]
-  );
-  const CurrentIcon = currentSortOption?.icon || SortDesc;
-  const displaySortText = currentSortOption?.title || tData('sort');
+  const currentSortOption =
+    useMemo(
+      () =>
+        SORT_OPTIONS.find(
+          (item) => item.value.toLowerCase() === sortQuery?.toLowerCase()
+        ),
+      [sortQuery]
+    );
+  const CurrentIcon = currentSortOption?.icon || SORT_OPTIONS[0].icon;
+  const displaySortText = currentSortOption?.title || t('likeDesc');
 
   return (
-    <DropdownMenu dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+    <DropdownMenu>
       <DropdownMenuTrigger className="outline-none cursor-pointer" asChild>
         <button
-          className="text-lg flex gap-2 items-center font-medium min-w-fit"
+          className="text-lg flex gap-2 items-center justify-center font-medium min-w-fit"
           aria-label="Sort options"
         >
-          <CurrentIcon size={20} />
-          {displaySortText}
+          <span>{tData('sort')}:</span>
+          <span className="flex gap-1 text-sm">
+            <CurrentIcon className="size-4" />
+            {displaySortText}
+          </span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center">
-        <DropdownMenuRadioGroup value={sortQuery} onValueChange={setSortQuery}>
+      <DropdownMenuContent>
+        <DropdownMenuRadioGroup
+          dir={locale == 'fa' ? 'rtl' : 'ltr'}
+          value={sortQuery}
+          onValueChange={setSortQuery}
+        >
           {SORT_OPTIONS.map((option) => {
             const OptionIcon = option.icon;
             return (
