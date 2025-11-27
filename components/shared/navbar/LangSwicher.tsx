@@ -25,7 +25,7 @@ export default function LangSwicher() {
             <Globe />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-32">
+        <DropdownMenuContent className="min-w-32" align='start'>
           <DropdownMenuItem>
             <Link href={'/fa'} className="w-full">
               <span>{t('fa')}</span>

@@ -27,10 +27,13 @@ export function MobileMenu({
         <MenuIcon className="cursor-pointer" />
       </SheetTrigger>
 
-      <SheetContent dir={locale == 'fa' ? 'rtl' : 'ltr'} side={locale == 'fa' ? 'right' : 'left'}>
+      <SheetContent
+        dir={locale == 'fa' ? 'rtl' : 'ltr'}
+        side={locale == 'fa' ? 'right' : 'left'}
+      >
         <SheetHeader>
           <SheetTitle className="border-b pb-4">
-            <span className="text-2xl lg:text-3xl font-extrabold text-gray-600">
+            <span className="text-2xl lg:text-3xl font-extrabold text-gray-600 dark:text-gray-100 shrink-0">
               Nano Image
             </span>
           </SheetTitle>

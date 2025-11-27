@@ -86,5 +86,10 @@
   "Product": {
     "copy": "copy",
     "toastCopy": "Prompt copied to clipboard!"
+  },
+  "Theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
   }
 }
