@@ -3,12 +3,8 @@ import './globals.css';
 import localFont from 'next/font/local';
 import Navbar from '@/components/shared/navbar/Navbar';
 import Footer from '@/components/shared/Footer';
-import { Toaster } from '@/components/ui/sonner';
-import { ClerkProvider } from '@clerk/nextjs';
-import NextTopLoader from 'nextjs-toploader';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { NextIntlClientProvider } from 'next-intl';
-import { ThemeProvider } from '@/components/shared/ThemeProvider';
+import AllProviders from '@/providers/AllProviders';
 
 const yekanBakh = localFont({
   src: [
@@ -62,32 +58,21 @@ export default async function RootLayout({
   const user = await currentUser();
   const locale = (await params).locale;
   return (
-    <ClerkProvider>
-      <html
-        lang={locale}
-        dir={locale == 'fa' ? 'rtl' : 'ltr'}
-        suppressHydrationWarning
-      >
-        <body className={`${yekanBakh.className} antialiased`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextIntlClientProvider>
-              <Toaster position="top-right" />
-              <NextTopLoader color="var(--primary)" showSpinner={false} />
-              <Navbar
-                isAuthenticated={!!userId}
-                userEmail={user?.emailAddresses?.[0]?.emailAddress}
-              />
-              <main className="container">{children}</main>
-              <Footer />
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html
+      lang={locale}
+      dir={locale == 'fa' ? 'rtl' : 'ltr'}
+      suppressHydrationWarning
+    >
+      <body className={`${yekanBakh.className} antialiased`}>
+        <AllProviders>
+          <Navbar
+            isAuthenticated={!!userId}
+            userEmail={user?.emailAddresses?.[0]?.emailAddress}
+          />
+          <main className="container">{children}</main>
+          <Footer />
+        </AllProviders>
+      </body>
+    </html>
   );
 }
