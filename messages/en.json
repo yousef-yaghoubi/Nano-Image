@@ -91,5 +91,11 @@
     "dark": "Dark",
     "light": "Light",
     "system": "System"
+  },
+  "Pages": {
+    "favorites": {
+      "notAuthenticated": "You need to sign in to see your favorite prompts.",
+      "head": "Favorites"
+    }
   }
 }

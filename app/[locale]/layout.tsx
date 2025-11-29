@@ -55,7 +55,11 @@ export default async function RootLayout({
   params: Promise<{ locale?: string }>;
 }>) {
   const { userId } = await auth();
-  const user = await currentUser();
+  let user = null;
+  if (userId) {
+    user = await currentUser();
+  }
+
   const locale = (await params).locale;
   return (
     <html

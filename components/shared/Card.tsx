@@ -3,12 +3,13 @@ import { Copy, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { FavoriteButton } from './FavoriteButton';
 
 function Card({
   data,
 }: {
   data: {
-    id: string;
+    _id: string;
     image: string;
     title: string;
     prompt: string;
@@ -29,7 +30,7 @@ function Card({
     >
       <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center gap-2 likeBox">
         <span>{data.likes}</span>
-        <Heart size={15} className="mb-1" />
+        <FavoriteButton promptId={data._id} />
       </div>
       <Image
         src={data.image}

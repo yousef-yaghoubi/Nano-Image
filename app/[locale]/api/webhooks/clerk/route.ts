@@ -6,95 +6,107 @@ import dbConnect from '@/lib/db';
 import { Favorite, PromptFavorite, Users } from '@/models';
 
 export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
+  // ----------------------- 1. CHECK SECRET -----------------------
+  const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    return new Response('Missing CLERK_WEBHOOK_SECRET', { status: 500 });
+  }
+
+  // ----------------------- 2. HEADERS -----------------------
+  const headerPayload = await headers();
+  const svix_id = headerPayload.get('svix-id');
+  const svix_timestamp = headerPayload.get('svix-timestamp');
+  const svix_signature = headerPayload.get('svix-signature');
+
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    return new Response('Missing svix headers', { status: 400 });
+  }
+
+  // ----------------------- 3. GET RAW BODY (CRITICAL FIX) -----------------------
+  // ⚠️ Must read as text first to preserve exact structure for verification
+  const payload = await req.text();
+
+  const wh = new Webhook(webhookSecret);
+  let evt: WebhookEvent;
+
   try {
-    await dbConnect(); // ⬅️ اتصال به MongoDB
+    evt = wh.verify(payload, {
+      'svix-id': svix_id,
+      'svix-timestamp': svix_timestamp,
+      'svix-signature': svix_signature,
+    }) as WebhookEvent;
+  } catch (err) {
+    console.error('Error verifying webhook:', err);
+    return new Response('Error verifying webhook', { status: 400 });
+  }
 
-    // ----------------------- HEADERS -----------------------
-    const headerPayload = headers();
-    const svix_id = (await headerPayload).get('svix-id');
-    const svix_timestamp = (await headerPayload).get('svix-timestamp');
-    const svix_signature = (await headerPayload).get('svix-signature');
+  // ----------------------- 4. PROCESS EVENT -----------------------
+  // Connect to DB only AFTER verification passes
+  await dbConnect();
 
-    if (!svix_id || !svix_timestamp || !svix_signature) {
-      return new Response('Missing svix headers', { status: 400 });
-    }
+  const eventType = evt.type;
+  console.log(`Webhook verified. Event Type: ${eventType}`);
 
-    // ----------------------- VERIFY -----------------------
-    const payload = await req.json();
-    const body = JSON.stringify(payload);
+  try {
+    switch (eventType) {
+      case 'user.created': {
+        const { id, email_addresses, image_url } = evt.data;
 
-    const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
-    if (!webhookSecret) return new Response('Missing CLERK_WEBHOOK_SECRET', { status: 500 });
+        // if (!email_addresses || email_addresses.length === 0) {
+        //   return new Response('No email found', { status: 400 });
+        // }
 
-    const wh = new Webhook(webhookSecret);
-
-    let evt: WebhookEvent;
-    try {
-      evt = wh.verify(body, {
-        'svix-id': svix_id,
-        'svix-timestamp': svix_timestamp,
-        'svix-signature': svix_signature,
-      }) as WebhookEvent;
-    } catch (err) {
-      console.error('Error verifying webhook:', err);
-      return new Response('Error verifying webhook', { status: 400 });
-    }
-
-    const eventType = evt.type;
-
-    // ---------------------- USER.CREATED ----------------------
-    if (eventType === 'user.created') {
-      const { id, email_addresses, image_url } = evt.data;
-
-      if (!email_addresses?.length) return new Response('No email found', { status: 400 });
-
-      try {
-        const user = await Users.create({
-          clerkId: id,
-          email: email_addresses[0].email_address,
-          image: image_url,
-          role: 'MEMBER',
-        });
-
-        await Favorite.create({ userId: user._id });
-
-        console.log('User created in database:', id);
-        return new Response('User created successfully', { status: 200 });
-      } catch (error) {
-        console.error('Error creating user:', error);
-        return new Response('Error creating user', { status: 500 });
-      }
-    }
-
-    // ---------------------- USER.UPDATED ----------------------
-    if (eventType === 'user.updated') {
-      const { id, email_addresses } = evt.data;
-      if (!email_addresses?.length) return new Response('No email found', { status: 400 });
-
-      try {
-        await Users.findOneAndUpdate(
+        // Use findOneAndUpdate with upsert=true.
+        // This handles "creation" AND "duplicates" automatically.
+        const user = await Users.findOneAndUpdate(
           { clerkId: id },
-          { email: email_addresses[0].email_address }
+          {
+            clerkId: id,
+            email: email_addresses[0].email_address,
+            image: image_url,
+            role: 'MEMBER',
+          },
+          { upsert: true, new: true, setDefaultsOnInsert: true }
         );
 
-        console.log('User updated in database:', id);
-        return new Response('User updated successfully', { status: 200 });
-      } catch (error) {
-        console.error('Error updating user:', error);
-        return new Response('Error updating user', { status: 500 });
+        // Ensure user has a Favorite list
+        const favExists = await Favorite.findOne({ userId: user._id });
+        if (!favExists) {
+          await Favorite.create({ userId: user._id });
+        }
+
+        console.log(`User created/synced: ${id}`);
+        return new Response('User created', { status: 200 });
       }
-    }
 
-    // ---------------------- USER.DELETED ----------------------
-    if (eventType === 'user.deleted') {
-      const { id } = evt.data;
+      case 'user.updated': {
+        const { id, email_addresses, image_url } = evt.data;
 
-      try {
+        // Update both email and image
+        await Users.findOneAndUpdate(
+          { clerkId: id },
+          {
+            email: email_addresses[0]?.email_address,
+            image: image_url,
+          }
+        );
+
+        console.log(`User updated: ${id}`);
+        return new Response('User updated', { status: 200 });
+      }
+
+      case 'user.deleted': {
+        const { id } = evt.data;
+
         const user = await Users.findOne({ clerkId: id });
-        if (!user) return new Response('User not found', { status: 404 });
+        if (!user) {
+          // Return 200 even if not found to stop Clerk from retrying
+          return new Response('User not found, nothing to delete', {
+            status: 200,
+          });
+        }
 
         const favorite = await Favorite.findOne({ userId: user._id });
 
@@ -104,18 +116,15 @@ export async function POST(req: Request) {
         }
 
         await Users.deleteOne({ _id: user._id });
-
-        console.log('User deleted from database:', id);
-        return new Response('User deleted successfully', { status: 200 });
-      } catch (error) {
-        console.error('Error deleting user:', error);
-        return new Response('Error deleting user', { status: 500 });
+        console.log(`User deleted: ${id}`);
+        return new Response('User deleted', { status: 200 });
       }
-    }
 
-    return new Response('Webhook processed successfully', { status: 200 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: err });
+      default:
+        return new Response('Event type not handled', { status: 200 });
+    }
+  } catch (error: any) {
+    console.error('Database error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

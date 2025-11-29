@@ -1,14 +1,16 @@
-import mongoose from 'mongoose';
+// @/models/index.ts
+import {
+  IFavorite,
+  IFavoriteModel,
+  IUser,
+  IPrompt,
+  IPromptFavorite,
+} from '@/types/models';
+import { Role } from './roles';
+import mongoose, { Schema } from 'mongoose';
 
-// Role Enum
-export const Role = {
-  MEMBER: 'MEMBER',
-  ADMIN: 'ADMIN',
-  SUPER_ADMIN: 'SUPER_ADMIN',
-};
-
-// Prompts Schema
-const promptsSchema = new mongoose.Schema(
+// ---------------------- PROMPTS SCHEMA ----------------------
+const promptsSchema = new Schema<IPrompt>(
   {
     title: {
       type: String,
@@ -28,7 +30,6 @@ const promptsSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
-      index: true,
     },
     layout: {
       type: String,
@@ -38,9 +39,9 @@ const promptsSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      index: true,
     },
-    model: {
+    aiModel: {
+      // ✅ Changed from 'model' to 'aiModel'
       type: String,
       required: true,
       index: true,
@@ -63,15 +64,17 @@ const promptsSchema = new mongoose.Schema(
   {
     timestamps: true,
     collection: 'prompts',
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-// Compound indexes for common queries
+// Performance Indexes
 promptsSchema.index({ tags: 1, createdAt: -1 });
 promptsSchema.index({ likes: -1, createdAt: -1 });
 promptsSchema.index({ creatorName: 1, createdAt: -1 });
 
-// Virtual for favorites count
+// Virtual: Count favorites
 promptsSchema.virtual('favoritesCount', {
   ref: 'PromptFavorite',
   localField: '_id',
@@ -79,8 +82,8 @@ promptsSchema.virtual('favoritesCount', {
   count: true,
 });
 
-// Users Schema
-const usersSchema = new mongoose.Schema(
+// ---------------------- USERS SCHEMA ----------------------
+const usersSchema = new Schema<IUser>(
   {
     clerkId: {
       type: String,
@@ -99,15 +102,13 @@ const usersSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(Role),
       default: Role.MEMBER,
-      index: true,
     },
     image: {
       type: String,
     },
-    waitFoRAdmin: {
+    waitForAdmin: {
       type: Boolean,
       default: false,
-      index: true,
     },
   },
   {
@@ -116,14 +117,14 @@ const usersSchema = new mongoose.Schema(
   }
 );
 
-// Compound index for admin queries
-usersSchema.index({ role: 1, waitForSuperAdmin: 1 });
+// Compound index for Admin Dashboard
+usersSchema.index({ role: 1, waitForAdmin: 1 });
 
-// Favorite Schema
-const favoriteSchema = new mongoose.Schema(
+// ---------------------- FAVORITE SCHEMA ----------------------
+const favoriteSchema = new Schema<IFavorite>(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Users',
       required: true,
       unique: true,
@@ -132,27 +133,28 @@ const favoriteSchema = new mongoose.Schema(
   },
   {
     collection: 'favorites',
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-// Virtual for prompts in favorite
 favoriteSchema.virtual('prompts', {
   ref: 'PromptFavorite',
   localField: '_id',
   foreignField: 'favoriteId',
 });
 
-// PromptFavorite Schema (Junction table)
-const promptFavoriteSchema = new mongoose.Schema(
+// ---------------------- PROMPT FAVORITE SCHEMA ----------------------
+const promptFavoriteSchema = new Schema<IPromptFavorite>(
   {
     promptId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Prompts',
       required: true,
       index: true,
     },
     favoriteId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Favorite',
       required: true,
       index: true,
@@ -164,18 +166,21 @@ const promptFavoriteSchema = new mongoose.Schema(
   }
 );
 
-// Compound unique index to prevent duplicate favorites
+// Indexes
 promptFavoriteSchema.index({ promptId: 1, favoriteId: 1 }, { unique: true });
-
-// Individual indexes for queries
 promptFavoriteSchema.index({ favoriteId: 1, createdAt: -1 });
-promptFavoriteSchema.index({ promptId: 1 });
 
-// Static method to get user's favorite prompts efficiently
+// ---------------------- STATIC METHODS ----------------------
+import type {
+  GetUserFavoritePromptsOptions,
+  ToggleFavoriteResult,
+} from '@/types/models';
+import { Types } from 'mongoose';
+
 favoriteSchema.statics.getUserFavoritePrompts = async function (
-  userId,
-  options = {}
-) {
+  userId: Types.ObjectId,
+  options: GetUserFavoritePromptsOptions = {}
+): Promise<IPromptFavorite[]> {
   const {
     skip = 0,
     limit = 20,
@@ -187,64 +192,79 @@ favoriteSchema.statics.getUserFavoritePrompts = async function (
   if (!favorite) return [];
 
   return mongoose
-    .model('PromptFavorite')
+    .model<IPromptFavorite>('PromptFavorite')
     .find({ favoriteId: favorite._id })
-    .populate('promptId')
+    .populate({
+      path: 'promptId',
+      select: 'title image likes creatorName tags',
+    })
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit)
     .lean();
 };
 
-// Static method to check if prompt is favorited
-favoriteSchema.statics.isPromptFavorited = async function (userId, promptId) {
-  const favorite = await this.findOne({ userId }).lean();
+favoriteSchema.statics.isPromptFavorited = async function (
+  userId: Types.ObjectId,
+  promptId: Types.ObjectId
+): Promise<boolean> {
+  const favorite = await this.findOne({ userId }).select('_id').lean();
   if (!favorite) return false;
 
   const exists = await mongoose
-    .model('PromptFavorite')
+    .model<IPromptFavorite>('PromptFavorite')
     .exists({ favoriteId: favorite._id, promptId });
 
   return !!exists;
 };
 
-// Static method to toggle favorite
-favoriteSchema.statics.toggleFavorite = async function (userId, promptId) {
-  let favorite = await this.findOne({ userId });
+favoriteSchema.statics.toggleFavorite = async function (
+  userId: Types.ObjectId,
+  promptId: Types.ObjectId
+): Promise<ToggleFavoriteResult> {
+  const favorite = await this.findOneAndUpdate(
+    { userId },
+    { $setOnInsert: { userId } },
+    { upsert: true, new: true, lean: true }
+  );
 
   if (!favorite) {
-    favorite = await this.create({ userId });
+    throw new Error('Failed to create or find favorite');
   }
 
   const existing = await mongoose
-    .model('PromptFavorite')
+    .model<IPromptFavorite>('PromptFavorite')
     .findOne({ favoriteId: favorite._id, promptId });
 
   if (existing) {
     await existing.deleteOne();
+    await mongoose
+      .model<IPrompt>('Prompts')
+      .updateOne({ _id: promptId }, { $inc: { likes: -1 } });
     return { action: 'removed', favorite };
   } else {
-    await mongoose.model('PromptFavorite').create({
+    await mongoose.model<IPromptFavorite>('PromptFavorite').create({
       favoriteId: favorite._id,
       promptId,
     });
+    await mongoose
+      .model<IPrompt>('Prompts')
+      .updateOne({ _id: promptId }, { $inc: { likes: 1 } });
     return { action: 'added', favorite };
   }
 };
 
-// Enable virtuals in JSON output
-promptsSchema.set('toJSON', { virtuals: true });
-promptsSchema.set('toObject', { virtuals: true });
-favoriteSchema.set('toJSON', { virtuals: true });
-favoriteSchema.set('toObject', { virtuals: true });
-
-// Create and export models (prevents recompilation in dev)
+// ---------------------- EXPORTS ----------------------
 export const Prompts =
-  mongoose.models.Prompts || mongoose.model('Prompts', promptsSchema);
+  mongoose.models.Prompts || mongoose.model<IPrompt>('Prompts', promptsSchema);
+
 export const Users =
-  mongoose.models.Users || mongoose.model('Users', usersSchema);
+  mongoose.models.Users || mongoose.model<IUser>('Users', usersSchema);
+
 export const Favorite =
-  mongoose.models.Favorite || mongoose.model('Favorite', favoriteSchema);
+  mongoose.models.Favorite ||
+  mongoose.model<IFavorite, IFavoriteModel>('Favorite', favoriteSchema);
+
 export const PromptFavorite =
   mongoose.models.PromptFavorite ||
-  mongoose.model('PromptFavorite', promptFavoriteSchema);
+  mongoose.model<IPromptFavorite>('PromptFavorite', promptFavoriteSchema);
