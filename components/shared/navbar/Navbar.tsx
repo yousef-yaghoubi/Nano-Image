@@ -20,7 +20,7 @@ export default function Navbar({ isAuthenticated, userEmail }: NavbarProps) {
     <div className="w-full h-20 border-b px-6">
       <div className="h-full flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
-        <Logo/>
+        <Logo />
         {isDesktop ? (
           <>
             <NavList isDesktop={true} />

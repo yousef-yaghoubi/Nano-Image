@@ -38,7 +38,13 @@ function ButtonFilter({
       )}
       onClick={handleTagClick.bind(null, option)}
     >
-      <span>{t(option)}</span>
+      {option.startsWith('Search:') ? (
+        <span>
+          {t('Search')} {option.replace('Search: ', '')}
+        </span>
+      ) : (
+        <span>{t(option)}</span>
+      )}
       <span>{tags.includes(option) && <X size={15} />}</span>
     </button>
   );

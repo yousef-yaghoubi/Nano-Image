@@ -1,6 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export interface PromptType {
-  // blurhash: any;
-  id: string;
+  _id: ObjectId;
   title: string;
   prompt: string;
   image: string;
@@ -12,6 +13,7 @@ export interface PromptType {
   tags: null | string[];
   isLiked: boolean;
   isPremium: boolean;
+  isFavorited: boolean;
 }
 
 export interface DataFullType {

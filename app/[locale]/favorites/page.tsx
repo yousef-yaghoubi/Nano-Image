@@ -3,7 +3,6 @@ import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getFavoritesPrompts from '@/services/getFavoritesPrompts';
 import { DataFullType } from '@/types/data';
 import { auth } from '@clerk/nextjs/server';
-import { get } from 'http';
 import { getTranslations } from 'next-intl/server';
 
 async function page({

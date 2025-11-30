@@ -1,21 +1,12 @@
 'use client';
-import { Copy, Heart } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { FavoriteButton } from './FavoriteButton';
+import { PromptType } from '@/types/data';
 
-function Card({
-  data,
-}: {
-  data: {
-    _id: string;
-    image: string;
-    title: string;
-    prompt: string;
-    likes: number;
-  };
-}) {
+function Card({ data }: { data: PromptType }) {
   const t = useTranslations('Product');
 
   const handleCopy = async () => {
@@ -30,7 +21,10 @@ function Card({
     >
       <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center gap-2 likeBox">
         <span>{data.likes}</span>
-        <FavoriteButton promptId={data._id} />
+        <FavoriteButton
+          promptId={data._id}
+          promptIsFavorit={data.isFavorited}
+        />
       </div>
       <Image
         src={data.image}

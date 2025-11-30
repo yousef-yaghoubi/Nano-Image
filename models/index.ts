@@ -1,7 +1,6 @@
 // @/models/index.ts
 import {
   IFavorite,
-  IFavoriteModel,
   IUser,
   IPrompt,
   IPromptFavorite,
@@ -170,90 +169,6 @@ const promptFavoriteSchema = new Schema<IPromptFavorite>(
 promptFavoriteSchema.index({ promptId: 1, favoriteId: 1 }, { unique: true });
 promptFavoriteSchema.index({ favoriteId: 1, createdAt: -1 });
 
-// ---------------------- STATIC METHODS ----------------------
-import type {
-  GetUserFavoritePromptsOptions,
-  ToggleFavoriteResult,
-} from '@/types/models';
-import { Types } from 'mongoose';
-
-favoriteSchema.statics.getUserFavoritePrompts = async function (
-  userId: Types.ObjectId,
-  options: GetUserFavoritePromptsOptions = {}
-): Promise<IPromptFavorite[]> {
-  const {
-    skip = 0,
-    limit = 20,
-    sortBy = 'createdAt',
-    sortOrder = -1,
-  } = options;
-
-  const favorite = await this.findOne({ userId }).lean();
-  if (!favorite) return [];
-
-  return mongoose
-    .model<IPromptFavorite>('PromptFavorite')
-    .find({ favoriteId: favorite._id })
-    .populate({
-      path: 'promptId',
-      select: 'title image likes creatorName tags',
-    })
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit)
-    .lean();
-};
-
-favoriteSchema.statics.isPromptFavorited = async function (
-  userId: Types.ObjectId,
-  promptId: Types.ObjectId
-): Promise<boolean> {
-  const favorite = await this.findOne({ userId }).select('_id').lean();
-  if (!favorite) return false;
-
-  const exists = await mongoose
-    .model<IPromptFavorite>('PromptFavorite')
-    .exists({ favoriteId: favorite._id, promptId });
-
-  return !!exists;
-};
-
-favoriteSchema.statics.toggleFavorite = async function (
-  userId: Types.ObjectId,
-  promptId: Types.ObjectId
-): Promise<ToggleFavoriteResult> {
-  const favorite = await this.findOneAndUpdate(
-    { userId },
-    { $setOnInsert: { userId } },
-    { upsert: true, new: true, lean: true }
-  );
-
-  if (!favorite) {
-    throw new Error('Failed to create or find favorite');
-  }
-
-  const existing = await mongoose
-    .model<IPromptFavorite>('PromptFavorite')
-    .findOne({ favoriteId: favorite._id, promptId });
-
-  if (existing) {
-    await existing.deleteOne();
-    await mongoose
-      .model<IPrompt>('Prompts')
-      .updateOne({ _id: promptId }, { $inc: { likes: -1 } });
-    return { action: 'removed', favorite };
-  } else {
-    await mongoose.model<IPromptFavorite>('PromptFavorite').create({
-      favoriteId: favorite._id,
-      promptId,
-    });
-    await mongoose
-      .model<IPrompt>('Prompts')
-      .updateOne({ _id: promptId }, { $inc: { likes: 1 } });
-    return { action: 'added', favorite };
-  }
-};
-
 // ---------------------- EXPORTS ----------------------
 export const Prompts =
   mongoose.models.Prompts || mongoose.model<IPrompt>('Prompts', promptsSchema);
@@ -263,7 +178,7 @@ export const Users =
 
 export const Favorite =
   mongoose.models.Favorite ||
-  mongoose.model<IFavorite, IFavoriteModel>('Favorite', favoriteSchema);
+  mongoose.model<IFavorite>('Favorite', favoriteSchema);
 
 export const PromptFavorite =
   mongoose.models.PromptFavorite ||

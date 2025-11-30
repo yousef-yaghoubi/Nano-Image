@@ -1,8 +1,7 @@
-import React from 'react';
 import { FilterSort } from '../FilteringData/Filter';
 import Card from '../Card';
 import PaginationFull from '../PaginationFull';
-import { DataFullType } from '@/types/data';
+import { DataFullType, PromptType } from '@/types/data';
 
 function ShowPrompts({ prompt }: { prompt: DataFullType }) {
   return (
@@ -12,17 +11,9 @@ function ShowPrompts({ prompt }: { prompt: DataFullType }) {
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 justify-items-center mt-10">
-        {prompt?.data?.map(
-          (item: {
-            image: string;
-            id: string;
-            prompt: string;
-            title: string;
-            likes: number;
-          }) => (
-            <Card data={item} key={item.title} />
-          )
-        )}
+        {prompt?.data?.map((item: PromptType) => (
+          <Card data={item} key={item.title} />
+        ))}
       </div>
 
       <div className="mt-10 text-3xl">

@@ -1,4 +1,4 @@
-import { Types, Document, Model } from 'mongoose';
+import { Types, Document } from 'mongoose';
 import type { RoleType } from '@/models/roles';
 // ---------------------- USER TYPES ----------------------
 export interface IUser extends Document {
@@ -98,24 +98,7 @@ export interface ToggleFavoriteResult {
   favorite: FavoriteLean;
 }
 
-export interface IFavoriteModel extends Model<IFavorite> {
-  getUserFavoritePrompts(
-    userId: Types.ObjectId,
-    options?: GetUserFavoritePromptsOptions
-  ): Promise<IPromptFavorite[]>;
-
-  isPromptFavorited(
-    userId: Types.ObjectId,
-    promptId: Types.ObjectId
-  ): Promise<boolean>;
-
-  toggleFavorite(
-    userId: Types.ObjectId,
-    promptId: Types.ObjectId
-  ): Promise<ToggleFavoriteResult>;
-}
-
-// ---------------------- POPULATED TYPES ----------------------
+//  ---------------------- POPULATED TYPES ----------------------
 export interface IPromptFavoritePopulated
   extends Omit<IPromptFavorite, 'promptId'> {
   promptId: IPrompt;

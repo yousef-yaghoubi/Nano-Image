@@ -1,4 +1,5 @@
 import { getBaseUrl } from '@/lib/getBaseUrl';
+import { headers } from 'next/headers';
 
 export default async function getPrompts({
   page = '1',
@@ -15,8 +16,15 @@ export default async function getPrompts({
   const api = `${getBaseUrl()}/api/prompts?limit=${limit}&page=${page}${
     search ? `&search=${search}` : ''
   }${tags ? `&tags=${tags}` : ''}${sort ? `&sort=${sort}` : ''}`;
-  const data = await fetch(api, { cache: 'no-store' }).then((res) =>
-    res.json()
-  );
+
+  const headersList = await headers();
+  const cookie = headersList.get('cookie');
+
+  const data = await fetch(api, {
+    cache: 'no-store',
+    headers: {
+      Cookie: cookie || '',
+    },
+  }).then((res) => res.json());
   return data;
 }

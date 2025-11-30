@@ -1,9 +1,11 @@
 import dbConnect from '@/lib/db';
-import { Prompts } from '@/models';
+import { Favorite, Prompts, Users, PromptFavorite } from '@/models'; // Added Users and PromptFavorite
 import { NextResponse } from 'next/server';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { PromptType } from '@/types/data';
-// import type { PromptType } from '@/types/models';
+import { ObjectId } from 'mongodb'; // Still needed for promptIds
+import { auth } from '@clerk/nextjs/server';
+import { IFavorite, IUser } from '@/types/models';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +23,32 @@ export async function GET(req: Request) {
     const sortParam = searchParams.get('sort');
     const searchRaw = searchParams.get('search');
 
+    // -------------------------
+    // USER ID (Clerk ID)
+    // -------------------------
+    const { userId: clerkId } = await auth(); // Renamed to clerkId for clarity
+    let mongooseUserId: ObjectId | null = null;
+    let favoriteId: ObjectId | null = null;
+
+    if (clerkId) {
+      // 1. Find the Mongoose User document using the Clerk ID
+      const user = await Users.findOne({ clerkId })
+        .select('_id')
+        .lean<IUser | null>();
+
+      if (user) {
+        mongooseUserId = user._id;
+
+        // 2. Find the user's main Favorite document using the Mongoose User ID
+        const favoriteDoc = await Favorite.findOne({ userId: mongooseUserId })
+          .select('_id')
+          .lean<IFavorite | null>();
+
+        if (favoriteDoc) {
+          favoriteId = favoriteDoc._id;
+        }
+      }
+    }
     // -------------------------
     // TAGS
     // -------------------------
@@ -88,11 +116,38 @@ export async function GET(req: Request) {
     // -------------------------
     const total = await Prompts.countDocuments(where);
 
-    const prompts = await Prompts.find(where)
+    let prompts = await Prompts.find(where)
       .sort(sort)
       .skip(skip)
       .limit(limit)
       .lean<PromptType[]>(); // ← این باعث میشه خروجی 100٪ تایپ باشه
+
+    // -------------------------
+    // ADD isFavorited LOGIC (MANUAL LOOKUP) 🚀
+    // -------------------------
+    if (favoriteId) {
+      const promptIds = prompts.map((prompt) => prompt._id);
+
+      // 3. Manually query the PromptFavorite collection
+      const favoritedPrompts = await PromptFavorite.find({
+        favoriteId: favoriteId,
+        promptId: { $in: promptIds },
+      })
+        .select('promptId')
+        .lean();
+
+      // 4. Create a Set of favorited prompt IDs for O(1) lookup
+      const favoritedPromptIds = new Set(
+        favoritedPrompts.map((fav) => fav.promptId.toString())
+      );
+
+      // 5. Map over the prompts and add the isFavorited flag
+      prompts = prompts.map((prompt) => ({
+        ...prompt,
+        isFavorited: favoritedPromptIds.has(prompt._id.toString()),
+      })) as (PromptType & { isFavorited: boolean })[];
+    }
+    // -------------------------
 
     const totalPages = Math.ceil(total / limit);
 
