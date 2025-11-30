@@ -18,7 +18,7 @@ export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
       return {
         success: false,
         action: null,
-        message: t('userNotFound'),
+        message: t('isNotAuthenticated'),
       };
 
     await dbConnect();

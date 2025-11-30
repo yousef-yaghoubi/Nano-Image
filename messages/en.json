@@ -107,6 +107,7 @@
     },
     "addToFavorite": "Added to favorites successfully.",
     "removeFromFavorite": "Removed from favorites successfully.",
+    "isNotAuthenticated": "You need to sign in to perform this action.",
     "userNotFound": "User not found in database. Please ensure your account is set up correctly.",
     "generic": "An error occurred. Please try again."
   }
