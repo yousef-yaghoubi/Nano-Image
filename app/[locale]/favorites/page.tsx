@@ -1,4 +1,4 @@
-import AuthButtons from '@/components/shared/AuthButtons';
+import NotAuthenticated from '@/components/shared/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getFavoritesPrompts from '@/services/getFavoritesPrompts';
 import { DataFullType } from '@/types/data';
@@ -37,20 +37,17 @@ async function page({
 
   const t = await getTranslations('Pages.favorites');
   if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen gap-4">
-        <h2 className="heading-2">{t('notAuthenticated')}</h2>
-        <div className="flex gap-2">
-          <AuthButtons isAuthenticated={isAuthenticated}></AuthButtons>
-        </div>
-      </div>
-    );
+    return <NotAuthenticated isAuthenticated={isAuthenticated} />;
   }
 
   return (
     <>
       <h1 className="heading-1 mb-4">{t('head')}</h1>
-      <ShowPrompts prompt={prompt} />
+      {prompt.success ? (
+        <ShowPrompts prompt={prompt} />
+      ) : (
+        <p>{prompt.message}</p>
+      )}
     </>
   );
 }

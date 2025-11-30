@@ -12,7 +12,8 @@
   "Navbar": {
     "home": "Home",
     "about": "About Me",
-    "favorite": "Favorites"
+    "favorite": "Favorites",
+    "newPrompt": "New Prompt"
   },
   "Auth": {
     "signup": "Sign Up",

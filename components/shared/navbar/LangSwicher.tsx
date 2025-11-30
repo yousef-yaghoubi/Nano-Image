@@ -21,11 +21,16 @@ export default function LangSwicher() {
     <div>
       <DropdownMenu dir={params.locale == 'fa' ? 'rtl' : 'ltr'}>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" variant="outline" aria-label="Select theme">
+          <Button
+            size="icon"
+            variant="outline"
+            aria-label="Select theme"
+            className="cursor-pointer  h-10 w-10"
+          >
             <Globe />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-32" align='start'>
+        <DropdownMenuContent className="min-w-32" align="start">
           <DropdownMenuItem>
             <Link href={'/fa'} className="w-full">
               <span>{t('fa')}</span>

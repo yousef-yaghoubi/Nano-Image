@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { Heart, House, Users } from 'lucide-react';
+import { Heart, House, PlusIcon, Users } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,13 +12,19 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
     { id: 1, label: t('home'), link: `/${locale}`, icon: House },
     { id: 2, label: t('favorite'), link: `/${locale}/favorites`, icon: Heart },
     { id: 3, label: t('about'), link: `/${locale}/about`, icon: Users },
+    {
+      id: 4,
+      label: t('newPrompt'),
+      link: `/${locale}/newPrompt`,
+      icon: PlusIcon,
+    },
   ];
   const pathName = usePathname();
 
   return (
     <nav>
       <ul
-        className={cn('flex gap-3 mt-4', isDesktop ? 'flex-row' : ' flex-col')}
+        className={cn('flex gap-3 ', isDesktop ? 'flex-row' : ' flex-col mt-4')}
       >
         {navDetail.map((li) => {
           const CurrentIcon = li.icon;
@@ -33,8 +39,8 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
                   'flex gap-1 w-full px-2 py-4 rounded-sm',
                   isDesktop
                     ? isAcive
-                      ? 'text-primary font-semibold'
-                      : 'font-medium'
+                      ? 'text-primary font-semibold text-sm lg:text-lg'
+                      : 'font-medium text-sm lg:text-lg'
                     : isAcive
                       ? 'bg-primary/20 font-semibold text-primary'
                       : 'bg-primary/5 font-light'

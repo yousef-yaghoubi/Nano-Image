@@ -1,18 +1,12 @@
 'use client';
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function TeaxtArea({ promptData }: { promptData?: string }) {
+export default function TeaxtArea() {
   const [prompt, setPrompt] = useState('');
   const id = useId();
-
-  useEffect(() => {
-    if (promptData !== null && promptData !== undefined && prompt === '') {
-      setPrompt(promptData);
-    }
-  }, [prompt, promptData]);
 
   return (
     <div className="mt-2">

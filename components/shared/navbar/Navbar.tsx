@@ -5,7 +5,7 @@ import NavList from './Nav';
 import LangSwicher from './LangSwicher';
 import { MobileMenu } from './MobileMenu';
 import AuthButtons from '../AuthButtons';
-import { ModeToggle } from '../ModeToggle';
+import { ModeToggle } from './ModeToggle';
 import Logo from './Logo';
 
 interface NavbarProps {
@@ -19,7 +19,6 @@ export default function Navbar({ isAuthenticated, userEmail }: NavbarProps) {
   return (
     <div className="w-full h-20 border-b px-6">
       <div className="h-full flex justify-between items-center max-w-7xl mx-auto">
-        {/* Logo */}
         <Logo />
         {isDesktop ? (
           <>

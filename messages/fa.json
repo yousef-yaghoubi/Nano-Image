@@ -12,7 +12,8 @@
   "Navbar": {
     "home": "خانه",
     "about": "درباره من",
-    "favorite": "علاقه مندی ها"
+    "favorite": "علاقه مندی ها",
+    "newPrompt": "پرامپت جدید"
   },
   "Auth": {
     "signup": "ثبت نام",

@@ -4,10 +4,12 @@ import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db';
 import { Favorite, Users, PromptFavorite } from '@/models';
 import { IFavorite, IUser } from '@/types/models';
+import { getTranslations } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+  const t = await getTranslations('Errors');
   try {
     // 1. Database Connection and Authentication
     await dbConnect();
@@ -17,7 +19,7 @@ export async function GET(req: Request) {
 
     if (!clerkUserId) {
       return NextResponse.json(
-      { success: false, message: 'User not authenticated' },
+        { success: false, message: t('isNotAuthenticated') },
         { status: 401 }
       );
     }
@@ -28,7 +30,7 @@ export async function GET(req: Request) {
     }).lean()) as IUser | null;
     if (!user) {
       return NextResponse.json(
-        { success: false, message: 'User not found' },
+        { success: false, message: t('userNotFound') },
         { status: 404 }
       );
     }
@@ -154,8 +156,8 @@ export async function GET(req: Request) {
         total,
         totalPages,
         currentPage: page,
-        hasNextPage: page < totalPages,
-        hasPrevPage: page > 1,
+        hasNextPage: totalPages == 0 ? false : page < totalPages,
+        hasPrevPage: totalPages == 0 ? false : page > 1,
       },
     });
   } catch (error) {
@@ -163,7 +165,7 @@ export async function GET(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: 'Error fetching favorite prompts',
+        message: t('generic'),
         error: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }

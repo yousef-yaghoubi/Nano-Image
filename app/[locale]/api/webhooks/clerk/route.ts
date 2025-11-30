@@ -1,11 +1,14 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
-import { WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { Favorite, PromptFavorite, Users } from '@/models';
+import { ObjectId } from 'mongoose';
+import { RoleType } from '@/models/roles';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   // ----------------------- 1. CHECK SECRET -----------------------
@@ -49,6 +52,7 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   console.log(`Webhook verified. Event Type: ${eventType}`);
 
+  const ClerkC = await clerkClient();
   try {
     switch (eventType) {
       case 'user.created': {
@@ -76,6 +80,12 @@ export async function POST(req: Request) {
         if (!favExists) {
           await Favorite.create({ userId: user._id });
         }
+
+        await ClerkC.users.updateUser(id, {
+          publicMetadata: {
+            role: user.role,
+          },
+        });
 
         console.log(`User created/synced: ${id}`);
         return new Response('User created', { status: 200 });
@@ -119,10 +129,35 @@ export async function POST(req: Request) {
         console.log(`User deleted: ${id}`);
         return new Response('User deleted', { status: 200 });
       }
+      case 'session.created': {
+        const userId = evt.data.user_id;
+
+        // 1. Fetch user role from your DB
+        const user = await Users.findOne({ clerkId: userId })
+          .select('role')
+          .lean<{ _id: ObjectId; role: RoleType }>();
+        console.log('user: ', user);
+        console.log('userId: ', userId);
+
+
+        if (user) {
+          // 2. Update publicMetadata (for future sessions)
+          await ClerkC.users.updateUser(userId, {
+            publicMetadata: {
+              role: user.role,
+            },
+          });
+        }
+
+        console.log(`Session created for user: ${userId}`);
+        return new Response('Session created', { status: 200 });
+      }
 
       default:
         return new Response('Event type not handled', { status: 200 });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Database error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });

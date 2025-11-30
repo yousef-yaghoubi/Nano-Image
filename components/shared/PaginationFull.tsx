@@ -42,7 +42,7 @@ export default function PaginationFull({
   };
 
   return (
-    <Pagination dir='ltr'>
+    <Pagination dir="ltr">
       <PaginationContent>
         {/* Previous page */}
         <PaginationItem>
@@ -63,7 +63,10 @@ export default function PaginationFull({
         {/* Page numbers */}
         {pages.map((p) => (
           <PaginationItem key={p}>
-            <PaginationLink href={getHrefWithPage(p)} isActive={p === currentPage}>
+            <PaginationLink
+              href={getHrefWithPage(p)}
+              isActive={p === currentPage}
+            >
               {p}
             </PaginationLink>
           </PaginationItem>
@@ -79,8 +82,10 @@ export default function PaginationFull({
         {/* Next page */}
         <PaginationItem>
           <PaginationNext
-            href={getHrefWithPage(currentPage < totalPages ? currentPage + 1 : totalPages)}
-            aria-disabled={currentPage === totalPages}
+            href={getHrefWithPage(
+              currentPage < totalPages ? currentPage + 1 : totalPages
+            )}
+            aria-disabled={currentPage >= totalPages}
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
           />
         </PaginationItem>
