@@ -110,6 +110,13 @@
     "removeFromFavorite": "Removed from favorites successfully.",
     "isNotAuthenticated": "You need to sign in to perform this action.",
     "userNotFound": "User not found in database. Please ensure your account is set up correctly.",
-    "generic": "An error occurred. Please try again."
+    "generic": "An error occurred. Please try again.",
+    "noFile": "File not uploaded. Please try again."
+  },
+  "FormSendPrompt": {
+    "minLengthName": "name must be at least 3 characters long.",
+    "maxLengthName": "name must be at most 40 characters long.",
+    "minLengthDesc": "prompt must be at least 10 characters long.",
+    "isRequired": "this field is required."
   }
 }

@@ -1,25 +1,33 @@
 'use client';
-import { useId, useState } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useField } from 'formik';
 
-export default function TeaxtArea() {
-  const [prompt, setPrompt] = useState('');
-  const id = useId();
-
+interface TextAreaType {
+  name: string;
+  label?: string;
+}
+export default function TeaxtArea({
+  name,
+  label,
+  ...props
+}: TextAreaType) {
+  const [field] = useField(name);
   return (
     <div className="mt-2">
-      <Label htmlFor={id}>
-        Required Prompt <span className="text-destructive">*</span>
+      <Label htmlFor={name}>
+        {label} <span className="text-destructive">*</span>
       </Label>
       <Textarea
-        id={id}
+        id={name}
+        {...props}
+        {...field}
         placeholder="Leave a message"
         required
-        value={prompt}
+        value={field.value || ''}
         className="max-h-96"
-        onChange={(e) => setPrompt(e.target.value)}
+        // onChange={(e) => setPromptText(e.target.value)}
       />
     </div>
   );
