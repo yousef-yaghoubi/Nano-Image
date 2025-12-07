@@ -100,7 +100,7 @@
       "head": "Favorites"
     }
   },
-  "Errors": {
+  "Messages": {
     "404": {
       "title": "Page Not Found",
       "description": "Sorry, the page you are looking for does not exist.",
@@ -111,7 +111,8 @@
     "isNotAuthenticated": "You need to sign in to perform this action.",
     "userNotFound": "User not found in database. Please ensure your account is set up correctly.",
     "generic": "An error occurred. Please try again.",
-    "noFile": "File not uploaded. Please try again."
+    "noFile": "File not uploaded. Please try again.",
+    "createPrompt": "Prompt created successfully"
   },
   "FormSendPrompt": {
     "minLengthName": "name must be at least 3 characters long.",

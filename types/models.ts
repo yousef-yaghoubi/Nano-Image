@@ -4,6 +4,8 @@ import type { RoleType } from '@/models/roles';
 export interface IUser extends Document {
   _id: Types.ObjectId;
   clerkId: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: RoleType;
   image?: string;
@@ -30,15 +32,11 @@ export interface IPrompt extends Document {
   prompt?: string;
   image: string;
   likes: number;
-  layout: string;
-  creatorName: string;
-  aiModel: string;
-  notes?: string;
+  creatorId: Types.ObjectId;
   tags: string[];
-  isPremium: boolean;
+  isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
-  favoritesCount?: number;
 }
 
 export type PromptLean = {
@@ -47,15 +45,11 @@ export type PromptLean = {
   prompt?: string;
   image: string;
   likes: number;
-  layout: string;
-  creatorName: string;
-  model: string;
-  notes?: string;
+  creatorId: Types.ObjectId;
   tags: string[];
-  isPremium: boolean;
+  isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
-  favoritesCount?: number;
 };
 
 // ---------------------- FAVORITE TYPES ----------------------

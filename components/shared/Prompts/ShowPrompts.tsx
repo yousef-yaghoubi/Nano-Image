@@ -12,7 +12,7 @@ function ShowPrompts({ prompt }: { prompt: DataFullType }) {
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 justify-items-center mt-10">
         {prompt?.data?.map((item: PromptType) => (
-          <Card data={item} key={item.title} />
+          <Card data={item} key={String(item._id)} />
         ))}
       </div>
 

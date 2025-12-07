@@ -1,10 +1,5 @@
 // @/models/index.ts
-import {
-  IFavorite,
-  IUser,
-  IPrompt,
-  IPromptFavorite,
-} from '@/types/models';
+import { IFavorite, IUser, IPrompt, IPromptFavorite } from '@/types/models';
 import { Role } from './roles';
 import mongoose, { Schema } from 'mongoose';
 
@@ -20,6 +15,7 @@ const promptsSchema = new Schema<IPrompt>(
     prompt: {
       type: String,
       trim: true,
+      required: true,
     },
     image: {
       type: String,
@@ -30,31 +26,18 @@ const promptsSchema = new Schema<IPrompt>(
       required: true,
       default: 0,
     },
-    layout: {
-      type: String,
-      required: true,
-    },
-    creatorName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    aiModel: {
-      // ✅ Changed from 'model' to 'aiModel'
-      type: String,
+    creatorId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
       required: true,
       index: true,
-    },
-    notes: {
-      type: String,
-      trim: true,
     },
     tags: {
       type: [String],
       default: [],
       index: true,
     },
-    isPremium: {
+    isPublic: {
       type: Boolean,
       required: true,
       default: false,
@@ -91,6 +74,20 @@ const usersSchema = new Schema<IUser>(
       index: true,
     },
     email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    lastName: {
       type: String,
       required: true,
       lowercase: true,

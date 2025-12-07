@@ -14,6 +14,7 @@ export async function GET() {
       { cache: 'no-store' }
     );
 
+    console.log(res);
     const data = await res.json();
 
     if (!Array.isArray(data?.items)) {
@@ -30,12 +31,8 @@ export async function GET() {
         prompt: item.prompt ?? '',
         image: item.image ?? '',
         likes: item.likes ?? 0,
-        layout: item.layout,
-        creatorName: 'yousef',
-        model: item.model ?? '',
-        notes: item.notes ?? '',
         tags: item.tags ?? [],
-        isPremium: item.isPremium ?? false,
+        creatorId: '69347231d35b238694c04b1c',
       }));
 
     console.log(`📦 Total fetched: ${prompts.length}`);

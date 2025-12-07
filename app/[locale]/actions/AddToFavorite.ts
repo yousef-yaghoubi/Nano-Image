@@ -10,7 +10,7 @@ import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 
 export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
-  const t = await getTranslations('Errors');
+  const t = await getTranslations('Messages');
   try {
     console.log('Adding to favorite, promptId:', promptId);
     const { userId: clerkUserId } = await auth();

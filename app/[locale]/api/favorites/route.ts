@@ -9,7 +9,7 @@ import { getTranslations } from 'next-intl/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
-  const t = await getTranslations('Errors');
+  const t = await getTranslations('Messages');
   try {
     // 1. Database Connection and Authentication
     await dbConnect();

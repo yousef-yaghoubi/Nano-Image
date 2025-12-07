@@ -11,7 +11,7 @@ cloudinary.config({
 });
 
 export async function POST(request: NextRequest) {
-  const t = await getTranslations('Errors');
+  const t = await getTranslations('Messages');
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       (resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            folder: 'pramptiko', // Optional: organize uploads in folders
+            folder: 'nanoImage', // Optional: organize uploads in folders
             resource_type: 'auto',
           },
           (error, result) => {

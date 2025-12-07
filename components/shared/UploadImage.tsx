@@ -69,7 +69,12 @@ export default function UploadImage({ name }: UploadImageProps) {
   }, [files[0]]);
 
   useEffect(() => {
-    if (imageUrl) setTouched(true);
+    if (imageUrl) {
+      setTouched(true);
+    } else {
+      removeFile(files[0]?.id);
+      setValue(null);
+    }
   }, [imageUrl]);
 
   return (

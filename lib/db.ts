@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 const MONGODB_URI: string = process.env.DATABASE_URL!;
 
 if (!MONGODB_URI) {
+  console.log('DB Url', process.env.DATABASE_URL);
   throw new Error('لطفا DATABASE_URL رو در فایل .env.local تعریف کنید');
 }
 

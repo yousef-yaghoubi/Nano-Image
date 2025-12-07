@@ -6,7 +6,7 @@ async function NotAuthenticated({
 }: {
   isAuthenticated: boolean;
 }) {
-  const t = await getTranslations('Errors');
+  const t = await getTranslations('Messages');
 
   return (
     <div className="flex flex-col justify-center items-center h-[calc(100dvh-240px)] gap-4">

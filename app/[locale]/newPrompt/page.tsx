@@ -3,7 +3,7 @@ import SendPrompt from '@/components/shared/SendPrompt';
 import { auth } from '@clerk/nextjs/server';
 
 async function page() {
-  const { isAuthenticated } = await auth();
+  const { isAuthenticated, userId } = await auth();
 
   if (!isAuthenticated) {
     return <NotAuthenticated isAuthenticated={isAuthenticated} />;
@@ -14,7 +14,7 @@ async function page() {
 
   return (
     <>
-      <SendPrompt />
+      <SendPrompt clerkId={userId} />
     </>
   );
 }
