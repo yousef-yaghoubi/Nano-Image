@@ -75,7 +75,7 @@ export async function GET(req: Request) {
     // FILTER (کاملاً تایپ‌شده)
     // -------------------------
     const where: FilterQuery<PromptType> = {
-      isPremium: false,
+      
     };
 
     if (tags) {

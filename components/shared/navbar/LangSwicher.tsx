@@ -9,35 +9,41 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export default function LangSwicher() {
   const t = useTranslations('Languages');
   const params = useParams();
-  console.log(params.locale);
+  const pathName = usePathname();
+
+  const changeLocale = (newLocale: string) => {
+    return pathName.replace(/^\/(fa|en)/, `/${newLocale}`);
+  };
 
   return (
     <div>
-      <DropdownMenu dir={params.locale == 'fa' ? 'rtl' : 'ltr'}>
+      <DropdownMenu dir={params.locale === 'fa' ? 'rtl' : 'ltr'}>
         <DropdownMenuTrigger asChild>
           <Button
             size="icon"
             variant="outline"
-            aria-label="Select theme"
-            className="cursor-pointer  h-10 w-10"
+            aria-label="Select locale"
+            className="cursor-pointer h-10 w-10"
           >
             <Globe />
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent className="min-w-32" align="start">
-          <DropdownMenuItem>
-            <Link href={'/fa'} className="w-full">
+          <DropdownMenuItem asChild>
+            <Link href={changeLocale('fa')} className="w-full">
               <span>{t('fa')}</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={'/en'} className="w-full">
+
+          <DropdownMenuItem asChild>
+            <Link href={changeLocale('en')} className="w-full">
               <span>{t('en')}</span>
             </Link>
           </DropdownMenuItem>

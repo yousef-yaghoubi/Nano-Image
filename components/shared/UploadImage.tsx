@@ -5,12 +5,14 @@ import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { useField } from 'formik';
+import { Label } from '../ui/label';
 
 interface UploadImageProps {
   name: string;
+  label: string;
 }
 
-export default function UploadImage({ name }: UploadImageProps) {
+export default function UploadImage({ name, label }: UploadImageProps) {
   const [field, , helpers] = useField<string | null>(name);
   const { setValue, setTouched } = helpers;
 
@@ -81,6 +83,9 @@ export default function UploadImage({ name }: UploadImageProps) {
     <div className="flex flex-col gap-2">
       <div className="relative">
         {/* Drop zone */}
+        <Label htmlFor={name}>
+          {label} <span className="text-destructive">*</span>
+        </Label>
         <div
           className="relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-input border-dashed p-4 transition-colors data-[dragging=true]:bg-accent/50"
           data-dragging={isDragging || undefined}

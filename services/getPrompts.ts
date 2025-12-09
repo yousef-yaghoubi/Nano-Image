@@ -26,5 +26,8 @@ export default async function getPrompts({
       Cookie: cookie || '',
     },
   }).then((res) => res.json());
+
+
+  console.log(data)
   return data;
 }

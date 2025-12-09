@@ -2,6 +2,7 @@
 import dbConnect from '@/lib/db';
 import { Prompts, Users } from '@/models';
 import { IUser } from '@/types/models';
+import { revalidatePath } from 'next/cache';
 
 interface AddPromptInput {
   clerkId: string;
@@ -29,6 +30,8 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       return { status: false, message: 'userNotFound' };
     }
 
+    console.log('prompt ', prompt);
+
     const newPrompt = await Prompts.create({
       title: prompt.title,
       prompt: prompt.prompt,
@@ -38,6 +41,10 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       isPublic: false,
     });
 
+    console.log('newPrompt', newPrompt);
+
+    revalidatePath('/fa');
+    revalidatePath('/en');
     return {
       status: true,
       message: 'createPrompt',

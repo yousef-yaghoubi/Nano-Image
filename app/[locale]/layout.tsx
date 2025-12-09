@@ -5,8 +5,6 @@ import Navbar from '@/components/shared/navbar/Navbar';
 import Footer from '@/components/shared/Footer';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import AllProviders from '@/providers/AllProviders';
-import { Button } from '@/components/ui/button';
-import { getBaseUrl } from '@/lib/getBaseUrl';
 
 const yekanBakh = localFont({
   src: [

@@ -8,4 +8,5 @@ export const SchemaSendPrompt = yup.object().shape({
     .required('isRequired'),
   imageUrl: yup.string().url().required('isRequired'),
   promptText: yup.string().min(10, 'minLengthDesc').required('isRequired'),
+  tags: yup.array().optional(),
 });

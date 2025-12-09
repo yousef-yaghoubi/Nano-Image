@@ -118,6 +118,12 @@
     "minLengthName": "name must be at least 3 characters long.",
     "maxLengthName": "name must be at most 40 characters long.",
     "minLengthDesc": "prompt must be at least 10 characters long.",
-    "isRequired": "this field is required."
+    "isRequired": "this field is required.",
+    "Label": {
+      "image": "Image",
+      "name": "Name Prompt",
+      "prompt": "Prompt",
+      "tags": "Tags"
+    }
   }
 }
