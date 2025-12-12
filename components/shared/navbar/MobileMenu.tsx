@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/sheet';
 import { MenuIcon } from 'lucide-react';
 import NavList from './Nav';
-import { UserAvatar } from '@clerk/nextjs';
 import AuthButtons from '../AuthButtons';
 import { useParams } from 'next/navigation';
 
@@ -45,12 +44,7 @@ export function MobileMenu({
             <div className="w-full flex flex-col gap-3">
               {isAuthenticated ? (
                 <>
-                  <div className="flex items-center border p-2 gap-2">
-                    <UserAvatar />
-                    <span>{userEmail}</span>
-                  </div>
-
-                  <AuthButtons isAuthenticated={true} mobile />
+                  <AuthButtons isAuthenticated={true} mobile userEmail={userEmail} />
                 </>
               ) : (
                 <AuthButtons isAuthenticated={false} mobile />

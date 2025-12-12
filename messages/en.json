@@ -125,5 +125,16 @@
       "prompt": "Prompt",
       "tags": "Tags"
     }
+  },
+  "Profile": {
+    "myAccount": "my Account",
+    "profile": "Profile",
+    "myFavorites": "My Favorites",
+    "myPrompts": "My Prompts",
+    "LogOut": {
+      "title": "آیا میخواهید از حساب خود خارج شوید؟",
+      "yes": "بله",
+      "no": "نه"
+    }
   }
 }

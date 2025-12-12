@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { Heart, House, PlusIcon, Users } from 'lucide-react';
+import { House, PlusIcon, Users } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,10 +10,9 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
   const locale = useLocale();
   const navDetail = [
     { id: 1, label: t('home'), link: `/${locale}`, icon: House },
-    { id: 2, label: t('favorite'), link: `/${locale}/favorites`, icon: Heart },
-    { id: 3, label: t('about'), link: `/${locale}/about`, icon: Users },
+    { id: 2, label: t('about'), link: `/${locale}/about`, icon: Users },
     {
-      id: 4,
+      id: 3,
       label: t('newPrompt'),
       link: `/${locale}/newPrompt`,
       icon: PlusIcon,

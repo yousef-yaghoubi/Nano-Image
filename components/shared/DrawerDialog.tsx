@@ -18,20 +18,22 @@ import {
   DrawerDescription,
 } from '@/components/ui/drawer';
 import { useParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 
 export function DrawerDialog({
   children,
   trigger,
+  title,
+  desc
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   trigger: React.ReactNode;
+  title?: React.ReactNode;
+  desc?: React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const params = useParams();
   const locale = params.locale;
-  const t = useTranslations('Filter.filter');
 
   if (isDesktop) {
     return (
@@ -43,8 +45,8 @@ export function DrawerDialog({
           dir={locale == 'fa' ? 'rtl' : 'ltr'}
         >
           <DialogHeader dir={locale == 'fa' ? 'rtl' : 'ltr'}>
-            <DialogTitle>{t('title')}</DialogTitle>
-            <DialogDescription>{t('description')}</DialogDescription>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{desc}</DialogDescription>
           </DialogHeader>
           {children}
         </DialogContent>
@@ -57,8 +59,8 @@ export function DrawerDialog({
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent dir={locale == 'fa' ? 'rtl' : 'ltr'}>
         <DrawerHeader>
-          <DrawerTitle>{t('title')}</DrawerTitle>
-          <DrawerDescription>{t('description')}</DrawerDescription>
+          <DrawerTitle>{title}</DrawerTitle>
+          <DrawerDescription>{desc}</DrawerDescription>
         </DrawerHeader>
         {children}
       </DrawerContent>

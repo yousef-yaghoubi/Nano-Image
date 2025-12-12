@@ -127,7 +127,7 @@ export default function UploadImage({ name, label }: UploadImageProps) {
 
         {/* Remove Image */}
         {previewUrl && (
-          <button
+          <Button
             onClick={() => {
               removeFile(files[0]?.id);
               setValue(null);
@@ -136,7 +136,7 @@ export default function UploadImage({ name, label }: UploadImageProps) {
             type="button"
           >
             <XIcon className="size-4" />
-          </button>
+          </Button>
         )}
       </div>
 

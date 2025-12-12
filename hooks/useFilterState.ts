@@ -41,15 +41,15 @@ export function useFilterState() {
     // مقایسه استیت فعلی با URL
     const currentTagsStr = [...selectedTags].sort().join(',');
     const newTagsStr = [...newTags].sort().join(',');
-    
-    const hasChanges = 
+
+    const hasChanges =
       currentTagsStr !== newTagsStr ||
       searchQuery !== newSearch ||
       sortQuery !== newSort;
 
     if (hasChanges) {
       isUpdatingFromURL.current = true;
-      
+
       if (currentTagsStr !== newTagsStr) {
         setSelectedTags(newTags);
       }
@@ -59,7 +59,7 @@ export function useFilterState() {
       if (sortQuery !== newSort) {
         setSortQuery(newSort);
       }
-      
+
       // بعد از یه تاخیر کوتاه flag رو reset کن
       setTimeout(() => {
         isUpdatingFromURL.current = false;
@@ -81,6 +81,7 @@ export function useFilterState() {
     }
 
     const params = new URLSearchParams();
+    const currentPageParam = searchParams.get('page');
 
     // Tags
     if (debouncedTags.length > 0) {
@@ -97,6 +98,11 @@ export function useFilterState() {
       params.set('sort', debouncedSort.trim());
     }
 
+    // Preserve current page when no filters are changing it (avoids bouncing back to page 1)
+    if (currentPageParam && !params.has('page')) {
+      params.set('page', currentPageParam);
+    }
+ 
     const newQuery = params.toString();
     const currentQuery = searchParams.toString();
 
@@ -105,7 +111,14 @@ export function useFilterState() {
       const url = newQuery ? `${pathname}?${newQuery}` : pathname;
       router.push(url, { scroll: false });
     }
-  }, [debouncedTags, debouncedSearch, debouncedSort, pathname, router, searchParams]);
+  }, [
+    debouncedTags,
+    debouncedSearch,
+    debouncedSort,
+    pathname,
+    router,
+    searchParams,
+  ]);
 
   // Generate active filters for display
   const activeFilters: ActiveFilter[] = useMemo(
@@ -129,72 +142,78 @@ export function useFilterState() {
   );
 
   // Helper function to remove a specific filter
-  const removeFilter = useCallback((filter: ActiveFilter) => {
-    if (filter.type === 'tag') {
-      const newTags = selectedTags.filter((tag) => tag !== filter.value);
-      setSelectedTags(newTags);
-      
-      // Immediately update URL when removing tag
-      const params = new URLSearchParams(searchParams);
-      if (newTags.length > 0) {
-        params.set('tags', newTags.join(','));
-      } else {
-        params.delete('tags');
+  const removeFilter = useCallback(
+    (filter: ActiveFilter) => {
+      if (filter.type === 'tag') {
+        const newTags = selectedTags.filter((tag) => tag !== filter.value);
+        setSelectedTags(newTags);
+
+        // Immediately update URL when removing tag
+        const params = new URLSearchParams(searchParams);
+        if (newTags.length > 0) {
+          params.set('tags', newTags.join(','));
+        } else {
+          params.delete('tags');
+        }
+
+        const newQuery = params.toString();
+        const url = newQuery ? `${pathname}?${newQuery}` : pathname;
+        router.push(url, { scroll: false });
+      } else if (filter.type === 'search') {
+        setSearchQuery('');
+
+        // Immediately update URL when removing search
+        const params = new URLSearchParams(searchParams);
+        params.delete('search');
+
+        const newQuery = params.toString();
+        const url = newQuery ? `${pathname}?${newQuery}` : pathname;
+        router.push(url, { scroll: false });
       }
-      
-      const newQuery = params.toString();
-      const url = newQuery ? `${pathname}?${newQuery}` : pathname;
-      router.push(url, { scroll: false });
-    } else if (filter.type === 'search') {
-      setSearchQuery('');
-      
-      // Immediately update URL when removing search
-      const params = new URLSearchParams(searchParams);
-      params.delete('search');
-      
-      const newQuery = params.toString();
-      const url = newQuery ? `${pathname}?${newQuery}` : pathname;
-      router.push(url, { scroll: false });
-    }
-  }, [selectedTags, searchParams, pathname, router]);
+    },
+    [selectedTags, searchParams, pathname, router]
+  );
 
   // Helper function to clear all filters
   const clearAllFilters = useCallback(() => {
     setSelectedTags([]);
     setSearchQuery('');
-    
+
     // Immediately clear URL params (keep only sort if it exists)
     const params = new URLSearchParams();
     if (sortQuery && sortQuery !== 'likes desc') {
       params.set('sort', sortQuery);
     }
-    
+
     const newQuery = params.toString();
     const url = newQuery ? `${pathname}?${newQuery}` : pathname;
     router.push(url, { scroll: false });
   }, [sortQuery, pathname, router]);
 
   // Helper function to toggle a tag
-  const toggleTag = useCallback((tag: string) => {
-    const newTags = selectedTags.includes(tag)
-      ? selectedTags.filter((t) => t !== tag)
-      : [...selectedTags, tag];
-    
-    setSelectedTags(newTags);
-    
-    // Immediately update URL when toggling tag
-    const params = new URLSearchParams(searchParams);
-    
-    if (newTags.length > 0) {
-      params.set('tags', newTags.join(','));
-    } else {
-      params.delete('tags');
-    }
-    
-    const newQuery = params.toString();
-    const url = newQuery ? `${pathname}?${newQuery}` : pathname;
-    router.push(url, { scroll: false });
-  }, [selectedTags, searchParams, pathname, router]);
+  const toggleTag = useCallback(
+    (tag: string) => {
+      const newTags = selectedTags.includes(tag)
+        ? selectedTags.filter((t) => t !== tag)
+        : [...selectedTags, tag];
+
+      setSelectedTags(newTags);
+
+      // Immediately update URL when toggling tag
+      const params = new URLSearchParams(searchParams);
+
+      if (newTags.length > 0) {
+        params.set('tags', newTags.join(','));
+      } else {
+        params.delete('tags');
+      }
+
+      const newQuery = params.toString();
+      const url = newQuery ? `${pathname}?${newQuery}` : pathname;
+      router.push(url, { scroll: false });
+    },
+    [selectedTags, searchParams, pathname, router]
+  );
 
   return {
     selectedTags,

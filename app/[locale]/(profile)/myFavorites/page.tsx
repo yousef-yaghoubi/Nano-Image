@@ -1,6 +1,6 @@
 import NotAuthenticated from '@/components/shared/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
-import getFavoritesPrompts from '@/services/getFavoritesPrompts';
+import getPrompts from '@/services/getPrompts';
 import { DataFullType } from '@/types/data';
 import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
@@ -28,11 +28,12 @@ async function page({
   const tags = rawTags && rawTags !== 'undefined' ? rawTags : '';
   const sort = rawSort && rawSort !== 'undefined' ? rawSort : '';
 
-  const prompt = (await getFavoritesPrompts({
+  const prompt = (await getPrompts({
     page,
     tags,
     search,
     sort,
+    forApi: 'favorites',
   })) as DataFullType;
 
   const t = await getTranslations('Pages.favorites');

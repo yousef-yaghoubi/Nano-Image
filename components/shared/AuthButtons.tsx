@@ -1,45 +1,34 @@
-'use client'
-import {
-  SignOutButton,
-  SignInButton,
-  SignUpButton,
-  UserAvatar,
-} from '@clerk/nextjs';
+'use client';
+import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
+import { ProfileIcon } from './navbar/ProfileIcon';
 
 export default function AuthButtons({
   isAuthenticated,
-  userEmail,
   mobile = false,
+  userEmail,
 }: {
   isAuthenticated: boolean;
-  userEmail?: string;
   mobile?: boolean;
+  userEmail?: string;
 }) {
-  const t = useTranslations("Auth")
+  const t = useTranslations('Auth');
 
   if (isAuthenticated) {
     return (
       <div
         className={cn('flex items-center gap-3', mobile && 'flex-col w-full')}
       >
-        {!mobile && (
+        {!mobile ? (
           <div className="flex items-center gap-2">
-            <UserAvatar />
-            {userEmail && (
-              <span className="hidden lg:flex max-w-[200px] truncate">
-                {userEmail}
-              </span>
-            )}
+            <ProfileIcon />
+          </div>
+        ) : (
+          <div className="">
+            <ProfileIcon>{userEmail}</ProfileIcon>
           </div>
         )}
-
-        <ButtonSign>
-          <SignOutButton>
-            <span className="cursor-pointer">{t("signout")}</span>
-          </SignOutButton>
-        </ButtonSign>
       </div>
     );
   }
@@ -50,13 +39,13 @@ export default function AuthButtons({
     >
       <ButtonSign className="h-10 flex justify-center items-center border-0 bg-primary/10">
         <SignUpButton>
-          <span className="cursor-pointer">{t("signup")}</span>
+          <span className="cursor-pointer">{t('signup')}</span>
         </SignUpButton>
       </ButtonSign>
 
       <ButtonSign className="h-10 flex justify-center items-center">
         <SignInButton>
-          <span className="cursor-pointer">{t("signin")}</span>
+          <span className="cursor-pointer">{t('signin')}</span>
         </SignInButton>
       </ButtonSign>
     </div>

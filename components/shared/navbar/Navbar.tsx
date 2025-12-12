@@ -26,7 +26,6 @@ export default function Navbar({ isAuthenticated, userEmail }: NavbarProps) {
             <div className="flex items-center gap-3">
               <AuthButtons
                 isAuthenticated={isAuthenticated}
-                userEmail={userEmail}
               />
               <LangSwicher />
               <ModeToggle />

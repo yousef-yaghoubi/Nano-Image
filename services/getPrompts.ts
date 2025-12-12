@@ -6,14 +6,16 @@ export default async function getPrompts({
   tags,
   search,
   sort,
+  forApi = "prompts",
 }: {
   page?: string;
   tags?: string;
   search?: string | undefined;
   sort?: string;
+  forApi?: "prompts" | "favorites";
 }) {
   const limit = 24;
-  const api = `${getBaseUrl()}/api/prompts?limit=${limit}&page=${page}${
+  const api = `${getBaseUrl()}/api/${forApi}?limit=${limit}&page=${page}${
     search ? `&search=${search}` : ''
   }${tags ? `&tags=${tags}` : ''}${sort ? `&sort=${sort}` : ''}`;
 
@@ -27,7 +29,5 @@ export default async function getPrompts({
     },
   }).then((res) => res.json());
 
-
-  console.log(data)
   return data;
 }

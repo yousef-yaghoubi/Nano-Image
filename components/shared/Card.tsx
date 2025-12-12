@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 import { FavoriteButton } from './FavoriteButton';
 import { PromptType } from '@/types/data';
+import { motion } from 'motion/react';
 
 function Card({ data }: { data: PromptType }) {
   const t = useTranslations('Product');
@@ -15,9 +16,19 @@ function Card({ data }: { data: PromptType }) {
   };
 
   return (
-    <div
+    <motion.div
       className="w-full md:w-72 h-52 sm:h-64 md:h-96 overflow-hidden bg-primary relative rounded-lg md:rounded-3xl rounded-tl-none! group"
       dir="ltr"
+      initial={{
+        y: 100,
+        opacity: 0.5,
+      }}
+      whileInView={{
+        y: 0,
+        opacity: 1,
+        transition: { duration: 1 },
+      }}
+      viewport={{ once: true }}
     >
       <div className="z-50! left-0 w-20 absolute text-sm font-medium bg-white h-8 rounded-br-md flex justify-center items-center gap-2 likeBox">
         <span>{data.likes}</span>
@@ -44,7 +55,7 @@ function Card({ data }: { data: PromptType }) {
         <Copy size={15} />
         <span>{t('copy')}</span>
       </button>
-    </div>
+    </motion.div>
   );
 }
 
