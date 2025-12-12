@@ -136,9 +136,9 @@
     "myFavorites": "My Favorites",
     "myPrompts": "My Prompts",
     "LogOut": {
-      "title": "آیا میخواهید از حساب خود خارج شوید؟",
-      "yes": "بله",
-      "no": "نه"
+      "title": "Do you want to sign out of your account?",
+      "logOut": "Sign out",
+      "no": "No"
     }
   }
 }

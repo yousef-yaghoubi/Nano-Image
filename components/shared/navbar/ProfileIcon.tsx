@@ -32,8 +32,7 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
   const tAuth = useTranslations('Auth');
   const pathname = usePathname();
   const isActive = ITEM_PROFILES.find((item) => item.link === pathname);
-  console.log('isActive', isActive);
-  console.log('pathname', pathname);
+
   return (
     <DropdownMenu dir={params.locale == 'fa' ? 'rtl' : 'ltr'}>
       <DropdownMenuTrigger
@@ -80,12 +79,12 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
           >
             <div className="w-full flex gap-2 justify-around mb-10 md:m-0">
               <SignOutButton>
-                <button className="w-1/3 cursor-pointer bg-destructive/90 text-background py-1 rounded-sm">
-                  خروج
+                <button className="w-1/3 outline-none font-medium cursor-pointer bg-destructive/90 text-background py-1 rounded-sm">
+                  {tProfile('LogOut.logOut')}
                 </button>
               </SignOutButton>
-              <button className="w-1/3 cursor-pointer py-1 rounded-sm text-destructive border border-destructive">
-                خیر
+              <button className="w-1/3 outline-none font-medium cursor-pointer py-1 rounded-sm text-destructive border border-destructive">
+                {tProfile('LogOut.no')}
               </button>
             </div>
           </DrawerDialog>
