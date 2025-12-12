@@ -1,5 +1,5 @@
 'use client';
-import { Moon, Sun } from 'lucide-react';
+import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
@@ -11,12 +11,33 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+const themes = [
+  { id: 1, title: 'light', icon: SunIcon },
+  { id: 2, title: 'dark', icon: MoonIcon },
+  { id: 3, title: 'system', icon: MonitorIcon },
+];
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme: activeTheme } = useTheme();
   const params = useParams();
   const locale = params.locale;
   const t = useTranslations('Theme');
+
+  const currentTheme = activeTheme || 'light';
+  let CurrentIcon = SunIcon;
+
+  if (currentTheme === 'system') {
+    // If system: show what system resolved to, but can highlight system
+    // Show Monitor for system
+    CurrentIcon = MonitorIcon;
+  } else if (currentTheme === 'dark') {
+    CurrentIcon = MoonIcon;
+  } else if (currentTheme === 'light') {
+    CurrentIcon = SunIcon;
+  }
+
   return (
     <DropdownMenu dir={locale == 'fa' ? 'rtl' : 'ltr'}>
       <DropdownMenuTrigger asChild>
@@ -25,21 +46,28 @@ export function ModeToggle() {
           size="icon"
           className="cursor-pointer h-10 w-10"
         >
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          <CurrentIcon className="h-[1.2rem] w-[1.2rem] transition-all" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          {t('light')}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          {t('dark')}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          {t('system')}
-        </DropdownMenuItem>
+        {themes.map((theme) => (
+          <DropdownMenuItem
+            key={theme.id}
+            onClick={() => setTheme(theme.title)}
+            className={
+              currentTheme === theme.title ? 'font-bold text-primary' : ''
+            }
+          >
+            <theme.icon
+              className={cn(
+                'mr-2 h-4 w-4',
+                currentTheme === theme.title ? 'text-primary' : ''
+              )}
+            />
+            {t(theme.title)}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
