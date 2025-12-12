@@ -95,9 +95,13 @@
     "system": "System"
   },
   "Pages": {
-    "favorites": {
+    "MyFavorites": {
       "notAuthenticated": "You need to sign in to see your favorite prompts.",
-      "head": "Favorites"
+      "head": "My Favorites"
+    },
+    "MyPrompts": {
+      "notAuthenticated": "You need to sign in to see your prompts.",
+      "head": "My Prompts"
     }
   },
   "Messages": {

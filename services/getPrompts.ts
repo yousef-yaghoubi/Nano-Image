@@ -6,13 +6,13 @@ export default async function getPrompts({
   tags,
   search,
   sort,
-  forApi = "prompts",
+  forApi = 'prompts',
 }: {
   page?: string;
   tags?: string;
   search?: string | undefined;
   sort?: string;
-  forApi?: "prompts" | "favorites";
+  forApi?: 'prompts' | 'favorites' | 'get-me/prompts';
 }) {
   const limit = 24;
   const api = `${getBaseUrl()}/api/${forApi}?limit=${limit}&page=${page}${

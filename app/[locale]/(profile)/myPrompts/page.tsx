@@ -33,10 +33,10 @@ async function page({
     tags,
     search,
     sort,
-    forApi: 'favorites',
+    forApi: 'get-me/prompts',
   })) as DataFullType;
 
-  const t = await getTranslations('Pages.MyFavorites');
+  const t = await getTranslations('Pages.MyPrompts');
   if (!isAuthenticated) {
     return <NotAuthenticated isAuthenticated={isAuthenticated} />;
   }

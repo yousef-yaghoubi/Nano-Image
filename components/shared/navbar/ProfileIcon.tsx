@@ -26,7 +26,7 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
       link: `/${locale}/myFavorites`,
       icon: Heart,
     },
-    { id: 3, title: 'myPrompts', link: `/${locale}/myPrompt`, icon: Plus },
+    { id: 3, title: 'myPrompts', link: `/${locale}/myPrompts`, icon: Plus },
   ];
   const tProfile = useTranslations('Profile');
   const tAuth = useTranslations('Auth');
