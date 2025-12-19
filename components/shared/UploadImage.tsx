@@ -10,14 +10,25 @@ import { Label } from '../ui/label';
 interface UploadImageProps {
   name: string;
   label: string;
+  method?: 'api' | 'editProfile'; // Method selector: 'api' (default) or 'editProfile'
+  onFileSelectEditProfile?: (file: File | null) => void; // Called in 'editProfile' method
 }
 
-export default function UploadImage({ name, label }: UploadImageProps) {
+/**
+ * UploadImage component can work in two modes:
+ * 1. Default ('api'): uploads image to API and sets image URL field.
+ * 2. 'editProfile': sends file to EditImage in EditProfile via onFileSelectEditProfile callback, does NOT upload to API.
+ */
+export default function UploadImage({
+  name,
+  label,
+  method = 'api',
+  onFileSelectEditProfile,
+}: UploadImageProps) {
   const [field, , helpers] = useField<string | null>(name);
   const { setValue, setTouched } = helpers;
 
-  const imageUrl = field.value; // Correct
-
+  const imageUrl = field.value;
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024;
   const [uploading, setUploading] = useState(false);
@@ -39,11 +50,14 @@ export default function UploadImage({ name, label }: UploadImageProps) {
     maxFiles: 1,
   });
 
+  // Show preview of selected file or value of field (URL string)
   const previewUrl = files[0]?.preview || imageUrl;
 
+  // Upload to API (Cloudinary) - for "api" mode only
   const handleUploadToCloudinary = async () => {
     const fileItem = files[0]?.file as File;
 
+    if (!fileItem) return;
     setUploading(true);
 
     try {
@@ -66,18 +80,54 @@ export default function UploadImage({ name, label }: UploadImageProps) {
     }
   };
 
+  // On file select (handles both methods)
   useEffect(() => {
-    if (files[0] && !imageUrl) handleUploadToCloudinary();
+    if (files[0]) {
+      if (method === 'api') {
+        // Method 1: Send file to API, save URL to form
+        if (!imageUrl) handleUploadToCloudinary();
+      } else if (method === 'editProfile') {
+        // Method 2: Pass file object to parent handler (do not upload, do not set form value)
+        if (typeof onFileSelectEditProfile === 'function') {
+          const selectedFile = files[0].file;
+          // Only call if it's an actual File (not FileMetadata from react-upload-kit)
+          if (selectedFile instanceof File) {
+            onFileSelectEditProfile(selectedFile);
+          }
+        }
+      }
+      // Optionally set touched so Formik shows error for required profile image
+      setTouched(true);
+    }
   }, [files[0]]);
 
+  // For method=api, keep Formik "touched" and clear/remove if unset
+  // For editProfile, don't clear form value (always null), but remove file if user clicks remove
   useEffect(() => {
-    if (imageUrl) {
-      setTouched(true);
-    } else {
-      removeFile(files[0]?.id);
+    if (method === 'api') {
+      if (imageUrl) {
+        setTouched(true);
+      } else {
+        removeFile(files[0]?.id);
+        setValue(null);
+      }
+    }
+  }, [imageUrl, method]);
+
+  // Remove button handler
+  const onRemove = () => {
+    removeFile(files[0]?.id);
+    if (method === 'api') {
       setValue(null);
     }
-  }, [imageUrl]);
+    // In editProfile mode, do not update formik value
+    if (
+      typeof onFileSelectEditProfile === 'function' &&
+      method === 'editProfile'
+    ) {
+      onFileSelectEditProfile(null); // indicate clear
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -117,6 +167,7 @@ export default function UploadImage({ name, label }: UploadImageProps) {
                 className="mt-4"
                 onClick={openFileDialog}
                 variant="outline"
+                type="button"
               >
                 <UploadIcon className="-ms-1 size-4 opacity-60" />
                 Select image
@@ -125,13 +176,10 @@ export default function UploadImage({ name, label }: UploadImageProps) {
           )}
         </div>
 
-        {/* Remove Image */}
+        {/* Remove Image / File */}
         {previewUrl && (
           <Button
-            onClick={() => {
-              removeFile(files[0]?.id);
-              setValue(null);
-            }}
+            onClick={onRemove}
             className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
             type="button"
           >

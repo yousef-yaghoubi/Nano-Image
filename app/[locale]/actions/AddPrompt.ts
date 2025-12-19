@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import { Prompts, Users } from '@/models';
 import { IUser } from '@/types/models';
 import { revalidatePath } from 'next/cache';
+import { GetBlurData } from './GetBlurHash';
 
 interface AddPromptInput {
   clerkId: string;
@@ -31,11 +32,13 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
     }
 
     console.log('prompt ', prompt);
+    const { blurDataURL } = await GetBlurData(prompt.image);
 
     const newPrompt = await Prompts.create({
       title: prompt.title,
       prompt: prompt.prompt,
       image: prompt.image,
+      imageBlur: blurDataURL || '',
       creatorId: user._id,
       tags: prompt.tags || [],
       isPublic: false,

@@ -29,8 +29,12 @@ export default async function Home({
     tags,
     search,
     sort,
-    forApi: "prompts",
+    forApi: 'prompts',
   })) as DataFullType;
 
-  return <ShowPrompts prompt={prompt} />;
+  return (
+    <>
+      <ShowPrompts prompt={prompt} />
+    </>
+  );
 }

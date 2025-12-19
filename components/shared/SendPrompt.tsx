@@ -58,7 +58,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
         {({ values, setFieldValue, isValid, isSubmitting }) => (
           <Form className="space-y-6">
             <div>
-              <UploadImage name="imageUrl" label={tForm("Label.image")} />
+              <UploadImage name="imageUrl" label={tForm('Label.image')} />
               <ErrorMessage
                 name="imageUrl"
                 render={(e) => (
@@ -70,7 +70,8 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
             {/* Name Prompt */}
             <div>
               <Label htmlFor="namePrompt">
-                {tForm("Label.name")} <span className="text-destructive">*</span>
+                {tForm('Label.name')}{' '}
+                <span className="text-destructive">*</span>
               </Label>
               <Field
                 as={Input}
@@ -91,7 +92,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
 
             {/* Prompt Text */}
             <div>
-              <TeaxtArea name="promptText" label={tForm("Label.prompt")} />
+              <TeaxtArea name="promptText" label={tForm('Label.prompt')} />
               <ErrorMessage
                 name="promptText"
                 render={(e) => (
@@ -100,7 +101,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
               />
             </div>
 
-            <TagsShowInput name="tags" label={tForm("Label.tags")} />
+            <TagsShowInput name="tags" label={tForm('Label.tags')} />
 
             <Button type="submit" disabled={!isValid || isSubmitting}>
               {!isSubmitting ? <>Submit</> : <>Loding</>}

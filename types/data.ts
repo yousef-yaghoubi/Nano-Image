@@ -5,6 +5,7 @@ export interface PromptType {
   title: string;
   prompt: string;
   image: string;
+  imageBlur: string;
   likes: number;
   layout: string;
   creatorName: string;

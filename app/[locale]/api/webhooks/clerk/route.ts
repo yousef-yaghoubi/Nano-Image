@@ -56,7 +56,8 @@ export async function POST(req: Request) {
   try {
     switch (eventType) {
       case 'user.created': {
-        const { id, email_addresses, image_url } = evt.data;
+        const { id, email_addresses, image_url, first_name, last_name } =
+          evt.data;
 
         // if (!email_addresses || email_addresses.length === 0) {
         //   return new Response('No email found', { status: 400 });
@@ -70,6 +71,8 @@ export async function POST(req: Request) {
             clerkId: id,
             email: email_addresses[0].email_address,
             image: image_url,
+            firstName: first_name || '',
+            lastName: last_name || '',
             role: 'MEMBER',
           },
           { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -92,16 +95,31 @@ export async function POST(req: Request) {
       }
 
       case 'user.updated': {
-        const { id, email_addresses, image_url } = evt.data;
+        const { id, email_addresses, image_url, first_name, last_name } =
+          evt.data;
 
-        // Update both email and image
-        await Users.findOneAndUpdate(
-          { clerkId: id },
-          {
-            email: email_addresses[0]?.email_address,
-            image: image_url,
-          }
-        );
+        // Update email, image, firstName, and lastName
+        const updateData: {
+          email?: string;
+          image?: string;
+          firstName?: string;
+          lastName?: string;
+        } = {};
+
+        if (email_addresses?.[0]?.email_address) {
+          updateData.email = email_addresses[0].email_address;
+        }
+        if (image_url) {
+          updateData.image = image_url;
+        }
+        if (first_name !== undefined && first_name !== null) {
+          updateData.firstName = first_name;
+        }
+        if (last_name !== undefined && last_name !== null) {
+          updateData.lastName = last_name;
+        }
+
+        await Users.findOneAndUpdate({ clerkId: id }, updateData);
 
         console.log(`User updated: ${id}`);
         return new Response('User updated', { status: 200 });
@@ -138,7 +156,6 @@ export async function POST(req: Request) {
           .lean<{ _id: ObjectId; role: RoleType }>();
         console.log('user: ', user);
         console.log('userId: ', userId);
-
 
         if (user) {
           // 2. Update publicMetadata (for future sessions)

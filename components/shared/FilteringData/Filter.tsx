@@ -37,18 +37,19 @@ function FilterDrawer({
     (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value),
     [setSearchQuery]
   );
-  const t = useTranslations('data');
   const tFilter = useTranslations('Filter.filter');
 
   return (
     <DrawerDialog
+      title={tFilter('name')}
+      desc={tFilter('description')}
       trigger={
         <button
           className="text-lg flex gap-2 items-center font-medium cursor-pointer"
           aria-label="Open filters"
         >
           <FilterIcon size={20} />
-          {t('filter')}
+          {tFilter("name")}
           {activeFiltersCount > 0 && (
             <span className="ml-1 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
               {activeFiltersCount}

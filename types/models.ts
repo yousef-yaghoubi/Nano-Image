@@ -8,7 +8,6 @@ export interface IUser extends Document {
   lastName: string;
   email: string;
   role: RoleType;
-  image?: string;
   waitForAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -19,7 +18,6 @@ export type UserLean = {
   clerkId: string;
   email: string;
   role: RoleType;
-  image?: string;
   waitForAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -31,6 +29,7 @@ export interface IPrompt extends Document {
   title: string;
   prompt?: string;
   image: string;
+  imageBlur?: string;
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];
@@ -44,6 +43,7 @@ export type PromptLean = {
   title: string;
   prompt?: string;
   image: string;
+  imageBlur?: string;
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];

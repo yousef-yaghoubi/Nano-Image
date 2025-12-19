@@ -1,3 +1,4 @@
+import HeadPages from '@/components/shared/HeadPages';
 import NotAuthenticated from '@/components/shared/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
@@ -43,7 +44,7 @@ async function page({
 
   return (
     <>
-      <h1 className="heading-1 mb-4">{t('head')}</h1>
+      <HeadPages title={t('head')} />
       {prompt.success ? (
         <ShowPrompts prompt={prompt} />
       ) : (

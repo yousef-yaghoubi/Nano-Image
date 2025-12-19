@@ -30,12 +30,14 @@
   },
   "Filter": {
     "sorts": {
+      "name": "Sort",
       "likeDesc": "Like Desc",
       "likeAsc": "Like Asc",
       "dateDesc": "Date Desc",
       "dateAsc": "Date Asc"
     },
     "filter": {
+      "name": "Filter",
       "title": "Filter Prompts",
       "description": "Filters help you quickly find prompts by style, mood, and genre.",
       "header": {
@@ -116,11 +118,15 @@
     "userNotFound": "User not found in database. Please ensure your account is set up correctly.",
     "generic": "An error occurred. Please try again.",
     "noFile": "File not uploaded. Please try again.",
-    "createPrompt": "Prompt created successfully"
+    "createPrompt": "Prompt created successfully",
+    "profileUpdated": "Profile updated successfully",
+    "imageUpdated": "Profile image updated successfully"
   },
   "FormSendPrompt": {
     "minLengthName": "name must be at least 3 characters long.",
     "maxLengthName": "name must be at most 40 characters long.",
+    "minLengthLastName": "last name must be at least 3 characters long.",
+    "maxLengthLastName": "last name must be at most 40 characters long.",
     "minLengthDesc": "prompt must be at least 10 characters long.",
     "isRequired": "this field is required.",
     "Label": {

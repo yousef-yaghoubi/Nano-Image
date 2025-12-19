@@ -21,6 +21,10 @@ const promptsSchema = new Schema<IPrompt>(
       type: String,
       required: true,
     },
+    imageBlur: {
+      type: String,
+      default: '',
+    },
     likes: {
       type: Number,
       required: true,
@@ -98,9 +102,6 @@ const usersSchema = new Schema<IUser>(
       type: String,
       enum: Object.values(Role),
       default: Role.MEMBER,
-    },
-    image: {
-      type: String,
     },
     waitForAdmin: {
       type: Boolean,

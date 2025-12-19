@@ -23,7 +23,7 @@ export function DrawerDialog({
   children,
   trigger,
   title,
-  desc
+  desc,
 }: {
   children?: React.ReactNode;
   trigger: React.ReactNode;
@@ -39,7 +39,7 @@ export function DrawerDialog({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
-        {/* </div> */}
+
         <DialogContent
           className="w-full max-h-4/5 overflow-scroll"
           dir={locale == 'fa' ? 'rtl' : 'ltr'}

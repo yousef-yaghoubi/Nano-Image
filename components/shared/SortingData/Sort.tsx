@@ -23,7 +23,7 @@ interface SortDropdownProps {
 
 export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const t = useTranslations('Filter.sorts');
-  const tData = useTranslations('data');
+  
   const SORT_OPTIONS = [
     { id: 1, title: t('likeDesc'), value: 'likes desc', icon: ThumbsUp },
     { id: 2, title: t('likeAsc'), value: 'likes asc', icon: ThumbsDown },
@@ -51,7 +51,7 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
           className="text-lg flex gap-2 items-center justify-center font-medium min-w-fit"
           aria-label="Sort options"
         >
-          <span>{tData('sort')}:</span>
+          <span>{t('name')}:</span>
           <span className="flex gap-1 text-sm">
             <CurrentIcon className="size-4" />
             {displaySortText}
