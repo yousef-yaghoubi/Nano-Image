@@ -27,8 +27,8 @@ export function MobileMenu({
       </SheetTrigger>
 
       <SheetContent
-        dir={locale == 'fa' ? 'rtl' : 'ltr'}
-        side={locale == 'fa' ? 'right' : 'left'}
+        dir={locale === 'en' ? 'ltr' : 'rtl'}
+        side={locale === 'en' ? 'left' : 'right'}
       >
         <SheetHeader>
           <SheetTitle className="border-b pb-4">

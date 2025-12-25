@@ -26,7 +26,8 @@
   },
   "Languages": {
     "fa": "Persian",
-    "en": "English"
+    "en": "English",
+    "ar": "Arabic"
   },
   "Filter": {
     "sorts": {
@@ -104,6 +105,17 @@
     "MyPrompts": {
       "notAuthenticated": "You need to sign in to see your prompts.",
       "head": "My Prompts"
+    },
+    "Profile": {
+      "Rename": {
+        "title": "Rename",
+        "firstName": "First Name:",
+        "lastName": "Last Name:"
+      },
+      "Image": {
+        "title": "Upload Profile",
+        "image": "Image:"
+      }
     }
   },
   "Messages": {
@@ -120,7 +132,8 @@
     "noFile": "File not uploaded. Please try again.",
     "createPrompt": "Prompt created successfully",
     "profileUpdated": "Profile updated successfully",
-    "imageUpdated": "Profile image updated successfully"
+    "imageUpdated": "Profile image updated successfully",
+    "loading": "Loading..."
   },
   "FormSendPrompt": {
     "minLengthName": "name must be at least 3 characters long.",

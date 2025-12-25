@@ -34,7 +34,7 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
   const isActive = ITEM_PROFILES.find((item) => item.link === pathname);
 
   return (
-    <DropdownMenu dir={params.locale == 'fa' ? 'rtl' : 'ltr'}>
+    <DropdownMenu dir={params.locale === 'en' ? 'ltr' : 'rtl'}>
       <DropdownMenuTrigger
         className={cn(
           'outline-none cursor-pointer flex gap-2 items-center',

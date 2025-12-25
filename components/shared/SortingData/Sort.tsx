@@ -60,7 +60,7 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup
-          dir={locale == 'fa' ? 'rtl' : 'ltr'}
+          dir={locale === 'en' ? 'ltr' : 'rtl'}
           value={sortQuery}
           onValueChange={setSortQuery}
         >

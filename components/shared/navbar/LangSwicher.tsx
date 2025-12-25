@@ -18,12 +18,12 @@ export default function LangSwicher() {
   const pathName = usePathname();
 
   const changeLocale = (newLocale: string) => {
-    return pathName.replace(/^\/(fa|en)/, `/${newLocale}`);
+    return pathName.replace(/^\/(fa|en|ar)/, `/${newLocale}`);
   };
 
   return (
     <div>
-      <DropdownMenu dir={params.locale === 'fa' ? 'rtl' : 'ltr'}>
+      <DropdownMenu dir={params.locale === 'en' ? 'ltr' : 'rtl'}>
         <DropdownMenuTrigger asChild>
           <Button
             size="icon"
@@ -45,6 +45,12 @@ export default function LangSwicher() {
           <DropdownMenuItem asChild>
             <Link href={changeLocale('en')} className="w-full">
               <span>{t('en')}</span>
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link href={changeLocale('ar')} className="w-full">
+              <span>{t('ar')}</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -7,14 +7,9 @@ import { getTranslations } from 'next-intl/server';
 interface EditProfileInput {
   firstName: string;
   lastName: string;
-  email: string;
 }
 
-export async function EditProfile({
-  firstName,
-  lastName,
-  email,
-}: EditProfileInput) {
+export async function EditProfile({ firstName, lastName }: EditProfileInput) {
   const t = await getTranslations('Messages');
   const clientClerk = await clerkClient();
 
@@ -33,7 +28,6 @@ export async function EditProfile({
       finalValue.firstName = firstName.trim();
     if (lastName && lastName.trim().length > 0)
       finalValue.lastName = lastName.trim();
-    if (email && email.trim().length > 0) finalValue.email = email.trim();
 
     // Update user profile in Clerk
     const updatedUser = await clientClerk.users.updateUser(
@@ -51,6 +45,7 @@ export async function EditProfile({
     // Revalidate profile pages
     revalidatePath('/fa/profile');
     revalidatePath('/en/profile');
+    revalidatePath('/ar/profile');
 
     return {
       status: true,
@@ -80,9 +75,12 @@ export async function AddImage({ file }: { file: File | Blob }) {
     }
 
     // Send file to Clerk as profile image
-    const updatedUser = await clientClerk.users.updateUserProfileImage(clerkUserId, {
-      file,
-    });
+    const updatedUser = await clientClerk.users.updateUserProfileImage(
+      clerkUserId,
+      {
+        file,
+      }
+    );
 
     if (!updatedUser) {
       return {
@@ -91,9 +89,14 @@ export async function AddImage({ file }: { file: File | Blob }) {
       };
     }
 
+    // Revalidate profile pages to refresh the avatar
+    revalidatePath('/fa/profile');
+    revalidatePath('/en/profile');
+    revalidatePath('/ar/profile');
+
     return {
       status: true,
-      message: t('profileImageUpdated'),
+      message: t('imageUpdated'),
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {

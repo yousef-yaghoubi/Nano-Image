@@ -42,9 +42,9 @@ export function DrawerDialog({
 
         <DialogContent
           className="w-full max-h-4/5 overflow-scroll"
-          dir={locale == 'fa' ? 'rtl' : 'ltr'}
+          dir={locale === 'en' ? 'ltr' : 'rtl'}
         >
-          <DialogHeader dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+          <DialogHeader dir={locale === 'en' ? 'ltr' : 'rtl'}>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{desc}</DialogDescription>
           </DialogHeader>
@@ -57,7 +57,7 @@ export function DrawerDialog({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+      <DrawerContent dir={locale === 'en' ? 'ltr' : 'rtl'}>
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{desc}</DrawerDescription>

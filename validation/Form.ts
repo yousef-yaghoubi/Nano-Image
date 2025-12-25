@@ -44,14 +44,13 @@ export const SchemaProfileEdit = yup.object().shape({
       }
       return value.length <= 40;
     }),
-  email: yup
-    .string()
-    .nullable()
-    .optional()
-    .test('email-format', 'isRequired', function (value) {
-      if (!value || value.length === 0) {
-        return true; // Field is optional, so empty is valid
-      }
-      return yup.string().email().isValidSync(value);
+});
+
+export const SchemaImageUpdate = yup.object().shape({
+  file: yup
+    .mixed<File>()
+    .required('noFile')
+    .test('file-exists', 'noFile', function (value) {
+      return !!value;
     }),
 });

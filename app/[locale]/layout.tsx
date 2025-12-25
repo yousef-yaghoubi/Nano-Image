@@ -64,7 +64,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      dir={locale == 'fa' ? 'rtl' : 'ltr'}
+      dir={locale === 'en' ? 'ltr' : 'rtl'}
       suppressHydrationWarning
     >
       <body className={`${yekanBakh.className} antialiased`}>

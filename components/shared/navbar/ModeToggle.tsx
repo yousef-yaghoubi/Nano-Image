@@ -39,7 +39,7 @@ export function ModeToggle() {
   }
 
   return (
-    <DropdownMenu dir={locale == 'fa' ? 'rtl' : 'ltr'}>
+    <DropdownMenu dir={locale === 'en' ? 'ltr' : 'rtl'}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"

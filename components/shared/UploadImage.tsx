@@ -4,31 +4,87 @@ import { ImageIcon, UploadIcon, XIcon } from 'lucide-react';
 import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import { Label } from '../ui/label';
 
 interface UploadImageProps {
-  name: string;
+  name?: string; // Optional when not using Formik
   label: string;
   method?: 'api' | 'editProfile'; // Method selector: 'api' (default) or 'editProfile'
   onFileSelectEditProfile?: (file: File | null) => void; // Called in 'editProfile' method
+  important?: boolean;
+  // Optional props for non-Formik usage
+  value?: string | null;
+  onChange?: (url: string | null) => void;
 }
 
 /**
  * UploadImage component can work in two modes:
  * 1. Default ('api'): uploads image to API and sets image URL field.
  * 2. 'editProfile': sends file to EditImage in EditProfile via onFileSelectEditProfile callback, does NOT upload to API.
+ *
+ * Formik is optional - if Formik context is available and 'name' is provided, it will use Formik.
+ * Otherwise, it uses local state and optional value/onChange props.
  */
 export default function UploadImage({
   name,
   label,
   method = 'api',
   onFileSelectEditProfile,
+  important = false,
+  value: controlledValue,
+  onChange: controlledOnChange,
 }: UploadImageProps) {
-  const [field, , helpers] = useField<string | null>(name);
-  const { setValue, setTouched } = helpers;
+  // Try to use Formik if context is available and name is provided
+  const formikContext = useFormikContext();
+  const hasFormik = formikContext && name;
 
-  const imageUrl = field.value;
+  // Use Formik field if available, otherwise use local state or controlled props
+  let field: { value: string | null } | null = null;
+  let helpers: {
+    setValue: (value: string | null) => void;
+    setTouched: (touched: boolean) => void;
+  } | null = null;
+
+  if (hasFormik) {
+    try {
+      const [formikField, , formikHelpers] = useField<string | null>(name!);
+      field = formikField;
+      helpers = formikHelpers;
+    } catch {
+      // Formik context exists but useField failed, fall back to local state
+      console.warn(
+        'Formik context detected but useField failed, using local state'
+      );
+    }
+  }
+
+  // Local state for non-Formik usage
+  const [localValue, setLocalValue] = useState<string | null>(
+    controlledValue ?? null
+  );
+
+  // Determine the current image URL
+  const imageUrl = field?.value ?? controlledValue ?? localValue;
+
+  // Wrapper functions for setting value
+  const setValue = (url: string | null) => {
+    if (helpers) {
+      helpers.setValue(url);
+    } else if (controlledOnChange) {
+      controlledOnChange(url);
+    } else {
+      setLocalValue(url);
+    }
+  };
+
+  const setTouched = (touched: boolean) => {
+    if (helpers) {
+      helpers.setTouched(touched);
+    }
+    // No-op for non-Formik usage
+  };
+
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024;
   const [uploading, setUploading] = useState(false);
@@ -45,7 +101,7 @@ export default function UploadImage({
       getInputProps,
     },
   ] = useFileUpload({
-    accept: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif',
+    accept: 'image/png,image/jpeg,image/jpg',
     maxSize,
     maxFiles: 1,
   });
@@ -101,6 +157,13 @@ export default function UploadImage({
     }
   }, [files[0]]);
 
+  // Sync controlled value prop changes
+  useEffect(() => {
+    if (controlledValue !== undefined && !field) {
+      setLocalValue(controlledValue);
+    }
+  }, [controlledValue, field]);
+
   // For method=api, keep Formik "touched" and clear/remove if unset
   // For editProfile, don't clear form value (always null), but remove file if user clicks remove
   useEffect(() => {
@@ -113,6 +176,13 @@ export default function UploadImage({
       }
     }
   }, [imageUrl, method]);
+
+  // Clear files when controlled value becomes null in editProfile mode
+  useEffect(() => {
+    if (method === 'editProfile' && controlledValue === null && files[0]) {
+      removeFile(files[0]?.id);
+    }
+  }, [controlledValue, method]);
 
   // Remove button handler
   const onRemove = () => {
@@ -133,11 +203,11 @@ export default function UploadImage({
     <div className="flex flex-col gap-2">
       <div className="relative">
         {/* Drop zone */}
-        <Label htmlFor={name}>
-          {label} <span className="text-destructive">*</span>
+        <Label htmlFor={name || 'upload-image'}>
+          {label} {important && <span className="text-destructive">*</span>}
         </Label>
         <div
-          className="relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-input border-dashed p-4 transition-colors data-[dragging=true]:bg-accent/50"
+          className="relative flex min-h-52 mt-2 flex-col items-center justify-center overflow-hidden rounded-xl border border-input border-dashed p-4 transition-colors data-[dragging=true]:bg-accent/50"
           data-dragging={isDragging || undefined}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
@@ -161,7 +231,7 @@ export default function UploadImage({
               </div>
               <p className="mb-1.5 font-medium text-sm">Drop your image here</p>
               <p className="text-xs text-muted-foreground">
-                SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
+                PNG or JPG (max. {maxSizeMB}MB)
               </p>
               <Button
                 className="mt-4"
@@ -180,7 +250,7 @@ export default function UploadImage({
         {previewUrl && (
           <Button
             onClick={onRemove}
-            className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
+            className="absolute top-6 right-4 flex size-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
             type="button"
           >
             <XIcon className="size-4" />

@@ -58,7 +58,11 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
         {({ values, setFieldValue, isValid, isSubmitting }) => (
           <Form className="space-y-6">
             <div>
-              <UploadImage name="imageUrl" label={tForm('Label.image')} />
+              <UploadImage
+                name="imageUrl"
+                important
+                label={tForm('Label.image')}
+              />
               <ErrorMessage
                 name="imageUrl"
                 render={(e) => (
