@@ -4,7 +4,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import NavList from './Nav';
 import LangSwicher from './LangSwicher';
 import { MobileMenu } from './MobileMenu';
-import AuthButtons from '../AuthButtons';
+import AuthButtons from '../Auth/AuthButtons';
 import { ModeToggle } from './ModeToggle';
 import Logo from './Logo';
 

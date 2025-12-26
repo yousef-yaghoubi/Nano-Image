@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { DrawerDialog } from '../DrawerDialog';
 import ChildFilter from './ChildFilter';
 import ButtonFilter from './ButtonFilter';
-import SearchBox from '../SearchBox';
+import SearchBox from '../Form/SearchBox';
 import { useFilterState } from '@/hooks/useFilterState';
 import { FilterIcon } from 'lucide-react';
 import { Sort } from '../SortingData/Sort';

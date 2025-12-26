@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { EditProfile } from '@/app/[locale]/actions/EditProfile';
 import { Button } from '@/components/ui/button';
-import FormField from '@/components/shared/FormField';
+import FormField from '@/components/shared/Form/FormField';
 import { Loader2 } from 'lucide-react';
 
 function FormUpdateUser() {

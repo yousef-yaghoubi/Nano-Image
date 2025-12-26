@@ -1,5 +1,5 @@
+import Card from '../Card/Card';
 import { FilterSort } from '../FilteringData/Filter';
-import Card from '../Card';
 import PaginationFull from '../PaginationFull';
 import { DataFullType, PromptType } from '@/types/data';
 

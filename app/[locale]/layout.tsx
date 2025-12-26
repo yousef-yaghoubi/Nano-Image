@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
-import Navbar from '@/components/shared/navbar/Navbar';
+import Navbar from '@/components/shared/Navbar/Navbar';
 import Footer from '@/components/shared/Footer';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import AllProviders from '@/providers/AllProviders';

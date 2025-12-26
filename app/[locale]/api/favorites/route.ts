@@ -1,22 +1,45 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-
 import dbConnect from '@/lib/db';
 import { Favorite, Users, PromptFavorite } from '@/models';
 import { IFavorite, IUser } from '@/types/models';
 import { getTranslations } from 'next-intl/server';
+import { favoriteQuerySchema } from '@/validation/DTO';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   const t = await getTranslations('Messages');
-  try {
-    // 1. Database Connection and Authentication
-    await dbConnect();
-    const url = new URL(req.url);
-    const searchParams = url.searchParams;
-    const { userId: clerkUserId } = await auth(); // Using auth() without await based on context
 
+  try {
+    await dbConnect();
+    const { searchParams } = new URL(req.url);
+
+    // ۲. اعتبارسنجی با استفاده از DTO
+    let validatedData;
+    try {
+      validatedData = await favoriteQuerySchema.validate({
+        page: searchParams.get('page'),
+        limit: searchParams.get('limit'),
+        sort: searchParams.get('sort'),
+      });
+    } catch (validationError) {
+      if (validationError instanceof Error) {
+        return NextResponse.json(
+          { success: false, message: validationError.message },
+          { status: 400 }
+        );
+      }
+      return NextResponse.json(
+        { success: false, message: 'Unknown validation error' },
+        { status: 400 }
+      );
+    }
+
+    const { page, limit, sort: sortParam } = validatedData;
+
+    // ۳. Authentication
+    const { userId: clerkUserId } = await auth();
     if (!clerkUserId) {
       return NextResponse.json(
         { success: false, message: t('isNotAuthenticated') },
@@ -24,7 +47,6 @@ export async function GET(req: Request) {
       );
     }
 
-    // find app user
     const user = (await Users.findOne({
       clerkId: clerkUserId,
     }).lean()) as IUser | null;
@@ -35,40 +57,19 @@ export async function GET(req: Request) {
       );
     }
 
-    // 2. Pagination Setup
-    const limit = Math.max(1, Number(searchParams.get('limit')) || 24);
-    const page = Math.max(1, Number(searchParams.get('page')) || 1);
-
-    // 3. Sorting Setup
-    const sortParam = searchParams.get('sort');
-    // Default: date desc (by when it was favorited)
+    // ۴. منطق Sorting
     let sort: { [key: string]: 1 | -1 } = { 'prompt.likes': -1 };
-
-    // Flag to check if sorting by a field on the 'Prompt' document
     let isSortingByPromptField = true;
 
-    switch (sortParam) {
-      case 'likes asc':
-        sort = { 'prompt.likes': 1 };
-        isSortingByPromptField = true;
-        break;
-      case 'likes desc':
-        sort = { 'prompt.likes': -1 };
-        isSortingByPromptField = true;
-        break;
-      case 'date asc':
-        // Sort by the favorite creation date directly on PromptFavorite
-        sort = { createdAt: 1 };
-        isSortingByPromptField = false; // Added to correctly use the sort stage
-        break;
-      case 'date desc':
-        // Sort by the favorite creation date directly on PromptFavorite
-        sort = { createdAt: -1 };
-        isSortingByPromptField = false; // Added to correctly use the sort stage
-        break;
+    if (sortParam === 'date asc' || sortParam === 'date desc') {
+      sort = { createdAt: sortParam === 'date asc' ? 1 : -1 };
+      isSortingByPromptField = false;
+    } else {
+      sort = { 'prompt.likes': sortParam === 'likes asc' ? 1 : -1 };
+      isSortingByPromptField = true;
     }
 
-    // 4. Fetch Favorite Container
+    // ۵. دریافت دیتای Favorite
     const favorite = (await Favorite.findOne({
       userId: user._id,
     }).lean()) as IFavorite | null;
@@ -86,14 +87,10 @@ export async function GET(req: Request) {
       });
     }
 
-    // 5. Aggregation Pipeline
+    // ۶. Aggregation Pipeline
     const pipeline = [
       { $match: { favoriteId: favorite._id } },
-
-      // Stage A: Sort by field on PromptFavorite (e.g., 'createdAt') before $lookup for efficiency
-      // Only include this stage if we are NOT sorting by a prompt field.
       ...(!isSortingByPromptField ? [{ $sort: sort }] : []),
-
       {
         $lookup: {
           from: 'prompts',
@@ -102,53 +99,37 @@ export async function GET(req: Request) {
           as: 'prompt',
         },
       },
-      // Remove entries where the prompt was deleted (prompt array is empty)
       { $unwind: '$prompt' },
-
-      // Stage B: Sort by field on the Prompts document (e.g., 'prompt.likes') after $unwind
-      // Only include this stage if we ARE sorting by a prompt field.
       ...(isSortingByPromptField ? [{ $sort: sort }] : []),
-
-      // Pagination must happen AFTER sorting
       { $skip: (page - 1) * limit },
       { $limit: limit },
-
-      // 🛑 FIXED: Project the prompt object and add the isFavorited: true flag
       {
         $replaceRoot: {
-          newRoot: {
-            $mergeObjects: [
-              '$prompt',
-              { isFavorited: true }, // 🛑 Add the constant isFavorited: true field
-            ],
+          newRoot: { $mergeObjects: ['$prompt', { isFavorited: true }] },
+        },
+      },
+    ];
+
+    const [data, totalResult] = await Promise.all([
+      PromptFavorite.aggregate(pipeline),
+      PromptFavorite.aggregate([
+        { $match: { favoriteId: favorite._id } },
+        {
+          $lookup: {
+            from: 'prompts',
+            localField: 'promptId',
+            foreignField: '_id',
+            as: 'prompt',
           },
         },
-      },
-    ];
+        { $unwind: '$prompt' },
+        { $count: 'total' },
+      ]),
+    ]);
 
-    const data = await PromptFavorite.aggregate(pipeline);
-
-    // 6. Get Total Count
-    // This pipeline correctly excludes deleted prompts for accurate total count
-    const totalCountPipeline = [
-      { $match: { favoriteId: favorite._id } },
-      {
-        $lookup: {
-          from: 'prompts',
-          localField: 'promptId',
-          foreignField: '_id',
-          as: 'prompt',
-        },
-      },
-      { $unwind: '$prompt' },
-      { $count: 'total' },
-    ];
-
-    const totalObj = await PromptFavorite.aggregate(totalCountPipeline);
-    const total = totalObj[0]?.total || 0;
+    const total = totalResult[0]?.total || 0;
     const totalPages = Math.ceil(total / limit);
 
-    // 7. Return Response
     return NextResponse.json({
       success: true,
       data,
@@ -156,12 +137,12 @@ export async function GET(req: Request) {
         total,
         totalPages,
         currentPage: page,
-        hasNextPage: totalPages == 0 ? false : page < totalPages,
-        hasPrevPage: totalPages == 0 ? false : page > 1,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
       },
     });
   } catch (error) {
-    console.error('Error fetching favorite prompts:', error);
+    console.error('API Error:', error);
     return NextResponse.json(
       {
         success: false,

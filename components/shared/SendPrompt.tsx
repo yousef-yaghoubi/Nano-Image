@@ -6,12 +6,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import UploadImage from './UploadImage';
-import TeaxtArea from './TextArea';
+import TeaxtArea from './Form/TextArea';
 import { Input } from '../ui/input';
 import { SchemaSendPrompt } from '@/validation/Form';
 import { AddPrompt } from '@/app/[locale]/actions/AddPrompt';
 import { toast } from 'sonner';
-import TagsShowInput from './Tags';
+import TagsShowInput from './Form/Tags';
 
 interface FormValues {
   namePrompt: string;

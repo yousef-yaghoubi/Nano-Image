@@ -1,85 +1,70 @@
-import dbConnect from '@/lib/db';
-import { Favorite, Prompts, Users, PromptFavorite } from '@/models'; // Added Users and PromptFavorite
 import { NextResponse } from 'next/server';
-import type { FilterQuery, SortOrder } from 'mongoose';
-import { PromptType } from '@/types/data';
-import { ObjectId } from 'mongodb'; // Still needed for promptIds
 import { auth } from '@clerk/nextjs/server';
+import dbConnect from '@/lib/db';
+import { Favorite, Prompts, Users, PromptFavorite } from '@/models';
 import { IFavorite, IUser } from '@/types/models';
+import { PromptType } from '@/types/data';
+import type { FilterQuery, SortOrder } from 'mongoose';
+import { promptsQuerySchema } from '@/validation/DTO';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
     await dbConnect();
+    const { searchParams } = new URL(req.url);
 
-    const url = new URL(req.url);
-    const searchParams = url.searchParams;
+    // ۱. اعتبارسنجی با DTO
+    let validatedData;
+    try {
+      validatedData = await promptsQuerySchema.validate({
+        page: searchParams.get('page'),
+        limit: searchParams.get('limit'),
+        sort: searchParams.get('sort'),
+        tags: searchParams.get('tags'),
+        search: searchParams.get('search'),
+      });
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Unknown validation error';
+      return NextResponse.json(
+        { success: false, message: errorMessage },
+        { status: 400 }
+      );
+    }
 
-    const limit = Math.max(1, Number(searchParams.get('limit')) || 24);
-    const page = Math.max(1, Number(searchParams.get('page')) || 1);
+    const {
+      page,
+      limit,
+      sort: sortParam,
+      tags: rawTags,
+      search,
+    } = validatedData;
+    const skip = (page - 1) * limit;
 
-    const rawTags = searchParams.get('tags');
-    const sortParam = searchParams.get('sort');
-    const searchRaw = searchParams.get('search');
-
-    // -------------------------
-    // USER ID (Clerk ID)
-    // -------------------------
-    const { userId: clerkId } = await auth(); // Renamed to clerkId for clarity
-    let mongooseUserId: ObjectId | null = null;
-    let favoriteId: ObjectId | null = null;
+    // ۲. احراز هویت و پیدا کردن FavoriteId (بدون تغییر در منطق شما)
+    const { userId: clerkId } = await auth();
+    let favoriteId: string | null = null;
 
     if (clerkId) {
-      // 1. Find the Mongoose User document using the Clerk ID
       const user = await Users.findOne({ clerkId })
         .select('_id')
         .lean<IUser | null>();
-
       if (user) {
-        mongooseUserId = user._id;
-
-        // 2. Find the user's main Favorite document using the Mongoose User ID
-        const favoriteDoc = await Favorite.findOne({ userId: mongooseUserId })
+        const favDoc = await Favorite.findOne({ userId: user._id })
           .select('_id')
           .lean<IFavorite | null>();
-
-        if (favoriteDoc) {
-          favoriteId = favoriteDoc._id;
-        }
+        favoriteId = favDoc?._id?.toString() ?? null;
       }
     }
-    // -------------------------
-    // TAGS
-    // -------------------------
-    let tags: string[] | null = null;
+    const where: FilterQuery<PromptType> = {};
 
-    if (rawTags && rawTags.trim() && rawTags !== 'undefined') {
-      tags = rawTags
+    if (rawTags) {
+      const tagsArray = rawTags
         .split(',')
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0);
-    }
-
-    // -------------------------
-    // SEARCH
-    // -------------------------
-    const search =
-      searchRaw && searchRaw.trim() && searchRaw !== 'undefined'
-        ? searchRaw.trim()
-        : null;
-
-    const skip = (page - 1) * limit;
-
-    // -------------------------
-    // FILTER (کاملاً تایپ‌شده)
-    // -------------------------
-    const where: FilterQuery<PromptType> = {
-      
-    };
-
-    if (tags) {
-      where.tags = { $in: tags };
+        .map((t) => t.trim())
+        .filter(Boolean);
+      if (tagsArray.length > 0) where.tags = { $in: tagsArray };
     }
 
     if (search) {
@@ -89,65 +74,44 @@ export async function GET(req: Request) {
       ];
     }
 
-    // -------------------------
-    // SORT (بدون any)
-    // -------------------------
+    // ۴. آماده‌سازی Sort
     const sort: Record<string, SortOrder> = {};
+    if (sortParam === 'likes asc') sort.likes = 1;
+    else if (sortParam === 'date desc') sort.createdAt = -1;
+    else if (sortParam === 'date asc') sort.createdAt = 1;
+    else sort.likes = -1; // Default: likes desc
 
-    switch (sortParam) {
-      case 'likes desc':
-        sort.likes = -1;
-        break;
-      case 'likes asc':
-        sort.likes = 1;
-        break;
-      case 'date desc':
-        sort.createdAt = -1;
-        break;
-      case 'date asc':
-        sort.createdAt = 1;
-        break;
-      default:
-        sort.likes = -1; // default
-    }
+    // ۵. اجرای کوئری‌ها
+    const [total, promptsRaw] = await Promise.all([
+      Prompts.countDocuments(where),
+      Prompts.find(where)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean<PromptType[]>(),
+    ]);
 
-    // -------------------------
-    // QUERY (کاملاً typed)
-    // -------------------------
-    const total = await Prompts.countDocuments(where);
+    let prompts = promptsRaw;
 
-    let prompts = await Prompts.find(where)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean<PromptType[]>(); // ← این باعث میشه خروجی 100٪ تایپ باشه
-
-    // -------------------------
-    // ADD isFavorited LOGIC (MANUAL LOOKUP) 🚀
-    // -------------------------
-    if (favoriteId) {
-      const promptIds = prompts.map((prompt) => prompt._id);
-
-      // 3. Manually query the PromptFavorite collection
-      const favoritedPrompts = await PromptFavorite.find({
-        favoriteId: favoriteId,
+    // ۶. منطق isFavorited
+    if (favoriteId && prompts.length > 0) {
+      const promptIds = prompts.map((p) => p._id);
+      const favoritedEntries = await PromptFavorite.find({
+        favoriteId,
         promptId: { $in: promptIds },
       })
         .select('promptId')
         .lean();
 
-      // 4. Create a Set of favorited prompt IDs for O(1) lookup
-      const favoritedPromptIds = new Set(
-        favoritedPrompts.map((fav) => fav.promptId.toString())
+      const favoritedSet = new Set(
+        favoritedEntries.map((f) => f.promptId.toString())
       );
 
-      // 5. Map over the prompts and add the isFavorited flag
-      prompts = prompts.map((prompt) => ({
-        ...prompt,
-        isFavorited: favoritedPromptIds.has(prompt._id.toString()),
-      })) as (PromptType & { isFavorited: boolean })[];
+      prompts = prompts.map((p) => ({
+        ...p,
+        isFavorited: favoritedSet.has(p._id.toString()),
+      })) as typeof promptsRaw;
     }
-    // -------------------------
 
     const totalPages = Math.ceil(total / limit);
 
@@ -164,14 +128,9 @@ export async function GET(req: Request) {
       },
     });
   } catch (error) {
+    console.error('Fetch Error:', error);
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Error fetching prompts',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        data: null,
-        pagination: null,
-      },
+      { success: false, message: 'Internal Server Error' },
       { status: 500 }
     );
   }

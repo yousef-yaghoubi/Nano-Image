@@ -2,7 +2,7 @@
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import { ProfileIcon } from './navbar/ProfileIcon';
+import { ProfileIcon } from '../Navbar/ProfileIcon';
 
 export default function AuthButtons({
   isAuthenticated,

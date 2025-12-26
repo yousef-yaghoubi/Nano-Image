@@ -1,4 +1,4 @@
-import NotAuthenticated from '@/components/shared/NotAuthenticated';
+import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
 import SendPrompt from '@/components/shared/SendPrompt';
 import { auth } from '@clerk/nextjs/server';
 

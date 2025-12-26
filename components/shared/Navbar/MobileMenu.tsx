@@ -7,8 +7,8 @@ import {
 } from '@/components/ui/sheet';
 import { MenuIcon } from 'lucide-react';
 import NavList from './Nav';
-import AuthButtons from '../AuthButtons';
 import { useParams } from 'next/navigation';
+import AuthButtons from '../Auth/AuthButtons';
 
 export function MobileMenu({
   isAuthenticated,

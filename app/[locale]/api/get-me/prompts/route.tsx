@@ -3,98 +3,61 @@ import { Favorite, Prompts, Users, PromptFavorite } from '@/models';
 import { NextResponse } from 'next/server';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { PromptType } from '@/types/data';
-import { ObjectId } from 'mongodb';
 import { auth } from '@clerk/nextjs/server';
 import { IFavorite, IUser } from '@/types/models';
+import { promptsQuerySchema } from '@/validation/DTO';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
     await dbConnect();
+    const { searchParams } = new URL(req.url);
 
-    const url = new URL(req.url);
-    const searchParams = url.searchParams;
+    // ۱. اعتبارسنجی ورودی‌ها با DTO
+    let validatedData;
+    try {
+      validatedData = await promptsQuerySchema.validate({
+        page: searchParams.get('page'),
+        limit: searchParams.get('limit'),
+        sort: searchParams.get('sort'),
+        tags: searchParams.get('tags'),
+        search: searchParams.get('search'),
+      });
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : typeof err === 'object' && err !== null && 'message' in err
+          ? String((err as { message?: unknown }).message)
+          : 'Unknown error';
+      return NextResponse.json({ success: false, message: errorMessage }, { status: 400 });
+    }
 
-    const limit = Math.max(1, Number(searchParams.get('limit')) || 24);
-    const page = Math.max(1, Number(searchParams.get('page')) || 1);
+    const { page, limit, sort: sortParam, tags: rawTags, search } = validatedData;
 
-    const rawTags = searchParams.get('tags');
-    const sortParam = searchParams.get('sort');
-    const searchRaw = searchParams.get('search');
-
-    // -------------------------
-    // USER ID (Clerk ID)
-    // -------------------------
+    // ۲. احراز هویت (اجباری برای این مسیر)
     const { userId: clerkId } = await auth();
-    let userId: ObjectId | null = null;
-    let favoriteId: ObjectId | null = null;
-
     if (!clerkId) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'User not authenticated',
-          data: null,
-        },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'User not authenticated' }, { status: 401 });
     }
 
-    const user = await Users.findOne({ clerkId })
-      .select('_id')
-      .lean<IUser | null>();
-
+    const user = await Users.findOne({ clerkId }).select('_id').lean<IUser | null>();
     if (!user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'User not found in database',
-          data: null,
-        },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    userId = user._id;
+    // ۳. پیدا کردن FavoriteId برای چک کردن وضعیت لایک‌ها
+    const favoriteDoc = await Favorite.findOne({ userId: user._id }).select('_id').lean<IFavorite | null>();
+    const favoriteId = favoriteDoc?._id;
 
-    const favoriteDoc = await Favorite.findOne({ userId: userId })
-      .select('_id')
-      .lean<IFavorite | null>();
+    // ۴. فیلتر (فقط پرامپت‌های خود کاربر)
+    const where: FilterQuery<PromptType> = { creatorId: user._id };
 
-    if (favoriteDoc) {
-      favoriteId = favoriteDoc._id;
+    if (rawTags) {
+      const tagsArray = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+      if (tagsArray.length > 0) where.tags = { $in: tagsArray };
     }
-
-    // -------------------------
-    // TAGS
-    // -------------------------
-    let tags: string[] | null = null;
-    if (rawTags && rawTags.trim() && rawTags !== 'undefined') {
-      tags = rawTags
-        .split(',')
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-    }
-
-    // -------------------------
-    // SEARCH
-    // -------------------------
-    const search =
-      searchRaw && searchRaw.trim() && searchRaw !== 'undefined'
-        ? searchRaw.trim()
-        : null;
-
-    const skip = (page - 1) * limit;
-
-    // -------------------------
-    // FILTER — only prompts created by user
-    // -------------------------
-    const where: FilterQuery<PromptType> = {
-      creatorId: userId, // Only show prompts created by the authenticated user
-    };
-
-    if (tags) where.tags = { $in: tags };
 
     if (search) {
       where.$or = [
@@ -103,65 +66,41 @@ export async function GET(req: Request) {
       ];
     }
 
-    // -------------------------
-    // SORT
-    // -------------------------
+    // ۵. تنظیم سورت
     const sort: Record<string, SortOrder> = {};
-    switch (sortParam) {
-      case 'likes desc':
-        sort.likes = -1;
-        break;
-      case 'likes asc':
-        sort.likes = 1;
-        break;
-      case 'date desc':
-        sort.createdAt = -1;
-        break;
-      case 'date asc':
-        sort.createdAt = 1;
-        break;
-      default:
-        sort.createdAt = -1;
-    }
+    if (sortParam === 'likes desc') sort.likes = -1;
+    else if (sortParam === 'likes asc') sort.likes = 1;
+    else if (sortParam === 'date asc') sort.createdAt = 1;
+    else sort.createdAt = -1; // Default: date desc
 
-    // -------------------------
-    // QUERY
-    // -------------------------
-    const total = await Prompts.countDocuments(where);
+    // ۶. کوئری دیتابیس (اجرا به صورت موازی برای سرعت بیشتر)
+    const skip = (page - 1) * limit;
+    const [total, promptsRaw] = await Promise.all([
+      Prompts.countDocuments(where),
+      Prompts.find(where).sort(sort).skip(skip).limit(limit).lean<PromptType[]>(),
+    ]);
 
-    let prompts = await Prompts.find(where)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean<PromptType[]>();
+    let prompts = promptsRaw;
 
-    // -------------------------
-    // ADD isFavorited
-    // -------------------------
+    // ۷. منطق isFavorited
     if (favoriteId && prompts.length > 0) {
       const promptIds = prompts.map((p) => p._id);
-
       const favorited = await PromptFavorite.find({
         favoriteId,
         promptId: { $in: promptIds },
-      })
-        .select('promptId')
-        .lean();
+      }).select('promptId').lean();
 
       const favSet = new Set(favorited.map((f) => f.promptId.toString()));
-
       prompts = prompts.map((p) => ({
         ...p,
         isFavorited: favSet.has(p._id.toString()),
-      }));
+      })) as PromptType[] & { isFavorited: boolean }[];
     }
 
-    // -------------------------
     const totalPages = Math.ceil(total / limit);
 
     return NextResponse.json({
       success: true,
-      message: 'User prompts fetched successfully 🚀',
       data: prompts,
       pagination: {
         total,
@@ -171,14 +110,11 @@ export async function GET(req: Request) {
         hasPrevPage: page > 1,
       },
     });
+
   } catch (error) {
+    console.error('Error fetching user prompts:', error);
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Error fetching user prompts',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        data: null,
-      },
+      { success: false, message: 'Error fetching user prompts' },
       { status: 500 }
     );
   }
