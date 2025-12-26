@@ -1,12 +1,14 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
 // export default clerkMiddleware();
 const intlMiddleware = createMiddleware(routing);
 
+const isProtectedRoute = createRouteMatcher(['/(en|fa|ar)/profile(.*)']);
 // export default function proxy(request: Request) {
-export default clerkMiddleware(async (_auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) await auth.protect();
   // first let clerk run, then pass request to intl
   return intlMiddleware(req);
 });

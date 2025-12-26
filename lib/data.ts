@@ -61,9 +61,9 @@ export function getProfileMenuItems(locale: string): ProfileMenuItem[] {
     {
       id: 2,
       title: 'myFavorites',
-      link: `/${locale}/myFavorites`,
+      link: `/${locale}/profile/myFavorites`,
       icon: Heart,
     },
-    { id: 3, title: 'myPrompts', link: `/${locale}/myPrompts`, icon: Plus },
+    { id: 3, title: 'myPrompts', link: `/${locale}/profile/myPrompts`, icon: Plus },
   ];
 }
