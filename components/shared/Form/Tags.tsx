@@ -1,5 +1,6 @@
 'use client';
 
+import { Label } from '@/components/ui/label';
 import {
   Tags,
   TagsContent,
@@ -14,7 +15,6 @@ import {
 import { FILTERING_OPTIONS } from '@/lib/data';
 import { useField } from 'formik';
 import { CheckIcon } from 'lucide-react';
-import { Label } from '../ui/label';
 import { useTranslations } from 'next-intl';
 
 const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
