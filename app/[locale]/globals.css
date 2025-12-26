@@ -149,6 +149,12 @@
   min-height: calc(65dvh);
 }
 
+.primaryGradient {
+  @apply bg-linear-to-b from-primary to-cyan-600;
+}
+.backgroundSecond {
+  @apply bg-linear-to-r from-white to-gray-100 dark:from-[#001920] dark:to-[#00140d];
+}
 .likeBox {
   position: relative;
   background-color: var(--background);

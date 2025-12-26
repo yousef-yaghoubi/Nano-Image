@@ -13,7 +13,7 @@ export interface PromptType {
   notes: null | string;
   tags: null | string[];
   isLiked: boolean;
-  isPremium: boolean;
+  isPublic: boolean;
   isFavorited: boolean;
 }
 
@@ -52,4 +52,11 @@ export interface UploadImageType {
   display_name: string;
   original_filename: string;
   api_key: string;
+}
+
+export interface ProfileMenuItem {
+  id: number;
+  title: string;
+  link: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
 }

@@ -29,33 +29,58 @@ export async function GET(req: Request) {
         err instanceof Error
           ? err.message
           : typeof err === 'object' && err !== null && 'message' in err
-          ? String((err as { message?: unknown }).message)
-          : 'Unknown error';
-      return NextResponse.json({ success: false, message: errorMessage }, { status: 400 });
+            ? String((err as { message?: unknown }).message)
+            : 'Unknown error';
+      return NextResponse.json(
+        { success: false, message: errorMessage },
+        { status: 400 }
+      );
     }
 
-    const { page, limit, sort: sortParam, tags: rawTags, search } = validatedData;
+    const {
+      page,
+      limit,
+      sort: sortParam,
+      tags: rawTags,
+      search,
+    } = validatedData;
 
     // ۲. احراز هویت (اجباری برای این مسیر)
     const { userId: clerkId } = await auth();
     if (!clerkId) {
-      return NextResponse.json({ success: false, message: 'User not authenticated' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: 'User not authenticated' },
+        { status: 401 }
+      );
     }
 
-    const user = await Users.findOne({ clerkId }).select('_id').lean<IUser | null>();
+    const user = await Users.findOne({ clerkId })
+      .select('_id')
+      .lean<IUser | null>();
     if (!user) {
-      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: 'User not found' },
+        { status: 404 }
+      );
     }
 
     // ۳. پیدا کردن FavoriteId برای چک کردن وضعیت لایک‌ها
-    const favoriteDoc = await Favorite.findOne({ userId: user._id }).select('_id').lean<IFavorite | null>();
+    const favoriteDoc = await Favorite.findOne({ userId: user._id })
+      .select('_id')
+      .lean<IFavorite | null>();
     const favoriteId = favoriteDoc?._id;
 
     // ۴. فیلتر (فقط پرامپت‌های خود کاربر)
-    const where: FilterQuery<PromptType> = { creatorId: user._id };
+    const where: FilterQuery<PromptType> = {
+      creatorId: user._id,
+      isPublic: true,
+    };
 
     if (rawTags) {
-      const tagsArray = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+      const tagsArray = rawTags
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean);
       if (tagsArray.length > 0) where.tags = { $in: tagsArray };
     }
 
@@ -77,7 +102,11 @@ export async function GET(req: Request) {
     const skip = (page - 1) * limit;
     const [total, promptsRaw] = await Promise.all([
       Prompts.countDocuments(where),
-      Prompts.find(where).sort(sort).skip(skip).limit(limit).lean<PromptType[]>(),
+      Prompts.find(where)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean<PromptType[]>(),
     ]);
 
     let prompts = promptsRaw;
@@ -88,7 +117,9 @@ export async function GET(req: Request) {
       const favorited = await PromptFavorite.find({
         favoriteId,
         promptId: { $in: promptIds },
-      }).select('promptId').lean();
+      })
+        .select('promptId')
+        .lean();
 
       const favSet = new Set(favorited.map((f) => f.promptId.toString()));
       prompts = prompts.map((p) => ({
@@ -98,7 +129,6 @@ export async function GET(req: Request) {
     }
 
     const totalPages = Math.ceil(total / limit);
-
     return NextResponse.json({
       success: true,
       data: prompts,
@@ -110,7 +140,6 @@ export async function GET(req: Request) {
         hasPrevPage: page > 1,
       },
     });
-
   } catch (error) {
     console.error('Error fetching user prompts:', error);
     return NextResponse.json(

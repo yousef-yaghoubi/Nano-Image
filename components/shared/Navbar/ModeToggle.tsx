@@ -1,6 +1,7 @@
 'use client';
 import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -24,13 +25,20 @@ export function ModeToggle() {
   const params = useParams();
   const locale = params.locale;
   const t = useTranslations('Theme');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   const currentTheme = activeTheme || 'light';
   let CurrentIcon = SunIcon;
 
   if (currentTheme === 'system') {
-    // If system: show what system resolved to, but can highlight system
-    // Show Monitor for system
     CurrentIcon = MonitorIcon;
   } else if (currentTheme === 'dark') {
     CurrentIcon = MoonIcon;

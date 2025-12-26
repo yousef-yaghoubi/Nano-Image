@@ -8,8 +8,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { getProfileMenuItems } from '@/lib/data';
 import { SignOutButton, UserAvatar } from '@clerk/nextjs';
-import { Heart, LogOut, Plus, User } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
@@ -18,16 +19,7 @@ import { DrawerDialog } from '../DrawerDialog';
 export function ProfileIcon({ children }: { children?: React.ReactNode }) {
   const params = useParams() as { locale: string };
   const locale = params.locale;
-  const ITEM_PROFILES = [
-    { id: 1, title: 'profile', link: `/${locale}/profile`, icon: User },
-    {
-      id: 2,
-      title: 'myFavorites',
-      link: `/${locale}/myFavorites`,
-      icon: Heart,
-    },
-    { id: 3, title: 'myPrompts', link: `/${locale}/myPrompts`, icon: Plus },
-  ];
+  const ITEM_PROFILES = getProfileMenuItems(locale);
   const tProfile = useTranslations('Profile');
   const tAuth = useTranslations('Auth');
   const pathname = usePathname();

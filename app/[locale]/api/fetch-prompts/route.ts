@@ -26,7 +26,7 @@ export async function GET() {
     }
 
     const filteredItems = data.items.filter(
-      (item: PromptType) => item.isPremium === false
+      (item: PromptType & {isPremium: boolean}) => item.isPremium === false
     );
 
     console.log(`📦 Total fetched: ${filteredItems.length}`);

@@ -46,7 +46,10 @@ async function page({
     <>
       <HeadPages title={t('head')} />
       {prompt.success ? (
-        <ShowPrompts prompt={prompt} />
+        <ShowPrompts
+          prompt={prompt}
+          gridClass="grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+        />
       ) : (
         <p>{prompt.message}</p>
       )}

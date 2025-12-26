@@ -12,7 +12,6 @@ import AuthButtons from '../Auth/AuthButtons';
 
 export function MobileMenu({
   isAuthenticated,
-  userEmail,
 }: {
   isAuthenticated: boolean;
   userEmail?: string;
@@ -44,7 +43,7 @@ export function MobileMenu({
             <div className="w-full flex flex-col gap-3">
               {isAuthenticated ? (
                 <>
-                  <AuthButtons isAuthenticated={true} mobile userEmail={userEmail} />
+                  <AuthButtons isAuthenticated={true} mobile />
                 </>
               ) : (
                 <AuthButtons isAuthenticated={false} mobile />

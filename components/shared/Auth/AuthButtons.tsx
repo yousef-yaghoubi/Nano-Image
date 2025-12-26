@@ -3,15 +3,16 @@ import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { ProfileIcon } from '../Navbar/ProfileIcon';
+import { Button } from '@/components/ui/button';
+import { User2 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AuthButtons({
   isAuthenticated,
   mobile = false,
-  userEmail,
 }: {
   isAuthenticated: boolean;
   mobile?: boolean;
-  userEmail?: string;
 }) {
   const t = useTranslations('Auth');
 
@@ -25,9 +26,12 @@ export default function AuthButtons({
             <ProfileIcon />
           </div>
         ) : (
-          <div className="">
-            <ProfileIcon>{userEmail}</ProfileIcon>
-          </div>
+          <Link href={'/profile'}>
+            <Button>
+              <User2 />
+              ورود به حساب کاربری
+            </Button>
+          </Link>
         )}
       </div>
     );

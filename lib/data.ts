@@ -1,4 +1,6 @@
-import { FilterOption } from "@/types/filter";
+import { Heart, Plus, User } from 'lucide-react';
+import { FilterOption } from '@/types/filter';
+import { ProfileMenuItem } from '@/types/data';
 
 export const FILTERING_OPTIONS: FilterOption[] = [
   {
@@ -52,3 +54,16 @@ export const FILTERING_OPTIONS: FilterOption[] = [
     options: ['Glitch', 'Neon', 'Flat Design'],
   },
 ];
+
+export function getProfileMenuItems(locale: string): ProfileMenuItem[] {
+  return [
+    { id: 1, title: 'profile', link: `/${locale}/profile`, icon: User },
+    {
+      id: 2,
+      title: 'myFavorites',
+      link: `/${locale}/myFavorites`,
+      icon: Heart,
+    },
+    { id: 3, title: 'myPrompts', link: `/${locale}/myPrompts`, icon: Plus },
+  ];
+}

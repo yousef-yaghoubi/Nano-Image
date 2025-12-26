@@ -10,10 +10,9 @@ import Logo from './Logo';
 
 interface NavbarProps {
   isAuthenticated: boolean;
-  userEmail?: string;
 }
 
-export default function Navbar({ isAuthenticated, userEmail }: NavbarProps) {
+export default function Navbar({ isAuthenticated }: NavbarProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
   return (
@@ -38,7 +37,6 @@ export default function Navbar({ isAuthenticated, userEmail }: NavbarProps) {
 
             <MobileMenu
               isAuthenticated={isAuthenticated}
-              userEmail={userEmail}
             />
           </div>
         )}

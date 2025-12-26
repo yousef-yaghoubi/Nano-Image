@@ -3,7 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import Navbar from '@/components/shared/Navbar/Navbar';
 import Footer from '@/components/shared/Footer';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import AllProviders from '@/providers/AllProviders';
 
 const yekanBakh = localFont({
@@ -55,10 +55,6 @@ export default async function RootLayout({
   params: Promise<{ locale?: string }>;
 }>) {
   const { userId } = await auth();
-  let user = null;
-  if (userId) {
-    user = await currentUser();
-  }
 
   const locale = (await params).locale;
   return (
@@ -71,7 +67,6 @@ export default async function RootLayout({
         <AllProviders>
           <Navbar
             isAuthenticated={!!userId}
-            userEmail={user?.emailAddresses?.[0]?.emailAddress}
           />
           <main className="container">{children}</main>
           <Footer />
