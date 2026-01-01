@@ -37,19 +37,19 @@ export default function LangSwicher() {
 
         <DropdownMenuContent className="min-w-32" align="start">
           <DropdownMenuItem asChild>
-            <Link href={changeLocale('fa')} className="w-full">
+            <Link href={changeLocale('fa')} className="w-full cursor-pointer">
               <span>{t('fa')}</span>
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href={changeLocale('en')} className="w-full">
+            <Link href={changeLocale('en')} className="w-full cursor-pointer">
               <span>{t('en')}</span>
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href={changeLocale('ar')} className="w-full">
+            <Link href={changeLocale('ar')} className="w-full cursor-pointer">
               <span>{t('ar')}</span>
             </Link>
           </DropdownMenuItem>

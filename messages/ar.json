@@ -2,7 +2,7 @@
   "data": {
     "filter": "تصفية",
     "sort": "ترتيب",
-    "activeFilter": "جميع الفلاتر",
+    "activeFilter": "عوامل التصفية النشطة",
     "clearAll": "مسح الكل"
   },
   "Pagination": {
@@ -11,18 +11,18 @@
   },
   "Navbar": {
     "home": "الرئيسية",
-    "about": "عني",
+    "about": "من أنا",
     "favorite": "المفضلة",
-    "newPrompt": "موجه جديد"
+    "newPrompt": "إضافة برومبت جديد"
   },
   "Auth": {
-    "signup": "التسجيل",
+    "signup": "إنشاء حساب",
     "signin": "تسجيل الدخول",
     "signout": "تسجيل الخروج"
   },
   "Footer": {
-    "copyright": "صُنع بـ ❤️ بواسطة",
-    "name": "يوسف يعقوبي"
+    "copyright": "تم التطوير بـ ❤️ بواسطة",
+    "name": "Yousef Yaghoubi"
   },
   "Languages": {
     "fa": "الفارسية",
@@ -32,65 +32,65 @@
   "Filter": {
     "sorts": {
       "name": "ترتيب",
-      "likeDesc": "الأكثر إعجاباً",
-      "likeAsc": "الأقل إعجاباً",
+      "likeDesc": "الأكثر إعجابًا",
+      "likeAsc": "الأقل إعجابًا",
       "dateDesc": "الأحدث",
       "dateAsc": "الأقدم"
     },
     "filter": {
       "name": "تصفية",
-      "title": "تصفية الموجهات",
-      "description": "تساعدك الفلاتر على العثور بسرعة على الموجهات حسب الأسلوب والحالة والنوع.",
+      "title": "تصفية البرومبتات",
+      "description": "تساعدك عوامل التصفية على العثور بسرعة على البرومبتات حسب الأسلوب والمزاج والنوع.",
       "header": {
-        "Artistic Styles": "الأساليب الفنية",
-        "Corporate & professional": "الشركات والمهنية",
-        "Genre & themes": "النوع والمواضيع",
+        "Artistic Styles": "الأنماط الفنية",
+        "Corporate & professional": "الشركات والاحترافية",
+        "Genre & themes": "الأنواع والمواضيع",
         "Mood & tone": "المزاج والنبرة",
-        "Optional add-ons": "الإضافات الاختيارية"
+        "Optional add-ons": "إضافات اختيارية"
       },
       "tag": {
         "Search": "بحث:",
-        "Anime": "أنيمي",
+        "Anime": "أنمي",
         "Cinematic": "سينمائي",
         "Realistic": "واقعي",
-        "Architecture": "عمارة",
-        "Cartoon": "كرتون",
-        "3D Render": "عرض ثلاثي الأبعاد",
-        "Vector": "متجه",
+        "Architecture": "هندسة معمارية",
+        "Cartoon": "كرتوني",
+        "3D Render": "تصيير ثلاثي الأبعاد",
+        "Vector": "فيكتور",
         "Watercolor": "ألوان مائية",
-        "Sketch / Line Art": "رسم / فن الخط",
-        "Oil Painting": "رسم زيتي",
-        "Abstract": "مجرد",
+        "Sketch / Line Art": "رسم / خطوط",
+        "Oil Painting": "لوحة زيتية",
+        "Abstract": "تجريدي",
         "Surreal": "سريالي",
         "Fashion": "أزياء",
         "Photography": "تصوير",
         "Portrait": "بورتريه",
         "Corporate": "شركات",
         "Business": "أعمال",
-        "Minimalist": "بسيط",
+        "Minimalist": "مينيمال",
         "Modern": "حديث",
         "Product / Poster": "منتج / ملصق",
         "Logo": "شعار",
-        "Infographic": "معلومات بيانية",
-        "Concept art": "فن المفاهيم",
-        "Fantasy": "خيال",
+        "Infographic": "إنفوجرافيك",
+        "Concept art": "فن مفاهيمي",
+        "Fantasy": "خيالي",
         "Sci-Fi": "خيال علمي",
         "Cyberpunk": "سايبربانك",
-        "Retro / Vintage": "رجعي / كلاسيكي",
-        "Grunge": "جرانج",
-        "Vibrant / Colorful": "نابض بالحياة / ملون",
+        "Retro / Vintage": "ريترو / كلاسيك",
+        "Grunge": "غرنج",
+        "Vibrant / Colorful": "زاهي / ملون",
         "Elegant": "أنيق",
-        "Dark / Moody": "داكن / مظلم",
-        "Glitch": "عطل",
+        "Dark / Moody": "داكن / غامض",
+        "Glitch": "تشويش",
         "Neon": "نيون",
         "Flat Design": "تصميم مسطح"
       },
-      "searchPlaceholder": "البحث بالاسم أو الموجه..."
+      "searchPlaceholder": "ابحث بالاسم أو البرومبت..."
     }
   },
   "Product": {
     "copy": "نسخ",
-    "toastCopy": "تم نسخ الموجه إلى الحافظة!"
+    "toastCopy": "تم نسخ البرومبت إلى الحافظة!"
   },
   "Theme": {
     "dark": "داكن",
@@ -99,12 +99,12 @@
   },
   "Pages": {
     "MyFavorites": {
-      "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية الموجهات المفضلة لديك.",
-      "head": "مفضلاتي"
+      "notAuthenticated": "يجب تسجيل الدخول لعرض البرومبتات المفضلة.",
+      "head": "مفضلتي"
     },
     "MyPrompts": {
-      "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية الموجهات الخاصة بك.",
-      "head": "موجهاتي"
+      "notAuthenticated": "يجب تسجيل الدخول لعرض البرومبتات الخاصة بك.",
+      "head": "برومبتاتي"
     },
     "Profile": {
       "Rename": {
@@ -113,47 +113,51 @@
         "lastName": "اسم العائلة:"
       },
       "Image": {
-        "title": "رفع الصورة الشخصية",
+        "title": "رفع صورة الملف الشخصي",
         "image": "الصورة:"
       }
+    },
+    "Home": {
+      "head": "هنا تتحول الأفكار إلى صور",
+      "description": "لا تحتاج إلى معرفة تقنية — فقط انسخ البرومبت واستخدمه"
     }
   },
   "Messages": {
     "404": {
       "title": "الصفحة غير موجودة",
-      "description": "عذراً، الصفحة التي تبحث عنها غير موجودة.",
+      "description": "عذرًا، الصفحة التي تبحث عنها غير متوفرة.",
       "backHome": "العودة إلى الرئيسية"
     },
     "addToFavorite": "تمت الإضافة إلى المفضلة بنجاح.",
     "removeFromFavorite": "تمت الإزالة من المفضلة بنجاح.",
-    "isNotAuthenticated": "يجب عليك تسجيل الدخول لتنفيذ هذا الإجراء.",
-    "userNotFound": "لم يتم العثور على المستخدم. يرجى التأكد من إعداد حسابك بشكل صحيح.",
-    "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "isNotAuthenticated": "يجب تسجيل الدخول لتنفيذ هذا الإجراء.",
+    "userNotFound": "المستخدم غير موجود في قاعدة البيانات. يرجى التأكد من إعداد الحساب بشكل صحيح.",
+    "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     "noFile": "لم يتم رفع الملف. يرجى المحاولة مرة أخرى.",
-    "createPrompt": "تم إنشاء الموجه بنجاح",
-    "profileUpdated": "تم تحديث الملف الشخصي بنجاح",
-    "imageUpdated": "تم تحديث صورة الملف الشخصي بنجاح",
-    "loading": "جاري التحميل..."
+    "createPrompt": "تم إنشاء البرومبت بنجاح",
+    "profileUpdated": "تم تحديث الملف الشخصي",
+    "imageUpdated": "تم تحديث صورة الملف الشخصي",
+    "loading": "جارٍ التحميل..."
   },
   "FormSendPrompt": {
-    "minLengthName": "يجب أن يكون الاسم 3 أحرف على الأقل.",
-    "maxLengthName": "يجب أن يكون الاسم 40 حرفاً على الأكثر.",
-    "minLengthLastName": "يجب أن يكون اسم العائلة 3 أحرف على الأقل.",
-    "maxLengthLastName": "يجب أن يكون اسم العائلة 40 حرفاً على الأكثر.",
-    "minLengthDesc": "يجب أن يكون الموجه 10 أحرف على الأقل.",
+    "minLengthName": "يجب ألا يقل الاسم عن 3 أحرف.",
+    "maxLengthName": "يجب ألا يزيد الاسم عن 40 حرفًا.",
+    "minLengthLastName": "يجب ألا يقل اسم العائلة عن 3 أحرف.",
+    "maxLengthLastName": "يجب ألا يزيد اسم العائلة عن 40 حرفًا.",
+    "minLengthDesc": "يجب ألا يقل البرومبت عن 10 أحرف.",
     "isRequired": "هذا الحقل مطلوب.",
     "Label": {
       "image": "الصورة",
-      "name": "اسم الموجه",
-      "prompt": "الموجه",
-      "tags": "العلامات"
+      "name": "اسم البرومبت",
+      "prompt": "البرومبت",
+      "tags": "الوسوم"
     }
   },
   "Profile": {
     "myAccount": "حسابي",
     "profile": "الملف الشخصي",
-    "myFavorites": "مفضلاتي",
-    "myPrompts": "موجهاتي",
+    "myFavorites": "مفضلتي",
+    "myPrompts": "برومبتاتي",
     "LogOut": {
       "title": "هل تريد تسجيل الخروج من حسابك؟",
       "logOut": "تسجيل الخروج",
@@ -161,4 +165,3 @@
     }
   }
 }
-

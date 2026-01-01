@@ -116,6 +116,10 @@
         "title": "Upload Profile",
         "image": "Image:"
       }
+    },
+    "Home": {
+      "head": "This is where ideas turn into images",
+      "description": "No technical knowledge needed — just copy the prompt and use it"
     }
   },
   "Messages": {

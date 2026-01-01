@@ -23,9 +23,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
           <>
             <NavList isDesktop={true} />
             <div className="flex items-center gap-3">
-              <AuthButtons
-                isAuthenticated={isAuthenticated}
-              />
+              <AuthButtons isAuthenticated={isAuthenticated} />
               <LangSwicher />
               <ModeToggle />
             </div>
@@ -35,9 +33,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
             <LangSwicher />
             <ModeToggle />
 
-            <MobileMenu
-              isAuthenticated={isAuthenticated}
-            />
+            <MobileMenu isAuthenticated={isAuthenticated} />
           </div>
         )}
       </div>

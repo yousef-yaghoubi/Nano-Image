@@ -1,12 +1,12 @@
 'use client';
 
 import { AddImage } from '@/app/[locale]/actions/EditProfile';
-import UploadImage from '../UploadImage';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import UploadImage from '@/components/shared/UploadImage';
 
 function UpdateImage() {
   const t = useTranslations('Messages');

@@ -63,9 +63,10 @@ export function ModeToggle() {
           <DropdownMenuItem
             key={theme.id}
             onClick={() => setTheme(theme.title)}
-            className={
-              currentTheme === theme.title ? 'font-bold text-primary' : ''
-            }
+            className={cn(
+              currentTheme === theme.title ? 'font-bold text-primary' : '',
+              'cursor-pointer'
+            )}
           >
             <theme.icon
               className={cn(

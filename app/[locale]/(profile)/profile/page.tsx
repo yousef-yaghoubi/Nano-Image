@@ -1,5 +1,5 @@
-import FormUpdateUser from '@/components/shared/UpdateProfile/FormUpdateUser';
-import UpdateImage from '@/components/shared/UpdateProfile/UpdateImage';
+import FormUpdateUser from '@/components/pages/profile/FormUpdateUser';
+import UpdateImage from '@/components/pages/profile/UpdateImage';
 import { getTranslations } from 'next-intl/server';
 
 export default async function Page() {

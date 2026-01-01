@@ -1,4 +1,4 @@
-import Sidebar from '@/components/shared/Profile/Sidebar';
+import Sidebar from '@/components/pages/profile/Sidebar';
 import React from 'react';
 
 function layout({ children }: { children: React.ReactNode }) {

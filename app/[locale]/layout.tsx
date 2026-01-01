@@ -62,12 +62,11 @@ export default async function RootLayout({
       lang={locale}
       dir={locale === 'en' ? 'ltr' : 'rtl'}
       suppressHydrationWarning
+      className="selection:bg-primary/10"
     >
       <body className={`${yekanBakh.className} antialiased`}>
         <AllProviders>
-          <Navbar
-            isAuthenticated={!!userId}
-          />
+          <Navbar isAuthenticated={!!userId} />
           <main className="container">{children}</main>
           <Footer />
         </AllProviders>

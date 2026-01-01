@@ -10,11 +10,11 @@ import {
   MotionH3,
   MotionNav,
   MotionSpan,
-} from '../MotionWarpper';
+} from '../../shared/MotionWarpper';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 import { getProfileMenuItems } from '@/lib/data';
 import { useTranslations } from 'next-intl';
-import { DrawerDialog } from '../DrawerDialog';
+import { DrawerDialog } from '../../shared/DrawerDialog';
 import { cn } from '@/lib/utils';
 
 export default function Sidebar() {
