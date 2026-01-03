@@ -10,9 +10,9 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
   const locale = useLocale();
   const navDetail = [
     { id: 1, label: t('home'), link: `/${locale}`, icon: House },
-    { id: 2, label: t('about'), link: `/${locale}/about`, icon: Users },
+    { id: 2, label: t('prompts'), link: `/${locale}/prompts`, icon: Users },
     {
-      id: 3,
+      id: 4,
       label: t('newPrompt'),
       link: `/${locale}/newPrompt`,
       icon: PlusIcon,

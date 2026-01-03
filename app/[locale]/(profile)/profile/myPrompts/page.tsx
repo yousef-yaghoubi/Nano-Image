@@ -1,4 +1,3 @@
-import HeadPages from '@/components/shared/HeadPages';
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
@@ -44,11 +43,11 @@ async function page({
 
   return (
     <>
-      <HeadPages title={t('head')} />
       {prompt.success ? (
         <ShowPrompts
           prompt={prompt}
           gridClass="grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+          head={t('head')}
         />
       ) : (
         <p>{prompt.message}</p>

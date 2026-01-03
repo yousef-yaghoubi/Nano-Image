@@ -1,8 +1,6 @@
-import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
 import { DataFullType } from '@/types/data';
-import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 
 async function page({
@@ -15,7 +13,6 @@ async function page({
     sort?: string;
   }>;
 }) {
-  const { isAuthenticated } = await auth();
   const {
     page: rawPage,
     search: rawSearch,
@@ -33,26 +30,14 @@ async function page({
     tags,
     search,
     sort,
-    forApi: 'favorites',
+    forApi: 'prompts',
   })) as DataFullType;
-
-  const t = await getTranslations('Pages.MyFavorites');
-  if (!isAuthenticated) {
-    return <NotAuthenticated isAuthenticated={isAuthenticated} />;
-  }
+  const t = await getTranslations('Pages.MyPrompts');
 
   return (
-    <>
-      {prompt.success ? (
-        <ShowPrompts
-          head={t('head')}
-          prompt={prompt}
-          gridClass="grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-        />
-      ) : (
-        <p>{prompt.message}</p>
-      )}
-    </>
+    <section>
+      <ShowPrompts prompt={prompt} head={t('head')} />
+    </section>
   );
 }
 

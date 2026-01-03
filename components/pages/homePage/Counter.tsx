@@ -2,7 +2,7 @@ import { CountingNumber } from '@/components/ui/shadcn-io/counting-number';
 
 export function Counter({ count, title }: { count: number; title: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg p-4 min-w-28 w-fit">
+    <div className="flex flex-col items-center justify-center rounded-lg p-4 w-full">
       <span className="flex items-center gap-1 text-primary font-bold text-xl md:text-2xl">
         +
         <CountingNumber

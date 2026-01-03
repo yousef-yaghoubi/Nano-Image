@@ -4,14 +4,14 @@ import Card from '../Card/Card';
 import { FilterSort } from '../FilteringData/Filter';
 import PaginationFull from '../PaginationFull';
 import { DataFullType, PromptType } from '@/types/data';
-import { MotionButton } from '../MotionWarpper';
-import { useRouter } from 'next/navigation';
+import { MotionButton, MotionDiv, MotionH1, MotionP } from '../MotionWarpper';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 function ShowPrompts({
   prompt,
   gridClass = 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
-  showSimple = true,
+  showSimple = false,
   head,
   desc,
 }: {
@@ -22,16 +22,42 @@ function ShowPrompts({
   desc?: string;
 }) {
   const router = useRouter();
-  const t = useTranslations("Pages.Home")
+  const t = useTranslations('Pages.Home');
+  const params = useParams();
   return (
     <div className="font-extrabold text-3xl">
-      {head && desc && (
-        <>
-          <h1 className="text-3xl md:heading-1 text-primary font-black">
-            {head}
-          </h1>
-          <p className="text-lg md:text-xl font-light">{desc}</p>
-        </>
+      {head && (
+        <MotionH1
+          initial={{
+            x: params.locale == 'en' ? -100 : 100,
+            opacity: 0,
+          }}
+          animate={{
+            x: 0,
+            opacity: 1,
+            transition: { duration: 0.8 },
+          }}
+          className="heading-1 mb-4 text-primary"
+        >
+          {head}
+        </MotionH1>
+      )}
+
+      {desc && (
+        <MotionP
+          initial={{
+            x: params.locale == 'en' ? -100 : 100,
+            opacity: 0,
+          }}
+          animate={{
+            x: 0,
+            opacity: 1,
+            transition: { duration: 0.8 },
+          }}
+          className="heading-5 mb-4"
+        >
+          {desc}
+        </MotionP>
       )}
 
       {!showSimple && (
@@ -52,12 +78,24 @@ function ShowPrompts({
       </div>
 
       {!showSimple ? (
-        <div className="mt-10 text-3xl">
+        <MotionDiv
+          initial={{
+            y: 100,
+            opacity: 0.5,
+          }}
+          whileInView={{
+            y: 0,
+            opacity: 1,
+            transition: { duration: 1 },
+          }}
+          viewport={{ once: true }}
+          className="mt-10 text-3xl"
+        >
           <PaginationFull
             totalPages={prompt?.pagination?.totalPages}
             currentPage={prompt?.pagination?.currentPage}
           />
-        </div>
+        </MotionDiv>
       ) : (
         <MotionButton
           onClick={() => router.push('/prompts')}

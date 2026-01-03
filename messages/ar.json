@@ -13,7 +13,8 @@
     "home": "الرئيسية",
     "about": "عني",
     "favorite": "المفضلة",
-    "newPrompt": "أمر جديد"
+    "newPrompt": "أمر جديد",
+    "prompts": "الأوامر"
   },
   "Auth": {
     "signup": "إنشاء حساب",

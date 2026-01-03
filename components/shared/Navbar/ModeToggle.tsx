@@ -52,13 +52,13 @@ export function ModeToggle() {
         <Button
           variant="outline"
           size="icon"
-          className="cursor-pointer h-10 w-10"
+          className="cursor-pointer h-10 w-10 bg-white/50 dark:bg-transparent"
         >
           <CurrentIcon className="h-[1.2rem] w-[1.2rem] transition-all" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent align="start" className='z-100'>
         {themes.map((theme) => (
           <DropdownMenuItem
             key={theme.id}

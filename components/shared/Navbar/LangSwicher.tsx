@@ -30,13 +30,13 @@ export default function LangSwicher() {
             size="icon"
             variant="outline"
             aria-label="Select locale"
-            className="cursor-pointer h-10 w-10"
+            className="cursor-pointer h-10 w-10  bg-white/50 dark:bg-transparent"
           >
             <Globe />
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="min-w-32" align="start">
+        <DropdownMenuContent className="min-w-32 z-100" align="start">
           <DropdownMenuItem asChild>
             <Link href={changeLocale('fa')} className="w-full cursor-pointer">
               <span
