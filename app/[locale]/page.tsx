@@ -59,7 +59,7 @@ export default async function Home({
           </div>
           <ParentCounter />
         </div>
-        <EmblaSlider containerClassName="md:mt-24" slides={slides} />
+        <EmblaSlider slides={slides} />
       </section>
 
       <div className="flex justify-around items-center w-full mx-auto backgroundSecond p-2 md:p-5 border border-gray-300 dark:border-gray-700 rounded-3xl my-20 md:my-48">

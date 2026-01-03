@@ -37,7 +37,7 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
         <UserAvatar />
         {children}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="start">
+      <DropdownMenuContent className="w-56 z-100" align="start">
         <DropdownMenuLabel>{tProfile('myAccount')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           {ITEM_PROFILES.map((item) => (
