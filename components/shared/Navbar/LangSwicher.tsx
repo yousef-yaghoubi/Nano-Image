@@ -16,6 +16,7 @@ export default function LangSwicher() {
   const t = useTranslations('Languages');
   const params = useParams();
   const pathName = usePathname();
+  const activeLocale = params.locale;
 
   const changeLocale = (newLocale: string) => {
     return pathName.replace(/^\/(fa|en|ar)/, `/${newLocale}`);
@@ -23,7 +24,7 @@ export default function LangSwicher() {
 
   return (
     <div>
-      <DropdownMenu dir={params.locale === 'en' ? 'ltr' : 'rtl'}>
+      <DropdownMenu dir={activeLocale === 'en' ? 'ltr' : 'rtl'}>
         <DropdownMenuTrigger asChild>
           <Button
             size="icon"
@@ -38,19 +39,37 @@ export default function LangSwicher() {
         <DropdownMenuContent className="min-w-32" align="start">
           <DropdownMenuItem asChild>
             <Link href={changeLocale('fa')} className="w-full cursor-pointer">
-              <span>{t('fa')}</span>
+              <span
+                className={
+                  activeLocale === 'fa' ? 'text-primary font-bold' : undefined
+                }
+              >
+                {t('fa')}
+              </span>
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
             <Link href={changeLocale('en')} className="w-full cursor-pointer">
-              <span>{t('en')}</span>
+              <span
+                className={
+                  activeLocale === 'en' ? 'text-primary font-bold' : undefined
+                }
+              >
+                {t('en')}
+              </span>
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
             <Link href={changeLocale('ar')} className="w-full cursor-pointer">
-              <span>{t('ar')}</span>
+              <span
+                className={
+                  activeLocale === 'ar' ? 'text-primary font-bold' : undefined
+                }
+              >
+                {t('ar')}
+              </span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

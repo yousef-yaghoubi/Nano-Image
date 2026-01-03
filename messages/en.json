@@ -119,7 +119,16 @@
     },
     "Home": {
       "head": "This is where ideas turn into images",
-      "description": "No technical knowledge needed — just copy the prompt and use it"
+      "description": "No technical knowledge needed — just copy the prompt and use it",
+      "more": "See More...",
+      "logo": "Nano Image",
+      "Badges": {
+        "prompts": "Prompts",
+        "tags": "Tags",
+        "likes": "Likes"
+      },
+      "headPopular": "Popular Prompts",
+      "descPopular": "The most lovely prompts posted by users"
     }
   },
   "Messages": {

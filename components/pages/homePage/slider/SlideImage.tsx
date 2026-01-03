@@ -33,6 +33,7 @@ const SlideImage: React.FC<{ slide: SlideContent }> = ({ slide }) => {
         sizes={imageSizes}
         priority={imagePriority}
       />
+
       {showSpotlight && (
         <div className="w-full h-full absolute inset-0 z-50 spotlight-container" />
       )}
