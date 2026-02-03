@@ -1,12 +1,13 @@
-import ParentCounter from '@/components/pages/homePage/ParentCounter';
-import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import EmblaSlider from '@/components/pages/homePage/Slider';
-import getPrompts from '@/services/getPrompts';
-import { DataFullType } from '@/types/data';
 import { getTranslations } from 'next-intl/server';
 import { slides, slideTexts } from '@/lib/data';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import ParentCounter from '@/components/pages/homePage/ParentCounter';
+import ShowPromptsWrapper from '@/components/pages/homePage/ShowPromptsWrapper';
+import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
 
-export default async function Home({
+async function HomeContent({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -16,26 +17,6 @@ export default async function Home({
     sort?: string;
   }>;
 }) {
-  const {
-    page: rawPage,
-    search: rawSearch,
-    tags: rawTags,
-    sort: rawSort,
-  } = await searchParams;
-
-  const page = rawPage || '1';
-  const search = rawSearch && rawSearch !== 'undefined' ? rawSearch : '';
-  const tags = rawTags && rawTags !== 'undefined' ? rawTags : '';
-  const sort = rawSort && rawSort !== 'undefined' ? rawSort : '';
-
-  const prompt = (await getPrompts({
-    page,
-    tags,
-    search,
-    sort,
-    forApi: 'prompts',
-    limit: 12,
-  })) as DataFullType;
   const t = await getTranslations('Pages.Home');
 
   return (
@@ -57,7 +38,9 @@ export default async function Home({
               {t('head')}
             </h3>
           </div>
-          <ParentCounter />
+          <Suspense fallback={<Skeleton className="h-32 rounded-3xl" />}>
+            <ParentCounter />
+          </Suspense>
         </div>
         <EmblaSlider slides={slides} />
       </section>
@@ -75,12 +58,38 @@ export default async function Home({
         />
       </div>
 
-      <ShowPrompts
-        prompt={prompt}
-        showSimple={true}
-        head={t('headPopular')}
-        desc={t('descPopular')}
-      />
+      <Suspense fallback={<ShowPromptsSkeleton showSimple showHead showDesc />}>
+        <ShowPromptsWrapper
+          searchParams={searchParams}
+          showSimple
+          head={t('headPopular')}
+          desc={t('descPopular')}
+        />
+      </Suspense>
     </>
+  );
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    tags?: string;
+    search?: string;
+    sort?: string;
+  }>;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col gap-5">
+          <Skeleton className="h-32 w-full rounded-3xl" />
+          <Skeleton className="h-64 w-full rounded-3xl" />
+        </div>
+      }
+    >
+      <HomeContent searchParams={searchParams} />
+    </Suspense>
   );
 }

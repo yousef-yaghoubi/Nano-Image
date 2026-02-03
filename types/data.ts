@@ -1,5 +1,20 @@
 import { ObjectId } from 'mongoose';
 
+export interface DataType<T> {
+  [x: string]: number;
+  prompts: number;
+  success: boolean;
+  message: string | null;
+  data: T;
+  pagination?: {
+    total: number;
+    totalPages: number;
+    currentPage: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
 export interface PromptType {
   _id: ObjectId;
   title: string;

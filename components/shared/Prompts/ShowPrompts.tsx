@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import Card from '../Card/Card';
 import { FilterSort } from '../FilteringData/Filter';
 import PaginationFull from '../PaginationFull';
-import { DataFullType, PromptType } from '@/types/data';
+import { DataType, PromptType } from '@/types/data';
 import { MotionButton, MotionDiv, MotionH1, MotionP } from '../MotionWarpper';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -15,7 +15,7 @@ function ShowPrompts({
   head,
   desc,
 }: {
-  prompt: DataFullType;
+  prompt: DataType<PromptType[]>;
   gridClass?: string;
   showSimple?: boolean;
   head?: string;
@@ -92,8 +92,8 @@ function ShowPrompts({
           className="mt-10 text-3xl"
         >
           <PaginationFull
-            totalPages={prompt?.pagination?.totalPages}
-            currentPage={prompt?.pagination?.currentPage}
+            totalPages={prompt?.pagination?.totalPages as number}
+            currentPage={prompt?.pagination?.currentPage as number}
           />
         </MotionDiv>
       ) : (
@@ -115,6 +115,7 @@ function ShowPrompts({
         </MotionButton>
       )}
     </div>
+    // </Suspense>
   );
 }
 

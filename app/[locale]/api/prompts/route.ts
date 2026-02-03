@@ -7,8 +7,6 @@ import { PromptType } from '@/types/data';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { promptsQuerySchema } from '@/validation/DTO';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(req: Request) {
   try {
     await dbConnect();
