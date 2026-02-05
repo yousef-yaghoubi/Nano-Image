@@ -7,7 +7,7 @@ import { auth } from '@clerk/nextjs/server';
 import { IFavorite, IUser } from '@/types/models';
 import { promptsQuerySchema } from '@/validation/DTO';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {

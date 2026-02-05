@@ -3,10 +3,10 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import NavList from './Nav';
 import LangSwicher from './LangSwicher';
-import { MobileMenu } from './MobileMenu';
-import AuthButtons from '../Auth/AuthButtons';
+// import { MobileMenu } from './MobileMenu';
+// import AuthButtons from '../Auth/AuthButtons';
 import { ModeToggle } from './ModeToggle';
-import { useUser } from '@clerk/nextjs';
+// import { useUser } from '@clerk/nextjs';
 
 export function NavbarContent() {
   const isDesktop = useMediaQuery('(min-width: 768px)');

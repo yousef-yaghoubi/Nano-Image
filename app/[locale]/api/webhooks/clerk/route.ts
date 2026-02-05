@@ -7,8 +7,8 @@ import { Favorite, PromptFavorite, Users } from '@/models';
 import { ObjectId } from 'mongoose';
 import { RoleType } from '@/models/roles';
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+// export const runtime = 'nodejs';.
+// export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   // ----------------------- 1. CHECK SECRET -----------------------

@@ -35,6 +35,7 @@ export default function Navbar({isAuthenticated}: {isAuthenticated: boolean}) {
             <LangSwicher />
             <ModeToggle />
 
+            {/* <MobileMenu isAuthenticated={isAuthenticated} /> */}
             <MobileMenu isAuthenticated={isAuthenticated} />
           </div>
         )}

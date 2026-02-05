@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongoose';
 
 export interface DataType<T> {
-  [x: string]: number;
   prompts: number;
   success: boolean;
   message: string | null;

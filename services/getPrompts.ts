@@ -30,5 +30,7 @@ export default async function getPrompts({
     },
   }).then((res) => res.json());
 
+
+  console.log('data:', data)
   return data;
 }

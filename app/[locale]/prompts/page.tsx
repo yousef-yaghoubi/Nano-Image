@@ -1,6 +1,6 @@
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
-import { DataFullType } from '@/types/data';
+import { DataType, PromptType } from '@/types/data';
 import { getTranslations } from 'next-intl/server';
 
 async function page({
@@ -31,7 +31,7 @@ async function page({
     search,
     sort,
     forApi: 'prompts',
-  })) as DataFullType;
+  })) as DataType<PromptType[]>;
   const t = await getTranslations('Pages.MyPrompts');
 
   return (

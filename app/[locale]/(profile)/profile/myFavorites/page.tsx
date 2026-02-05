@@ -1,7 +1,7 @@
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
 import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
-import { DataFullType } from '@/types/data';
+import { DataType, PromptType } from '@/types/data';
 import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 
@@ -34,7 +34,7 @@ async function page({
     search,
     sort,
     forApi: 'favorites',
-  })) as DataFullType;
+  })) as DataType<PromptType[]>;
 
   const t = await getTranslations('Pages.MyFavorites');
   if (!isAuthenticated) {
