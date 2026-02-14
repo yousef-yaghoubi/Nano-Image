@@ -43,6 +43,9 @@ async function page({
 
   return (
     <>
+
+      {/* <PromptsTable/> */}
+
       {prompt.success ? (
         <ShowPrompts
           prompt={prompt}

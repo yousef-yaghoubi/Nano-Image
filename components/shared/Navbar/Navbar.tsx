@@ -6,6 +6,7 @@ import { MobileMenu } from './MobileMenu';
 import AuthButtons from '../Auth/AuthButtons';
 import { ModeToggle } from './ModeToggle';
 import Logo from './Logo';
+import { Suspense } from 'react';
 // import { useUser } from '@clerk/nextjs';
 // import { getMediaQuery } from '@/lib/getMediaQuery';
 // import { Suspense, use } from 'react';
@@ -35,8 +36,9 @@ export default function Navbar({isAuthenticated}: {isAuthenticated: boolean}) {
             <LangSwicher />
             <ModeToggle />
 
-            {/* <MobileMenu isAuthenticated={isAuthenticated} /> */}
+            <Suspense>
             <MobileMenu isAuthenticated={isAuthenticated} />
+            </Suspense>
           </div>
         )}
       </div>

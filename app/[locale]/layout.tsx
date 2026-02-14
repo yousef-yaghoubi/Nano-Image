@@ -5,6 +5,8 @@ import localFont from 'next/font/local';
 import Footer from '@/components/shared/Footer';
 import AllProviders from '@/providers/AllProviders';
 import { Suspense } from 'react';
+import { auth } from '@clerk/nextjs/server';
+import Navbar from '@/components/shared/Navbar/Navbar';
 // import { auth } from '@clerk/nextjs/server';
 
 const yekanBakh = localFont({
@@ -53,6 +55,14 @@ export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'fa' }, { locale: 'ar' }];
 }
 
+async function NavSuspense(){
+  const { isAuthenticated} = await auth();
+
+  return (
+    <Navbar isAuthenticated={isAuthenticated}/>
+  )
+}
+
 export default async function RootLayout({
   children,
   params,
@@ -60,7 +70,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale?: string }>;
 }>) {
-  // const { isAuthenticated} = await auth();m
 
   const locale = (await params).locale;
   return (
@@ -73,8 +82,9 @@ export default async function RootLayout({
     >
       <body className={`${yekanBakh.className} antialiased`}>
         <AllProviders>
-        
-            {/* <Navbar isAuthenticated={isAuthenticated}/> */}
+            <Suspense>
+              <NavSuspense/>
+            </Suspense>
         
           <main className="container">{children}</main>
           <Footer />

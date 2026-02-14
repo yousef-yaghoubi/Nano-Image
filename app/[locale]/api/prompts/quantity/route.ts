@@ -32,6 +32,12 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching prompts quantity:', error);
     return NextResponse.json(
+      // {success: true,
+      // message: null,
+      // data: {
+      //   prompts: 874,
+      //   likes: 3054,
+      // }}
       {
         success: false,
         message: 'Error fetching prompts quantity',
