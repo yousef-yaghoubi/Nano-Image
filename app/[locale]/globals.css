@@ -234,6 +234,15 @@
     -webkit-mask: radial-gradient(circle, transparent 11%, black 80%);
   }
 
+  .no-scrollbar {
+    scrollbar-width: none;          /* completely removes scrollbar */
+  }
+  
+  /* For Chrome, Edge, Safari, Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Gradient Backgrounds */
   .gradientImage {
     background: radial-gradient(circle, transparent 36%, var(--background) 74%);
@@ -247,6 +256,7 @@
     @apply bg-linear-to-r from-white to-gray-100 
            dark:from-[#001920] dark:to-[#00140d];
   }
+
 
   /* Text Gradients */
   .textGradient {

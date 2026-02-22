@@ -1,9 +1,10 @@
+
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
-import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
 import getPrompts from '@/services/getPrompts';
 import { DataType, PromptType } from '@/types/data';
 import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
+import { PromptsTable } from './Table';
 
 async function page({
   searchParams,
@@ -37,25 +38,17 @@ async function page({
   })) as DataType<PromptType[]>;
 
   const t = await getTranslations('Pages.MyPrompts');
+
   if (!isAuthenticated) {
     return <NotAuthenticated isAuthenticated={isAuthenticated} />;
   }
 
   return (
-    <>
-
-      {/* <PromptsTable/> */}
-
-      {prompt.success ? (
-        <ShowPrompts
-          prompt={prompt}
-          gridClass="grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-          head={t('head')}
-        />
-      ) : (
-        <p>{prompt.message}</p>
-      )}
-    </>
+    <div className="min-w-0 w-full px-3 sm:px-4 md:px-6 lg:px-8">
+      <div className="min-w-0 w-full overflow-hidden">
+        <PromptsTable data={prompt.data} head={t('head')}/>
+      </div>
+    </div>
   );
 }
 

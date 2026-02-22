@@ -1,10 +1,10 @@
 import dbConnect from '@/lib/db';
-import { Favorite, Prompts, Users, PromptFavorite } from '@/models';
+import { Prompts, Users } from '@/models';
 import { NextResponse } from 'next/server';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { PromptType } from '@/types/data';
 import { auth } from '@clerk/nextjs/server';
-import { IFavorite, IUser } from '@/types/models';
+import { IUser } from '@/types/models';
 import { promptsQuerySchema } from '@/validation/DTO';
 
 // export const dynamic = 'force-dynamic';
@@ -64,16 +64,9 @@ export async function GET(req: Request) {
       );
     }
 
-    // ۳. پیدا کردن FavoriteId برای چک کردن وضعیت لایک‌ها
-    const favoriteDoc = await Favorite.findOne({ userId: user._id })
-      .select('_id')
-      .lean<IFavorite | null>();
-    const favoriteId = favoriteDoc?._id;
-
     // ۴. فیلتر (فقط پرامپت‌های خود کاربر)
     const where: FilterQuery<PromptType> = {
       creatorId: user._id,
-      isPublic: true,
     };
 
     if (rawTags) {
@@ -110,24 +103,6 @@ export async function GET(req: Request) {
     ]);
 
     let prompts = promptsRaw;
-
-    // ۷. منطق isFavorited
-    if (favoriteId && prompts.length > 0) {
-      const promptIds = prompts.map((p) => p._id);
-      const favorited = await PromptFavorite.find({
-        favoriteId,
-        promptId: { $in: promptIds },
-      })
-        .select('promptId')
-        .lean();
-
-      const favSet = new Set(favorited.map((f) => f.promptId.toString()));
-      prompts = prompts.map((p) => ({
-        ...p,
-        isFavorited: favSet.has(p._id.toString()),
-      })) as PromptType[] & { isFavorited: boolean }[];
-    }
-
     const totalPages = Math.ceil(total / limit);
     return NextResponse.json({
       success: true,

@@ -3,9 +3,9 @@ import React from 'react';
 
 function layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex w-full justify-between gap-10">
+    <div className="flex w-full flex-col gap-4 md:flex-row md:justify-between md:gap-6 lg:gap-10">
       <Sidebar />
-      <div className="flex flex-col w-full">{children}</div>
+      <main className="min-w-0 flex-1">{children}</main>
     </div>
   );
 }

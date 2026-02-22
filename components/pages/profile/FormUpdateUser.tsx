@@ -7,13 +7,16 @@ import { EditProfile } from '@/app/[locale]/actions/EditProfile';
 import { Button } from '@/components/ui/button';
 import FormField from '@/components/shared/Form/FormField';
 import { Loader2 } from 'lucide-react';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 function FormUpdateUser() {
   const tPages = useTranslations('Pages.Profile.Rename');
   const tMessages = useTranslations('Messages');
   const initialValues = { firstName: '', lastName: '' };
   return (
-    <div>
+    <MotionDiv initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.4 }}>
       <Formik
         initialValues={initialValues}
         validationSchema={SchemaProfileEdit}
@@ -67,7 +70,7 @@ function FormUpdateUser() {
           </Form>
         )}
       </Formik>
-    </div>
+    </MotionDiv>
   );
 }
 

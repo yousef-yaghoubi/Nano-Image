@@ -105,7 +105,23 @@
     },
     "MyPrompts": {
       "notAuthenticated": "برای دیدن پرامپت های خود باید وارد حساب کاربری شوید.",
-      "head": "پرامپت های من"
+      "head": "پرامپت های من",
+      "Table": {
+        "pageOf": "صفحه {page} از {total}",
+        "rows": "ردیف",
+        "rowsPerPage": "تعداد در هر صفحه",
+        "previous": "قبلی",
+        "next": "بعدی",
+        "noResults": "نتیجه‌ای یافت نشد.",
+        "index": "ردیف",
+        "title": "عنوان",
+        "image": "تصویر",
+        "tags": "تگ‌ها",
+        "seeTags": "مشاهده تگ‌ها",
+        "tagsTitle": "تگ‌ها",
+        "likes": "لایک",
+        "status": "وضعیت"
+      }
     },
     "Profile": {
       "Rename": {

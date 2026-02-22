@@ -105,7 +105,23 @@
     },
     "MyPrompts": {
       "notAuthenticated": "You need to sign in to see your prompts.",
-      "head": "My Prompts"
+      "head": "My Prompts",
+      "Table": {
+        "pageOf": "Page {page} of {total}",
+        "rows": "rows",
+        "rowsPerPage": "Rows per page",
+        "previous": "Previous",
+        "next": "Next",
+        "noResults": "No results.",
+        "index": "Index",
+        "title": "Title",
+        "image": "Image",
+        "tags": "Tags",
+        "seeTags": "See tags",
+        "tagsTitle": "Tags",
+        "likes": "Likes",
+        "status": "Status"
+      }
     },
     "Profile": {
       "Rename": {

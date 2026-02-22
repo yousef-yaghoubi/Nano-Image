@@ -24,11 +24,11 @@ export default async function getPrompts({
   const cookie = headersList.get('cookie');
 
   const data = await fetch(api, {
-    cache: 'no-store',
     headers: {
       Cookie: cookie || '',
     },
   }).then((res) => res.json());
+  // console.log(data).
 
 
   // console.log('data:', data)

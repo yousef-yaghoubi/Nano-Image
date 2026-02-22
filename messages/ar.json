@@ -105,7 +105,23 @@
     },
     "MyPrompts": {
       "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية أوامرك.",
-      "head": "أوامري"
+      "head": "أوامري",
+      "Table": {
+        "pageOf": "صفحة {page} من {total}",
+        "rows": "صفوف",
+        "rowsPerPage": "صفوف لكل صفحة",
+        "previous": "السابق",
+        "next": "التالي",
+        "noResults": "لا توجد نتائج.",
+        "index": "صف",
+        "title": "العنوان",
+        "image": "الصورة",
+        "tags": "الوسوم",
+        "seeTags": "عرض الوسوم",
+        "tagsTitle": "الوسوم",
+        "likes": "الإعجابات",
+        "status": "الحالة"
+      }
     },
     "Profile": {
       "Rename": {
