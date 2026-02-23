@@ -26,9 +26,8 @@ import {
 import { MoveDown, MoveUp } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { getColumns } from './Coulomns';
+import { getColumns } from '../../../app/[locale]/(profile)/profile/myPrompts/Coulomns';
 import type { PromptType } from '@/types/data';
-import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -139,10 +138,10 @@ export function DataTable<TData>({
     >
       {head && <h3 className="heading-3 mb-4 m-2.5">{head}</h3>}
 
-      <MotionDiv
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
+      <div
+        // initial={{ opacity: 0, x: -20 }}
+        // animate={{ opacity: 1, x: 0 }}
+        // transition={{ duration: 0.4 }}
         className="w-full overflow-x-auto overflow-y-visible [-webkit-overflow-scrolling:touch]"
       >
         <Table className="min-w-full w-max rounded-xl sm:rounded-2xl overflow-hidden">
@@ -286,7 +285,7 @@ export function DataTable<TData>({
             </TableRow>
           </TableFooter>
         </Table>
-      </MotionDiv>
+      </div>
     </div>
   );
 }

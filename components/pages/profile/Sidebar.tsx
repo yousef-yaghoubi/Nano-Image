@@ -4,22 +4,17 @@ import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { LogOut, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import {
-  MotionAside,
-  MotionDiv,
-  MotionH3,
-  MotionNav,
-  MotionSpan,
-} from '../../shared/MotionWarpper';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 import { getProfileMenuItems } from '@/lib/data';
 import { useTranslations } from 'next-intl';
 import { DrawerDialog } from '../../shared/DrawerDialog';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MotionDiv, MotionSpan } from '@/components/shared/MotionWarpper';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const params = useParams();
   const locale = typeof params.locale === 'string' ? params.locale : undefined;
   const navItems = getProfileMenuItems(locale ?? '');
@@ -27,10 +22,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <MotionAside
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
+      <aside
         className="hidden md:block w-full md:w-64 shrink-0 rounded-3xl border border-gray-300 dark:border-gray-700 shadow-xl h-fit sticky top-24 bg-linear-to-b  backgroundSecond overflow-hidden"
         style={{
           boxShadow:
@@ -41,7 +33,9 @@ export default function Sidebar() {
           <div className="relative">
             <div className="relative w-28 h-28 rounded-full bg-linear-to-br from-primary/50 to-cyan-600 p-1">
               <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
-                {user?.imageUrl ? (
+                {isLoaded == false ? (
+                  <Skeleton className="w-32 h-32 rounded-full" />
+                ) : user?.imageUrl ? (
                   <Image
                     src={user?.imageUrl}
                     alt="User Avatar"
@@ -60,14 +54,12 @@ export default function Sidebar() {
           </div>
 
           <div className="text-center">
-            <MotionH3
-              className="font-bold text-xl text-gray-800 dark:text-gray-100 mb-1"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            {isLoaded == false ? (<Skeleton className='w-40 h-7'/>) : (
+              <h3
+              className="font-bold text-xl text-gray-800 dark:text-gray-100 mb-1">
               {user?.fullName}
-            </MotionH3>
+              </h3>
+            )}
           </div>
         </div>
 
@@ -87,16 +79,13 @@ export default function Sidebar() {
                 aria-current={isActive ? 'page' : undefined}
               >
                 {isActive && (
-                  <MotionDiv
+                  <div
                     className={cn(
                       'absolute top-0 bottom-0 w-1.5 primaryGradient',
                       locale == 'en'
                         ? 'left-0 rounded-r-lg'
                         : 'right-0 rounded-l-lg'
                     )}
-                    initial={{ height: 0 }}
-                    animate={{ height: '100%' }}
-                    transition={{ duration: 0.3 }}
                   />
                 )}
 
@@ -133,7 +122,7 @@ export default function Sidebar() {
 
         <div className="relative px-5 py-2 flex justify-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
+            <div className="w-full border-t border-gray-200 dark:border-gray-800"/>
           </div>
           <div className="relative bg-white dark:bg-gray-900 px-3 text-xs text-gray-500 dark:text-gray-400">
             {t('myAccount')}
@@ -164,9 +153,9 @@ export default function Sidebar() {
             </DrawerDialog>
           </div>
         </div>
-      </MotionAside>
+      </aside>
 
-      <MotionNav
+      <MotionDiv
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -226,7 +215,7 @@ export default function Sidebar() {
             </Link>
           );
         })}
-      </MotionNav>
+      </MotionDiv>
     </>
   );
 }

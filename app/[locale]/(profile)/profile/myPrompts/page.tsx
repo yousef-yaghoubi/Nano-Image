@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import PromptTableWrapper from './PromptTableWrapper';
-import { TableSkeleton } from './TableSkeleton';
+import { TableSkeleton } from '../../../../../components/shared/Table/TableSkeleton';
 
 
 async function page({
@@ -19,7 +19,7 @@ async function page({
         <Suspense fallback={<TableSkeleton head/>}>
         <PromptTableWrapper searchParams={searchParams}/>
         </Suspense>
-        <TableSkeleton head/>
+        {/* <TableSkeleton head/> */}
       </div>
     </div>
   );

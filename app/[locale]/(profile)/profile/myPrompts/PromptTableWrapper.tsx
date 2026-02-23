@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { PromptsTable } from "./Table"
+import { PromptsTable } from "../../../../../components/shared/Table/Table"
 import getPrompts from "@/services/getPrompts";
 import { DataType, PromptType } from "@/types/data";
 import { getTranslations } from "next-intl/server";
