@@ -23,9 +23,9 @@ import {
 import { Pagination } from './Pagination';
 import SearchBox from '../Form/SearchBox';
 
-interface Props<TData, TValue> {
+interface Props<TData> {
   data: TData[];
-  columns: ColumnDef<TData, TValue>[];
+  columns: ColumnDef<TData, any>[];
   isLoading?: boolean;
 
   // Empty state
@@ -56,7 +56,7 @@ interface Props<TData, TValue> {
 
 const SKELETON_ROWS = 5;
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData>({
   data,
   columns,
   isLoading = false,
@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
   onPageChange,
   onLimitChange,
   className = '',
-}: Props<TData, TValue>) {
+}: Props<TData>) {
   // اگه onSortingChange پاس داده شده → server-side، وگرنه local state
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
 

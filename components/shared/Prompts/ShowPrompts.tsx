@@ -35,7 +35,6 @@ function ShowPrompts({
   const t = useTranslations('Pages.Home');
 
   const showHead = !!head;
-  const showDesc = !!desc;
 
   return (
     <div className="text-3xl font-extrabold">

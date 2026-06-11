@@ -159,12 +159,13 @@ export function Pagination({
         {showPageSizeSelector && (
           <Select
             onValueChange={(value) => {
-              // ✅ Fixed: strict equality
-              changeByUrl === false && onLimitChange(Number(value));
+              if (!changeByUrl) {
+                onLimitChange?.(Number(value));
+              }
             }}
             value={limit.toString()}
           >
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-30">
               <SelectValue />
               <span>نمایش</span>
             </SelectTrigger>

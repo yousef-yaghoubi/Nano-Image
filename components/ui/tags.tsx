@@ -197,7 +197,7 @@ export const TagsInput = ({ className, ...props }: TagsInputProps) => (
 export type TagsListProps = ComponentProps<typeof CommandList>;
 
 export const TagsList = ({ className, ...props }: TagsListProps) => (
-  <CommandList className={cn('max-h-[200px]', className)} {...(props as any)} />
+  <CommandList className={cn('max-h-50', className)} {...(props as any)} />
 );
 
 export type TagsEmptyProps = ComponentProps<typeof CommandEmpty>;

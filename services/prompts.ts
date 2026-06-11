@@ -16,7 +16,7 @@ export type PromptsResponse = DataType<PromptType[]>;
 export interface MyPromptsResponse {
   success: boolean;
   message?: string;
-  data: PromptType[];
+  data: (PromptType & { buttons: string })[];
   allCount?: number;
   totalCount?: number;
   pagination?: {

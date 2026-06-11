@@ -5,7 +5,7 @@ import { DataTable } from '@/components/shared/Table/Table';
 import usePrompts from '@/hooks/queries/usePrompts';
 import type { MyPromptsResponse } from '@/services/prompts';
 import { useTranslations } from 'next-intl';
-import { getColumns } from './Coulomns'; // ✅ Fixed typo: Coulomns → Columns
+import { getColumns } from './Coulomns';
 
 export default function PromptsWrapper() {
   const t = useTranslations('Pages.MyPrompts.Table');
@@ -55,6 +55,8 @@ export default function PromptsWrapper() {
     () => getColumns({ t, tTags, page, limit }),
     [t, tTags, page, limit]
   );
+
+  console.log('columns:', columns);
 
   return (
     <DataTable
