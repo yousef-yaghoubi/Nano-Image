@@ -118,9 +118,17 @@
         "image": "Image",
         "tags": "Tags",
         "seeTags": "See tags",
-        "tagsTitle": "Tags",
         "likes": "Likes",
-        "status": "Status"
+        "status": {
+          "status": "Status",
+          "True": "Approved",
+          "False": "Cancelled",
+          "Pending": "Pending"
+        },
+        "buttons": {
+          "buttons": "buttons"
+        },
+        "searchPlaceholder": "Search title or prompt..."
       }
     },
     "Profile": {
@@ -188,6 +196,17 @@
       "title": "Do you want to sign out of your account?",
       "logOut": "Sign out",
       "no": "No"
+    }
+  },
+  "Actions": {
+    "remove": {
+      "remove": "remove",
+      "title": "Do you want to remove this prompt?",
+      "yes": "Remove it",
+      "no": "No"
+    },
+    "edit": {
+      "edit": "edit"
     }
   }
 }

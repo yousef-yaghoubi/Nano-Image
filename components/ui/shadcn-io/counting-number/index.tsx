@@ -36,7 +36,10 @@ function CountingNumber({
   ...props
 }: CountingNumberProps) {
   const localRef = React.useRef<HTMLSpanElement>(null);
-  React.useImperativeHandle(ref as any, () => localRef.current as HTMLSpanElement);
+  React.useImperativeHandle(
+    ref as any,
+    () => localRef.current as HTMLSpanElement
+  );
 
   const numberStr = number.toString();
   const decimals =

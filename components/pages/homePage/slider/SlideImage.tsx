@@ -35,10 +35,10 @@ const SlideImage: React.FC<{ slide: SlideContent }> = ({ slide }) => {
       />
 
       {showSpotlight && (
-        <div className="w-full h-full absolute inset-0 z-50 spotlight-container" />
+        <div className="spotlight-container absolute inset-0 z-50 h-full w-full" />
       )}
       {showGradient && (
-        <div className="w-full h-full absolute inset-0 z-50 gradientImage" />
+        <div className="gradientImage absolute inset-0 z-50 h-full w-full" />
       )}
     </>
   );

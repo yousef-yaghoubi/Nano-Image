@@ -9,7 +9,7 @@ import UploadImage from './UploadImage';
 import TeaxtArea from './Form/TextArea';
 import { Input } from '../ui/input';
 import { SchemaSendPrompt } from '@/validation/Form';
-import { AddPrompt } from '@/app/[locale]/actions/AddPrompt';
+import useAddPrompt from '@/hooks/mutations/useAddPrompt';
 import { toast } from 'sonner';
 import TagsShowInput from './Form/Tags';
 
@@ -23,6 +23,7 @@ interface FormValues {
 export default function SendPromptForm({ clerkId }: { clerkId: string }) {
   const tForm = useTranslations('FormSendPrompt');
   const tMessages = useTranslations('Messages');
+  const { mutateAsync, isPending } = useAddPrompt();
   const initialValues: FormValues = {
     namePrompt: '',
     promptText: '',
@@ -31,7 +32,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-6">
+    <div className="mx-auto mt-6 max-w-lg">
       <Formik
         initialValues={initialValues}
         validationSchema={SchemaSendPrompt}
@@ -43,7 +44,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
             tags: values.tags,
           };
 
-          const newPrompt = await AddPrompt({ clerkId, prompt: finalValue });
+          const newPrompt = await mutateAsync({ clerkId, prompt: finalValue });
 
           if (newPrompt.status) {
             toast.success(tMessages(newPrompt.message));
@@ -66,7 +67,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
               <ErrorMessage
                 name="imageUrl"
                 render={(e) => (
-                  <span className="text-red-500 text-sm mt-1">{tForm(e)}</span>
+                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
                 )}
               />
             </div>
@@ -89,7 +90,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
               <ErrorMessage
                 name="namePrompt"
                 render={(e) => (
-                  <span className="text-red-500 text-sm mt-1">{tForm(e)}</span>
+                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
                 )}
               />
             </div>
@@ -100,15 +101,15 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
               <ErrorMessage
                 name="promptText"
                 render={(e) => (
-                  <span className="text-red-500 text-sm mt-1">{tForm(e)}</span>
+                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
                 )}
               />
             </div>
 
             <TagsShowInput name="tags" label={tForm('Label.tags')} />
 
-            <Button type="submit" disabled={!isValid || isSubmitting}>
-              {!isSubmitting ? <>Submit</> : <>Loding</>}
+            <Button type="submit" disabled={!isValid || isSubmitting || isPending}>
+              {!isSubmitting && !isPending ? <>Submit</> : <>Loding</>}
             </Button>
           </Form>
         )}

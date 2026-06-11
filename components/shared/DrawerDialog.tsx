@@ -20,56 +20,75 @@ import {
 import { useParams } from 'next/navigation';
 import clsx from 'clsx';
 
+type DrawerDialogProps = {
+  children?: React.ReactNode;
+  trigger: React.ReactNode;
+  title?: React.ReactNode;
+  desc?: React.ReactNode;
+  className?: string;
+
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
 export function DrawerDialog({
   children,
   trigger,
   title,
   desc,
-  className
-}: {
-  children?: React.ReactNode;
-  trigger: React.ReactNode;
-  title?: React.ReactNode;
-  desc?: React.ReactNode;
-  className?: React.ComponentProps<'div'>['className']
-}) {
-  const [open, setOpen] = React.useState(false);
+  className,
+  open,
+  onOpenChange,
+}: DrawerDialogProps) {
+  // const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const params = useParams();
   const locale = params.locale;
 
+  const [internalOpen, setInternalOpen] = React.useState(false);
+
+  const isControlled = open !== undefined;
+
+  const dialogOpen = isControlled ? open : internalOpen;
+
+  const handleOpenChange = (value: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(value);
+    }
+
+    onOpenChange?.(value);
+  };
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
         <DialogContent
-          className={"w-full max-h-4/5 overflow-scroll no-scrollbar"}
+          className={'no-scrollbar max-h-4/5 w-full overflow-scroll'}
           dir={locale === 'en' ? 'ltr' : 'rtl'}
         >
           <DialogHeader dir={locale === 'en' ? 'ltr' : 'rtl'}>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{desc}</DialogDescription>
           </DialogHeader>
-          <div className={className}>
-          {children}
-          </div>
+          <div className={className}>{children}</div>
         </DialogContent>
       </Dialog>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={dialogOpen} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent dir={locale === 'en' ? 'ltr' : 'rtl'} className='no-scrollbar'>
+      <DrawerContent
+        dir={locale === 'en' ? 'ltr' : 'rtl'}
+        className="no-scrollbar"
+      >
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{desc}</DrawerDescription>
         </DrawerHeader>
-        <div className={clsx(className)}>
-        {children}
-        </div>
+        <div className={clsx(className)}>{children}</div>
       </DrawerContent>
     </Drawer>
   );

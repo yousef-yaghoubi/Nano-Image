@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { Favorite, PromptFavorite, Users } from '@/models';
 import { ObjectId } from 'mongoose';
-import { RoleType } from '@/models/roles';
+import { RoleType } from '@/models/enums';
 
 // export const runtime = 'nodejs';.
 // export const dynamic = 'force-dynamic';

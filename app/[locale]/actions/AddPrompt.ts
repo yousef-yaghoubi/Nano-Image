@@ -1,4 +1,5 @@
 'use server';
+
 import dbConnect from '@/lib/db';
 import { Prompts, Users } from '@/models';
 import { IUser } from '@/types/models';
@@ -9,7 +10,7 @@ interface AddPromptInput {
   clerkId: string;
   prompt: {
     title: string;
-    prompt: string; // required - updated model
+    prompt: string;
     image: string;
     tags?: string[];
   };
@@ -17,7 +18,6 @@ interface AddPromptInput {
 
 export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
   try {
-    console.log('clerkId', clerkId);
     if (!clerkId) {
       return { status: false, message: 'isNotAuthenticated' };
     }
@@ -25,13 +25,10 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
     await dbConnect();
 
     const user = (await Users.findOne({ clerkId }).lean()) as IUser | null;
-
-    console.log('user:', user);
     if (!user) {
       return { status: false, message: 'userNotFound' };
     }
 
-    console.log('prompt ', prompt);
     const { blurDataURL } = await GetBlurData(prompt.image);
 
     const newPrompt = await Prompts.create({
@@ -44,8 +41,6 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       isPublic: false,
     });
 
-    console.log('newPrompt', newPrompt);
-
     revalidatePath('/fa');
     revalidatePath('/en');
     return {
@@ -54,7 +49,7 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       data: JSON.parse(JSON.stringify(newPrompt)),
     };
   } catch (error) {
-    console.log('AddPrompt error:', error);
+    console.error('AddPrompt error:', error);
     return { status: false, message: 'generic' };
   }
 }

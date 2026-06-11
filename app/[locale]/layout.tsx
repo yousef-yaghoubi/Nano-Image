@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
-// import Navbar from '@/components/shared/Navbar/Navbar';
 import Footer from '@/components/shared/Footer';
 import AllProviders from '@/providers/AllProviders';
 import { Suspense } from 'react';
-import { auth } from '@clerk/nextjs/server';
 import Navbar from '@/components/shared/Navbar/Navbar';
-// import { auth } from '@clerk/nextjs/server';
 
 const yekanBakh = localFont({
   src: [
@@ -54,15 +51,6 @@ export const metadata: Metadata = {
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'fa' }, { locale: 'ar' }];
 }
-
-async function NavSuspense(){
-  const { isAuthenticated} = await auth();
-
-  return (
-    <Navbar isAuthenticated={isAuthenticated}/>
-  )
-}
-
 export default async function RootLayout({
   children,
   params,
@@ -70,27 +58,23 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale?: string }>;
 }>) {
-
   const locale = (await params).locale;
   return (
     <Suspense>
-    <html
-      lang={locale}
-      dir={locale === 'en' ? 'ltr' : 'rtl'}
-      suppressHydrationWarning
-      className="selection:bg-primary/10"
-    >
-      <body className={`${yekanBakh.className} antialiased`}>
-        <AllProviders>
-            <Suspense>
-              <NavSuspense/>
-            </Suspense>
-        
-          <main className="container">{children}</main>
-          <Footer />
-        </AllProviders>
-      </body>
-    </html>
-      </Suspense>
+      <html
+        lang={locale}
+        dir={locale === 'en' ? 'ltr' : 'rtl'}
+        suppressHydrationWarning
+        className="selection:bg-primary/10"
+      >
+        <body className={`${yekanBakh.className} antialiased`}>
+          <AllProviders>
+            <Navbar />
+            <main className="container">{children}</main>
+            <Footer />
+          </AllProviders>
+        </body>
+      </html>
+    </Suspense>
   );
 }

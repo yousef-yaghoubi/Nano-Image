@@ -42,7 +42,7 @@ export default function FormField({
       <ErrorMessage
         name={name}
         render={(error) => (
-          <span className="text-red-500 text-sm mt-1">{tForm(error)}</span>
+          <span className="mt-1 text-sm text-red-500">{tForm(error)}</span>
         )}
       />
     </div>

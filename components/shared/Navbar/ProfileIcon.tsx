@@ -29,15 +29,15 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
     <DropdownMenu dir={params.locale === 'en' ? 'ltr' : 'rtl'}>
       <DropdownMenuTrigger
         className={cn(
-          'outline-none cursor-pointer flex gap-2 items-center',
+          'flex cursor-pointer items-center gap-2 outline-none',
           isActive &&
-            'border border-primary ring-1 ring-primary p-1 rounded-full'
+            'border-primary ring-primary rounded-full border p-1 ring-1'
         )}
       >
         <UserAvatar />
         {children}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 z-100" align="start">
+      <DropdownMenuContent className="z-100 w-56" align="start">
         <DropdownMenuLabel>{tProfile('myAccount')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           {ITEM_PROFILES.map((item) => (
@@ -50,7 +50,7 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
             >
               <Link
                 href={item.link}
-                className="w-full h-full flex items-center gap-2"
+                className="flex h-full w-full items-center gap-2"
               >
                 {item.icon && <item.icon />}
                 {tProfile(item.title)}
@@ -62,20 +62,20 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
         <DropdownMenuItem variant="destructive" asChild>
           <DrawerDialog
             trigger={
-              <div className="w-full h-full flex items-center gap-2 text-sm text-destructive hover:bg-destructive/10 py-1.5 px-2 cursor-pointer rounded-sm">
+              <div className="text-destructive hover:bg-destructive/10 flex h-full w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm">
                 <LogOut size={16} />
                 {tAuth('signout')}
               </div>
             }
             title={tProfile('LogOut.title')}
           >
-            <div className="w-full flex gap-2 justify-around mb-10 md:m-0">
+            <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
               <SignOutButton>
-                <button className="w-1/3 outline-none font-medium cursor-pointer bg-destructive/90 text-background py-1 rounded-sm">
+                <button className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none">
                   {tProfile('LogOut.logOut')}
                 </button>
               </SignOutButton>
-              <button className="w-1/3 outline-none font-medium cursor-pointer py-1 rounded-sm text-destructive border border-destructive">
+              <button className="text-destructive border-destructive w-1/3 cursor-pointer rounded-sm border py-1 font-medium outline-none">
                 {tProfile('LogOut.no')}
               </button>
             </div>

@@ -31,10 +31,10 @@ function ButtonFilter({
     <button
       key={option}
       className={clsx(
-        'px-2 py-1.5 md:px-4 md:py-2 border border-gray-300 dark:border-gray-700 rounded-full flex items-center gap-1 text-xs md:text-sm font-medium transition cursor-pointer',
+        'flex cursor-pointer items-center gap-1 rounded-full border border-gray-300 px-2 py-1.5 text-xs font-medium transition md:px-4 md:py-2 md:text-sm dark:border-gray-700',
         tags.includes(option)
-          ? 'bg-primary text-white border-primary justify-around'
-          : 'bg-white dark:bg-gray-900 text-primary hover:bg-primary/20 justify-center'
+          ? 'bg-primary border-primary justify-around text-white'
+          : 'text-primary hover:bg-primary/20 justify-center bg-white dark:bg-gray-900'
       )}
       onClick={handleTagClick.bind(null, option)}
     >

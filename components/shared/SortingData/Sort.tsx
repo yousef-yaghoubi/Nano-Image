@@ -23,7 +23,7 @@ interface SortDropdownProps {
 
 export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const t = useTranslations('Filter.sorts');
-  
+
   const SORT_OPTIONS = [
     { id: 1, title: t('likeDesc'), value: 'likes desc', icon: ThumbsUp },
     { id: 2, title: t('likeAsc'), value: 'likes asc', icon: ThumbsDown },
@@ -33,22 +33,21 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const params = useParams();
   const locale = params.locale;
 
-  const currentSortOption =
-    useMemo(
-      () =>
-        SORT_OPTIONS.find(
-          (item) => item.value.toLowerCase() === sortQuery?.toLowerCase()
-        ),
-      [sortQuery]
-    );
+  const currentSortOption = useMemo(
+    () =>
+      SORT_OPTIONS.find(
+        (item) => item.value.toLowerCase() === sortQuery?.toLowerCase()
+      ),
+    [sortQuery]
+  );
   const CurrentIcon = currentSortOption?.icon || SORT_OPTIONS[0].icon;
   const displaySortText = currentSortOption?.title || t('likeDesc');
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none cursor-pointer" asChild>
+      <DropdownMenuTrigger className="cursor-pointer outline-none" asChild>
         <button
-          className="text-lg flex gap-2 items-center justify-center font-medium min-w-fit"
+          className="flex min-w-fit items-center justify-center gap-2 text-lg font-medium"
           aria-label="Sort options"
         >
           <span>{t('name')}:</span>

@@ -14,9 +14,11 @@ function FormUpdateUser() {
   const tMessages = useTranslations('Messages');
   const initialValues = { firstName: '', lastName: '' };
   return (
-    <MotionDiv initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.4 }}>
+    <MotionDiv
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4 }}
+    >
       <Formik
         initialValues={initialValues}
         validationSchema={SchemaProfileEdit}
@@ -65,7 +67,13 @@ function FormUpdateUser() {
               }
               className="w-fit"
             >
-              {isSubmitting ? <><Loader2/> {tMessages('loading')}</> : 'Submit'}
+              {isSubmitting ? (
+                <>
+                  <Loader2 /> {tMessages('loading')}
+                </>
+              ) : (
+                'Submit'
+              )}
             </Button>
           </Form>
         )}

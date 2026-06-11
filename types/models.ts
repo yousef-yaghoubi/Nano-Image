@@ -1,5 +1,5 @@
 import { Types, Document } from 'mongoose';
-import type { RoleType } from '@/models/roles';
+import type { IsPublicType, RoleType } from '@/models/enums';
 // ---------------------- USER TYPES ----------------------
 export interface IUser extends Document {
   _id: Types.ObjectId;
@@ -33,7 +33,7 @@ export interface IPrompt extends Document {
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];
-  isPublic: boolean;
+  isPublic: IsPublicType;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,7 +47,7 @@ export type PromptLean = {
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];
-  isPublic: boolean;
+  isPublic: IsPublicType;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -93,8 +93,10 @@ export interface ToggleFavoriteResult {
 }
 
 //  ---------------------- POPULATED TYPES ----------------------
-export interface IPromptFavoritePopulated
-  extends Omit<IPromptFavorite, 'promptId'> {
+export interface IPromptFavoritePopulated extends Omit<
+  IPromptFavorite,
+  'promptId'
+> {
   promptId: IPrompt;
 }
 

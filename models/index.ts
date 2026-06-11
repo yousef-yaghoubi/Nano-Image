@@ -1,6 +1,6 @@
 // @/models/index.ts
 import { IFavorite, IUser, IPrompt, IPromptFavorite } from '@/types/models';
-import { Role } from './roles';
+import { IsPublic, Role } from './enums';
 import mongoose, { Schema } from 'mongoose';
 
 // ---------------------- PROMPTS SCHEMA ----------------------
@@ -42,9 +42,9 @@ const promptsSchema = new Schema<IPrompt>(
       index: true,
     },
     isPublic: {
-      type: Boolean,
-      required: true,
-      default: false,
+      type: String,
+      enum: Object.values(IsPublic),
+      default: IsPublic.Pending,
     },
   },
   {

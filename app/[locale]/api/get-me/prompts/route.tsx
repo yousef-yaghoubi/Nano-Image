@@ -7,8 +7,6 @@ import { auth } from '@clerk/nextjs/server';
 import { IUser } from '@/types/models';
 import { promptsQuerySchema } from '@/validation/DTO';
 
-// export const dynamic = 'force-dynamic';
-
 export async function GET(req: Request) {
   try {
     await dbConnect();
@@ -89,11 +87,14 @@ export async function GET(req: Request) {
     if (sortParam === 'likes desc') sort.likes = -1;
     else if (sortParam === 'likes asc') sort.likes = 1;
     else if (sortParam === 'date asc') sort.createdAt = 1;
+    else if (sortParam === 'title asc') sort.title = 1;
+    else if (sortParam === 'title desc') sort.title = -1;
     else sort.createdAt = -1; // Default: date desc
 
     // ۶. کوئری دیتابیس (اجرا به صورت موازی برای سرعت بیشتر)
     const skip = (page - 1) * limit;
-    const [total, promptsRaw] = await Promise.all([
+    const [allCount, total, promptsRaw] = await Promise.all([
+      Prompts.countDocuments({ creatorId: user._id }), // total count without filters
       Prompts.countDocuments(where),
       Prompts.find(where)
         .sort(sort)
@@ -102,11 +103,13 @@ export async function GET(req: Request) {
         .lean<PromptType[]>(),
     ]);
 
-    let prompts = promptsRaw;
+    const prompts = promptsRaw;
     const totalPages = Math.ceil(total / limit);
+
     return NextResponse.json({
       success: true,
       data: prompts,
+      allCount,
       pagination: {
         total,
         totalPages,

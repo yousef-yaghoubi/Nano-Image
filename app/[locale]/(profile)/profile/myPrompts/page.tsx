@@ -1,25 +1,18 @@
 import { Suspense } from 'react';
 import PromptTableWrapper from './PromptTableWrapper';
 import { TableSkeleton } from '../../../../../components/shared/Table/TableSkeleton';
+import HeadPage from '@/components/shared/Prompts/HeadPage';
+import { getTranslations } from 'next-intl/server';
 
-
-async function page({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    tags?: string;
-    search?: string;
-    sort?: string;
-  }>;
-}) {
+async function page() {
+  const t = await getTranslations('Pages.MyPrompts');
   return (
-    <div className="min-w-0 w-full px-3 sm:px-4 md:px-6 lg:px-8">
-      <div className="min-w-0 w-full overflow-hidden">
-        <Suspense fallback={<TableSkeleton head/>}>
-        <PromptTableWrapper searchParams={searchParams}/>
+    <div className="w-full min-w-0">
+      <div className="w-full min-w-0 overflow-hidden">
+        <HeadPage head={t('head')} />
+        <Suspense fallback={<TableSkeleton head />}>
+          <PromptTableWrapper />
         </Suspense>
-        {/* <TableSkeleton head/> */}
       </div>
     </div>
   );

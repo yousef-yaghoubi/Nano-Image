@@ -6,8 +6,6 @@ import { IFavorite, IUser } from '@/types/models';
 import { getTranslations } from 'next-intl/server';
 import { favoriteQuerySchema } from '@/validation/DTO';
 
-// export const dynamic = 'force-dynamic';
-
 export async function GET(req: Request) {
   const t = await getTranslations('Messages');
 

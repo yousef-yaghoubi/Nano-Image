@@ -16,14 +16,14 @@ function ShowPromptsSkeleton({
   cardCount?: number;
 }) {
   return (
-    <div className="font-extrabold text-3xl">
-      {showHead && <Skeleton className="h-10 md:h-12 w-64 md:w-80 mb-4" />}
+    <div className="text-3xl font-extrabold">
+      {showHead && <Skeleton className="mb-4 h-10 w-64 md:h-12 md:w-80" />}
 
-      {showDesc && <Skeleton className="h-6 md:h-7 w-full max-w-2xl mb-4" />}
+      {showDesc && <Skeleton className="mb-4 h-6 w-full max-w-2xl md:h-7" />}
 
       {!showSimple && (
-        <div className="flex w-full justify-between items-center border-b pb-5">
-          <div className="flex gap-4 items-center justify-between w-f">
+        <div className="flex w-full items-center justify-between border-b pb-5">
+          <div className="w-full flex items-center justify-between gap-4">
             <Skeleton className="h-10 w-32 md:w-40" />
             <Skeleton className="h-10 w-32 md:w-40" />
           </div>
@@ -32,12 +32,15 @@ function ShowPromptsSkeleton({
 
       <div
         className={cn(
-          'w-full grid gap-10 justify-items-center mt-10',
+          'mt-10 grid w-full justify-items-center gap-10',
           gridClass
         )}
       >
         {Array.from({ length: cardCount }).map((_, index) => (
-          <Skeleton className="w-full md:w-72 h-52 sm:h-64 md:h-96 rounded-lg md:rounded-3xl rounded-tl-none" key={index}/>
+          <Skeleton
+            className="h-52 w-full rounded-lg rounded-tl-none sm:h-64 md:h-96 md:w-72 md:rounded-3xl"
+            key={index}
+          />
         ))}
       </div>
 
@@ -48,7 +51,7 @@ function ShowPromptsSkeleton({
           {/* // ))} */}
         </div>
       ) : (
-        <Skeleton className="m-auto mt-4 h-10 w-32 md:w-40 md:h-12" />
+        <Skeleton className="m-auto mt-4 h-10 w-32 md:h-12 md:w-40" />
       )}
     </div>
   );

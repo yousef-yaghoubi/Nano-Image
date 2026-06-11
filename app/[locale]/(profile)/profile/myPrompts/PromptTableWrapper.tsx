@@ -1,46 +1,88 @@
-import { auth } from "@clerk/nextjs/server";
-import { PromptsTable } from "../../../../../components/shared/Table/Table"
-import getPrompts from "@/services/getPrompts";
-import { DataType, PromptType } from "@/types/data";
-import { getTranslations } from "next-intl/server";
-import NotAuthenticated from "@/components/shared/Auth/NotAuthenticated";
+'use client';
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { SortingState } from '@tanstack/react-table';
+import { DataTable } from '@/components/shared/Table/Table';
+import usePrompts from '@/hooks/queries/usePrompts';
+import type { MyPromptsResponse } from '@/services/prompts';
+import { useTranslations } from 'next-intl';
+import { getColumns } from './Coulomns'; // ✅ Fixed typo: Coulomns → Columns
 
-async function PromptTableWrapper({searchParams}: {searchParams: Promise<{
-    page?: string;
-    tags?: string;
-    search?: string;
-    sort?: string;
-  }>}) {
-    const { isAuthenticated } = await auth();
+export default function PromptsWrapper() {
+  const t = useTranslations('Pages.MyPrompts.Table');
+  const tTags = useTranslations('Filter.filter.tag');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const {
-    page: rawPage,
-    search: rawSearch,
-    tags: rawTags,
-    sort: rawSort,
-  } = await searchParams;
+  const [searchInput, setSearchInput] = useState('');
+  const [search, setSearch] = useState('');
 
-  const page = rawPage || '1';
-  const search = rawSearch && rawSearch !== 'undefined' ? rawSearch : '';
-  const tags = rawTags && rawTags !== 'undefined' ? rawTags : '';
-  const sort = rawSort && rawSort !== 'undefined' ? rawSort : '';
+  // ✅ Fixed: track previous search to only reset page when search actually changes
+  const prevSearchRef = useRef(search);
 
-  const prompt = (await getPrompts({
-    page,
-    tags,
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+      // ✅ Only reset page if the debounced search value actually changed
+      if (prevSearchRef.current !== searchInput) {
+        prevSearchRef.current = searchInput;
+        setPage(1);
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  const handleSortingChange = (newSorting: SortingState) => {
+    setSorting(newSorting);
+    setPage(1);
+  };
+
+  // ✅ Removed unused sortField and sortOrder variables
+
+  const sortString = sorting[0]
+    ? `${sorting[0].id} ${sorting[0].desc ? 'desc' : 'asc'}`
+    : undefined;
+
+  const { data, isLoading } = usePrompts<MyPromptsResponse>({
+    page: String(page),
+    limit,
     search,
-    sort,
+    ...(sortString && { sort: sortString }),
     forApi: 'get-me/prompts',
-  })) as DataType<PromptType[]>;
+  });
 
-  const t = await getTranslations('Pages.MyPrompts');
+  const columns = useMemo(
+    () => getColumns({ t, tTags, page, limit }),
+    [t, tTags, page, limit]
+  );
 
-  if (!isAuthenticated) {
-    return <NotAuthenticated isAuthenticated={isAuthenticated} />;
-  }
   return (
-    <PromptsTable data={prompt.data} head={t('head')}/>
-  )
+    <DataTable
+      columns={columns}
+      data={data?.data ?? []}
+      isLoading={isLoading}
+      // Sorting
+      sortingState={sorting}
+      onSortingChange={handleSortingChange}
+      // Pagination
+      enablePagination
+      page={page}
+      limit={limit}
+      // ✅ Fixed: allCount can be undefined, fall back to totalCount then 0
+      totalCount={data?.pagination?.total ?? data?.allCount ?? 0}
+      pageSizeOptions={[5, 10, 25, 50]}
+      onPageChange={setPage}
+      onLimitChange={(newLimit) => {
+        setLimit(newLimit);
+        setPage(1);
+      }}
+      // Search
+      enableSearch
+      searchValue={searchInput}
+      onSearchChange={setSearchInput}
+      searchPlaceholder={t('searchPlaceholder')}
+      // Empty state
+      emptyMessage="هیچ پرامپتی یافت نشد"
+    />
+  );
 }
-
-export default PromptTableWrapper

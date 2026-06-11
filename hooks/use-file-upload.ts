@@ -52,7 +52,7 @@ export type FileUploadActions = {
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
   openFileDialog: () => void;
   getInputProps: (
-    props?: InputHTMLAttributes<HTMLInputElement>,
+    props?: InputHTMLAttributes<HTMLInputElement>
   ) => InputHTMLAttributes<HTMLInputElement> & {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ref: any;
@@ -60,7 +60,7 @@ export type FileUploadActions = {
 };
 
 export const useFileUpload = (
-  options: FileUploadOptions = {},
+  options: FileUploadOptions = {}
 ): [FileUploadState, FileUploadActions] => {
   const {
     maxSize = 2,
@@ -113,26 +113,31 @@ export const useFileUpload = (
 
         const isAccepted = acceptedTypes.some((type) => {
           if (type.startsWith('.')) return fileExtension === type.toLowerCase();
-          if (type.endsWith('/*')) return fileType.startsWith(type.split('/')[0] + '/');
+          if (type.endsWith('/*'))
+            return fileType.startsWith(type.split('/')[0] + '/');
           return fileType === type;
         });
 
-        if (!isAccepted) return `File "${file.name}" is not an accepted file type.`;
+        if (!isAccepted)
+          return `File "${file.name}" is not an accepted file type.`;
       }
 
       return null;
     },
-    [accept, maxSize],
+    [accept, maxSize]
   );
 
-  const createPreview = useCallback((file: File | FileMetadata): string | undefined => {
-    if (file instanceof File) {
-      const url = URL.createObjectURL(file);
-      objectUrlsRef.current.add(url);
-      return url;
-    }
-    return file.url;
-  }, []);
+  const createPreview = useCallback(
+    (file: File | FileMetadata): string | undefined => {
+      if (file instanceof File) {
+        const url = URL.createObjectURL(file);
+        objectUrlsRef.current.add(url);
+        return url;
+      }
+      return file.url;
+    },
+    []
+  );
 
   const generateUniqueId = useCallback((file: File | FileMetadata) => {
     if (file instanceof File) {
@@ -144,12 +149,16 @@ export const useFileUpload = (
   const cleanupFiles = useCallback(
     (files: FileWithPreview[]) => {
       files.forEach((f) => {
-        if (f.preview && f.file instanceof File && f.file.type.startsWith('image/')) {
+        if (
+          f.preview &&
+          f.file instanceof File &&
+          f.file.type.startsWith('image/')
+        ) {
           revokeObjectUrl(f.preview);
         }
       });
     },
-    [revokeObjectUrl],
+    [revokeObjectUrl]
   );
 
   const clearFiles = useCallback(() => {
@@ -180,27 +189,40 @@ export const useFileUpload = (
               return (
                 fFile.name === file.name &&
                 fFile.size === file.size &&
-                (fFile instanceof File ? fFile.lastModified === file.lastModified : true)
+                (fFile instanceof File
+                  ? fFile.lastModified === file.lastModified
+                  : true)
               );
             });
           if (isDuplicate) return;
 
           const error = validateFile(file);
           if (error) errors.push(error);
-          else validFiles.push({ file, id: generateUniqueId(file), preview: createPreview(file) });
+          else
+            validFiles.push({
+              file,
+              id: generateUniqueId(file),
+              preview: createPreview(file),
+            });
         });
 
         if (validFiles.length > 0) {
           addedFilesRef.current = validFiles;
-          const updatedFiles = multiple ? [...currentFiles, ...validFiles] : validFiles;
-          return { ...prev, files: updatedFiles, errors: errors.length > 0 ? errors : [] };
+          const updatedFiles = multiple
+            ? [...currentFiles, ...validFiles]
+            : validFiles;
+          return {
+            ...prev,
+            files: updatedFiles,
+            errors: errors.length > 0 ? errors : [],
+          };
         } else if (errors.length > 0) {
           return { ...prev, errors };
         }
         return prev;
       });
     },
-    [multiple, validateFile, generateUniqueId, createPreview, cleanupFiles],
+    [multiple, validateFile, generateUniqueId, createPreview, cleanupFiles]
   );
 
   const removeFile = useCallback(
@@ -208,13 +230,20 @@ export const useFileUpload = (
       setState((prev) => {
         const fileToRemove = prev.files.find((f) => f.id === id);
         if (fileToRemove) cleanupFiles([fileToRemove]);
-        return { ...prev, files: prev.files.filter((f) => f.id !== id), errors: [] };
+        return {
+          ...prev,
+          files: prev.files.filter((f) => f.id !== id),
+          errors: [],
+        };
       });
     },
-    [cleanupFiles],
+    [cleanupFiles]
   );
 
-  const clearErrors = useCallback(() => setState((prev) => ({ ...prev, errors: [] })), []);
+  const clearErrors = useCallback(
+    () => setState((prev) => ({ ...prev, errors: [] })),
+    []
+  );
 
   const handleDragEnter = useCallback((e: DragEvent<HTMLElement>) => {
     e.preventDefault();
@@ -237,20 +266,22 @@ export const useFileUpload = (
       e.stopPropagation();
       setState((prev) => ({ ...prev, isDragging: false }));
       if (inputRef.current?.disabled) return;
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0)
+        addFiles(e.dataTransfer.files);
     },
-    [addFiles],
+    [addFiles]
   );
 
   const handleFileChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) addFiles(e.target.files);
     },
-    [addFiles],
+    [addFiles]
   );
 
   const openFileDialog = useCallback(() => {
-    if (inputRef.current && !inputRef.current.disabled) inputRef.current.click();
+    if (inputRef.current && !inputRef.current.disabled)
+      inputRef.current.click();
   }, []);
 
   const getInputProps = useCallback(
@@ -263,7 +294,7 @@ export const useFileUpload = (
       ref: inputRef as unknown,
       style: { display: 'none', ...props.style },
     }),
-    [accept, multiple, handleFileChange],
+    [accept, multiple, handleFileChange]
   );
 
   // ✅ اجرا کردن callbacks بعد از تغییر state

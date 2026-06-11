@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 const MONGODB_URI: string = process.env.DATABASE_URL!;
 
 if (!MONGODB_URI) {
-  console.log('DB Url', process.env.DATABASE_URL);
   throw new Error('لطفا DATABASE_URL رو در فایل .env.local تعریف کنید');
 }
 
@@ -35,10 +34,7 @@ async function dbConnect(): Promise<typeof mongoose> {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('connect succsessfuly');
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {

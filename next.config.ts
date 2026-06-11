@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '5mb',
     },
   },
-  cacheComponents: true
+  cacheComponents: true,
 };
 
 const withNextIntl = createNextIntlPlugin();

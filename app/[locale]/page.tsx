@@ -6,33 +6,25 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ParentCounter from '@/components/pages/homePage/ParentCounter';
 import ShowPromptsWrapper from '@/components/pages/homePage/ShowPromptsWrapper';
 import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
+import HomeSkeleton from '@/components/pages/homePage/HomeSkeleton';
 
-async function HomeContent({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    tags?: string;
-    search?: string;
-    sort?: string;
-  }>;
-}) {
+async function HomeContent() {
   const t = await getTranslations('Pages.Home');
 
   return (
     <>
-      <section className="gap-5 flex flex-col xl:flex-row md:justify-around w-full h-fit mb-5">
-        <div className="w-full flex flex-col my-5 gap-5 justify-around">
+      <section className="mb-5 flex h-fit w-full flex-col gap-5 md:justify-around xl:flex-row">
+        <div className="my-5 flex w-full flex-col justify-around gap-5">
           <div className="flex flex-col gap-5">
             <h1
-              className="font-black text-4xl md:text-7xl textGradient bg-clip-text text-transparent text-gradient-shadow w-fit"
+              className="textGradient text-gradient-shadow w-fit bg-clip-text text-4xl font-black text-transparent md:text-7xl"
               data-text="Nano Prompt"
             >
               {t('logo')}
             </h1>
 
             <h3
-              className="text-xl md:text-4xl textGradient text-gradient-shadow w-fit"
+              className="textGradient text-gradient-shadow w-fit text-xl md:text-4xl"
               data-text={t('head')}
             >
               {t('head')}
@@ -45,7 +37,7 @@ async function HomeContent({
         <EmblaSlider slides={slides} />
       </section>
 
-      <div className="flex justify-around items-center w-full mx-auto backgroundSecond p-2 md:p-5 border border-gray-300 dark:border-gray-700 rounded-3xl my-20 md:my-48">
+      <div className="backgroundSecond mx-auto my-20 flex w-full items-center justify-around rounded-3xl border border-gray-300 p-2 md:my-48 md:p-5 dark:border-gray-700">
         <EmblaSlider
           slides={slideTexts}
           enableFade={false}
@@ -60,7 +52,6 @@ async function HomeContent({
 
       <Suspense fallback={<ShowPromptsSkeleton showSimple showHead showDesc />}>
         <ShowPromptsWrapper
-          searchParams={searchParams}
           showSimple
           head={t('headPopular')}
           desc={t('descPopular')}
@@ -70,26 +61,12 @@ async function HomeContent({
   );
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    tags?: string;
-    search?: string;
-    sort?: string;
-  }>;
-}) {
+export default async function Home() {
   return (
     <Suspense
-      fallback={
-        <div className="flex flex-col gap-5">
-          <Skeleton className="h-32 w-full rounded-3xl" />
-          <Skeleton className="h-64 w-full rounded-3xl" />
-        </div>
-      }
+      fallback={<HomeSkeleton/>}
     >
-      <HomeContent searchParams={searchParams} />
+      <HomeContent />
     </Suspense>
   );
 }

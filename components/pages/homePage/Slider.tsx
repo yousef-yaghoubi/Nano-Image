@@ -114,7 +114,7 @@ const EmblaSlider: React.FC<EmblaSliderProps> = ({
     <div
       ref={combinedRef}
       className={classNames('overflow-hidden select-none', containerClassName)}
-      dir='ltr'
+      dir="ltr"
     >
       <div className={classNames('flex', aspectRatio !== false && aspectRatio)}>
         {slides.map((slide, idx) => (

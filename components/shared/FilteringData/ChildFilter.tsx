@@ -13,8 +13,8 @@ function ChildFilter({
 }) {
   const t = useTranslations('Filter.filter.header');
   return (
-    <div className=" border-gray-300 text-primary pb-6">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="text-primary border-gray-300 pb-6">
+      <div className="mb-4 flex items-center gap-4">
         <h2 className="text-2xl font-bold">{t(filter.label)}</h2>
       </div>
 

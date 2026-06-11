@@ -36,7 +36,7 @@ export async function GetBlurData(
       };
     } catch (error) {
       const isLastAttempt = attempt === retries - 1;
-      
+
       if (isLastAttempt) {
         throw error;
       }

@@ -207,7 +207,7 @@ export default function UploadImage({
           {label} {important && <span className="text-destructive">*</span>}
         </Label>
         <div
-          className="relative flex min-h-52 mt-2 flex-col items-center justify-center overflow-hidden rounded-xl border border-input border-dashed p-4 transition-colors data-[dragging=true]:bg-accent/50"
+          className="border-input data-[dragging=true]:bg-accent/50 relative mt-2 flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors"
           data-dragging={isDragging || undefined}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
@@ -226,11 +226,11 @@ export default function UploadImage({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
-              <div className="mb-2 flex size-11 items-center justify-center rounded-full border bg-background">
+              <div className="bg-background mb-2 flex size-11 items-center justify-center rounded-full border">
                 <ImageIcon className="size-4 opacity-60" />
               </div>
-              <p className="mb-1.5 font-medium text-sm">Drop your image here</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="mb-1.5 text-sm font-medium">Drop your image here</p>
+              <p className="text-muted-foreground text-xs">
                 PNG or JPG (max. {maxSizeMB}MB)
               </p>
               <Button

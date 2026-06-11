@@ -1,5 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { clsx } from 'clsx';
 
 interface TableSkeletonProps {
@@ -25,19 +32,19 @@ export function TableSkeleton({
   return (
     <div
       className={clsx(
-        'w-full max-w-full rounded-2xl sm:rounded-3xl backgroundSecond border border-gray-300 dark:border-gray-700 p-0.5 sm:p-1 shadow-sm overflow-hidden',
+        'backgroundSecond w-full max-w-full overflow-hidden rounded-2xl border border-gray-300 p-0.5 shadow-sm sm:rounded-3xl sm:p-1 dark:border-gray-700',
         className
       )}
     >
       {/* Optional heading skeleton */}
       {head && (
-        <div className="mb-4 m-2.5">
+        <div className="m-2.5 mb-4">
           <Skeleton className="h-8 w-40" />
         </div>
       )}
 
       <div className="w-full overflow-x-auto overflow-y-visible [-webkit-overflow-scrolling:touch]">
-        <table className="min-w-full w-max rounded-xl sm:rounded-2xl overflow-hidden">
+        <table className="w-max min-w-full overflow-hidden rounded-xl sm:rounded-2xl">
           {/* ── Header ── */}
           <TableHeader>
             <TableRow className="h-16 bg-linear-to-r from-[#4d94b0] via-[#57c785] to-[#00b487]">
@@ -78,8 +85,8 @@ export function TableSkeleton({
                         colIdx === 0
                           ? 'w-28'
                           : colIdx % 3 === 0
-                          ? 'w-16'
-                          : 'w-20'
+                            ? 'w-16'
+                            : 'w-20'
                       )}
                     />
                   </TableCell>
@@ -92,25 +99,25 @@ export function TableSkeleton({
           <TableFooter>
             <TableRow>
               <TableCell colSpan={columns} className="p-0">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 border-t border-border px-3 py-2.5 sm:px-4 sm:py-3">
+                <div className="border-border flex flex-col gap-3 border-t px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4 sm:py-3">
                   {/* Page info */}
-                  <div className="flex items-center gap-2 order-2 sm:order-1">
+                  <div className="order-2 flex items-center gap-2 sm:order-1">
                     <Skeleton className="h-3 w-20" />
-                    <Skeleton className="hidden sm:block h-3 w-16" />
+                    <Skeleton className="hidden h-3 w-16 sm:block" />
                   </div>
 
                   {/* Controls */}
-                  <div className="flex items-center gap-2 sm:gap-3 order-1 sm:order-2">
+                  <div className="order-1 flex items-center gap-2 sm:order-2 sm:gap-3">
                     {/* Rows-per-page selector */}
-                    <div className="hidden sm:flex items-center gap-2">
+                    <div className="hidden items-center gap-2 sm:flex">
                       <Skeleton className="h-3 w-20" />
-                      <Skeleton className="h-7 sm:h-8 w-14 rounded-md" />
+                      <Skeleton className="h-7 w-14 rounded-md sm:h-8" />
                     </div>
 
                     {/* Prev / Next buttons */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 ml-auto sm:ml-0">
-                      <Skeleton className="h-7 sm:h-8 w-16 sm:w-20 rounded-md" />
-                      <Skeleton className="h-7 sm:h-8 w-16 sm:w-20 rounded-md" />
+                    <div className="ml-auto flex items-center gap-1.5 sm:ml-0 sm:gap-2">
+                      <Skeleton className="h-7 w-16 rounded-md sm:h-8 sm:w-20" />
+                      <Skeleton className="h-7 w-16 rounded-md sm:h-8 sm:w-20" />
                     </div>
                   </div>
                 </div>

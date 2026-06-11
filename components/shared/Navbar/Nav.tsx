@@ -23,25 +23,24 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
   return (
     <nav>
       <ul
-        className={cn('flex gap-3 ', isDesktop ? 'flex-row' : ' flex-col mt-4')}
+        className={cn('flex gap-3', isDesktop ? 'flex-row' : 'mt-4 flex-col')}
       >
         {navDetail.map((li) => {
           const CurrentIcon = li.icon;
           const isAcive = pathName == li.link;
 
-          console.log(li.link, pathName);
           return (
             <li key={li.id}>
               <Link
                 href={li.link}
                 className={cn(
-                  'flex gap-1 w-full px-2 py-4 rounded-sm',
+                  'flex w-full gap-1 rounded-sm px-2 py-4',
                   isDesktop
                     ? isAcive
-                      ? 'text-primary font-semibold text-sm lg:text-lg'
-                      : 'font-medium text-sm lg:text-lg'
+                      ? 'text-primary text-sm font-semibold lg:text-lg'
+                      : 'text-sm font-medium lg:text-lg'
                     : isAcive
-                      ? 'bg-primary/20 font-semibold text-primary'
+                      ? 'bg-primary/20 text-primary font-semibold'
                       : 'bg-primary/5 font-light'
                 )}
               >

@@ -45,20 +45,20 @@ function FilterDrawer({
       desc={tFilter('description')}
       trigger={
         <button
-          className="text-lg flex gap-2 items-center font-medium cursor-pointer"
+          className="flex cursor-pointer items-center gap-2 text-lg font-medium"
           aria-label="Open filters"
         >
           <FilterIcon size={20} />
-          {tFilter("name")}
+          {tFilter('name')}
           {activeFiltersCount > 0 && (
-            <span className="ml-1 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+            <span className="bg-primary text-primary-foreground ml-1 rounded-full px-2 py-0.5 text-xs">
               {activeFiltersCount}
             </span>
           )}
         </button>
       }
     >
-      <section className="px-10 py-6 z-10 overflow-scroll">
+      <section className="z-10 overflow-scroll px-10 py-6">
         <SearchBox
           value={searchQuery}
           onChange={handleSearchChange}
@@ -104,7 +104,7 @@ export function FilterSort() {
 
   return (
     <div className="w-full space-y-5">
-      <div className="flex items-center gap-4 flex-wrap w-full justify-between">
+      <div className="flex w-full flex-wrap items-center justify-between gap-4">
         <FilterDrawer
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -117,19 +117,19 @@ export function FilterSort() {
 
       {activeFilterCount > 0 && (
         <div className="mt-3">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg md:text-2xl font-bold text-primary">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-primary text-lg font-bold md:text-2xl">
               {t('activeFilter')} ({activeFilterCount})
             </h2>
             <button
               onClick={clearAllFilters}
-              className="text-sm text-red-600 hover:text-red-700 font-medium transition-colors cursor-pointer"
+              className="cursor-pointer text-sm font-medium text-red-600 transition-colors hover:text-red-700"
               aria-label="Clear all filters"
             >
               {t('clearAll')}
             </button>
           </div>
-          <div className="flex gap-3 flex-wrap">
+          <div className="flex flex-wrap gap-3">
             {activeFilters.map((filter) => (
               <ButtonFilter
                 key={`${filter.type}-${filter.value}`}

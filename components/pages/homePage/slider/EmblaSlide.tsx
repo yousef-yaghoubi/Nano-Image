@@ -28,7 +28,7 @@ export const EmblaSlide: React.FC<EmblaSlideProps> = (props) => {
     <div
       className={classNames(
         !slideWidth && 'flex-[0_0_100%]',
-        'min-w-0 relative h-full',
+        'relative h-full min-w-0',
         isMultipleSlides && 'px-1 sm:px-2',
         slideClassName
       )}
@@ -36,7 +36,7 @@ export const EmblaSlide: React.FC<EmblaSlideProps> = (props) => {
     >
       <div
         className={classNames(
-          'w-full h-full relative rounded-lg overflow-hidden',
+          'relative h-full w-full overflow-hidden rounded-lg',
           className
         )}
       >
@@ -51,7 +51,7 @@ export const EmblaSlide: React.FC<EmblaSlideProps> = (props) => {
           />
         )}
         {customContent && (
-          <div className="w-full h-full absolute inset-0 z-50">
+          <div className="absolute inset-0 z-50 h-full w-full">
             {customContent}
           </div>
         )}

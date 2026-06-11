@@ -29,7 +29,7 @@ const SlideText: React.FC<SlideTextProps> = ({
 
   return (
     <div className={wrapperClass}>
-      <div className="text-center z-50 max-w-full">
+      <div className="z-50 max-w-full text-center">
         {typeof text === 'string' ? <p className={textClass}>{text}</p> : text}
       </div>
     </div>

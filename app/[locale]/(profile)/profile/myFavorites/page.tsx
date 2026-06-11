@@ -1,58 +1,34 @@
+import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
-import ShowPrompts from '@/components/shared/Prompts/ShowPrompts';
-import getPrompts from '@/services/getPrompts';
-import { DataType, PromptType } from '@/types/data';
+import ShowPromptsContainer from '@/components/shared/Prompts/ShowPromptsContainer';
 import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
-async function page({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    tags?: string;
-    search?: string;
-    sort?: string;
-  }>;
-}) {
+async function page() {
   const { isAuthenticated } = await auth();
-  const {
-    page: rawPage,
-    search: rawSearch,
-    tags: rawTags,
-    sort: rawSort,
-  } = await searchParams;
-
-  const page = rawPage || '1';
-  const search = rawSearch && rawSearch !== 'undefined' ? rawSearch : '';
-  const tags = rawTags && rawTags !== 'undefined' ? rawTags : '';
-  const sort = rawSort && rawSort !== 'undefined' ? rawSort : '';
-
-  const prompt = (await getPrompts({
-    page,
-    tags,
-    search,
-    sort,
-    forApi: 'favorites',
-  })) as DataType<PromptType[]>;
-
   const t = await getTranslations('Pages.MyFavorites');
+
   if (!isAuthenticated) {
     return <NotAuthenticated isAuthenticated={isAuthenticated} />;
   }
 
   return (
-    <>
-      {prompt.success ? (
-        <ShowPrompts
-          head={t('head')}
-          prompt={prompt}
-          gridClass="grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+    <Suspense
+      fallback={
+        <ShowPromptsSkeleton
+          showHead
+          cardCount={12}
+          gridClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
         />
-      ) : (
-        <p>{prompt.message}</p>
-      )}
-    </>
+      }
+    >
+      <ShowPromptsContainer
+        head={t('head')}
+        forApi="favorites"
+        gridClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+      />
+    </Suspense>
   );
 }
 

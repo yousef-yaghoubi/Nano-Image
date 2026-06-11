@@ -102,7 +102,7 @@ export function useFilterState() {
     if (currentPageParam && !params.has('page')) {
       params.set('page', currentPageParam);
     }
- 
+
     const newQuery = params.toString();
     const currentQuery = searchParams.toString();
 

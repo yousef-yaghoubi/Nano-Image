@@ -6,12 +6,12 @@ export default async function Page() {
   const t = await getTranslations('Pages.Profile');
 
   return (
-    <div className="flex flex-col w-full gap-10">
-      <div className="border p-5 rounded-3xl border-gray-300 dark:border-gray-700 shadow-xl backgroundSecond">
+    <div className="flex w-full flex-col gap-10">
+      <div className="backgroundSecond rounded-3xl border border-gray-300 p-5 shadow-xl dark:border-gray-700">
         <h3 className="heading-3 mb-3">{t('Rename.title')}</h3>
         <FormUpdateUser />
       </div>
-      <div className="border p-5 rounded-3xl border-gray-300 dark:border-gray-700 shadow-xl backgroundSecond">
+      <div className="backgroundSecond rounded-3xl border border-gray-300 p-5 shadow-xl dark:border-gray-700">
         <h3 className="heading-3 mb-3">{t('Image.title')}</h3>
         <UpdateImage />
       </div>

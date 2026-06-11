@@ -2,7 +2,7 @@
 import { useParams } from 'next/navigation';
 import { MotionH1, MotionP } from '../MotionWarpper';
 
-function HeadPage({ head, desc }: { head?: string; desc?: string }) {
+function HeadPage({ head, desc }: { head: string; desc?: string }) {
   const params = useParams();
   return (
     <>
@@ -17,7 +17,7 @@ function HeadPage({ head, desc }: { head?: string; desc?: string }) {
             opacity: 1,
             transition: { duration: 0.8 },
           }}
-          className="heading-1 mb-4 text-primary"
+          className="heading-1 text-primary mb-4"
         >
           {head}
         </MotionH1>

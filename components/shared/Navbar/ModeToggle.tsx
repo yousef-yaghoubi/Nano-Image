@@ -52,19 +52,19 @@ export function ModeToggle() {
         <Button
           variant="outline"
           size="icon"
-          className="cursor-pointer h-10 w-10 bg-white/50 dark:bg-transparent"
+          className="h-10 w-10 cursor-pointer bg-white/50 dark:bg-transparent"
         >
           <CurrentIcon className="h-[1.2rem] w-[1.2rem] transition-all" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className='z-100'>
+      <DropdownMenuContent align="start" className="z-100">
         {themes.map((theme) => (
           <DropdownMenuItem
             key={theme.id}
             onClick={() => setTheme(theme.title)}
             className={cn(
-              currentTheme === theme.title ? 'font-bold text-primary' : '',
+              currentTheme === theme.title ? 'text-primary font-bold' : '',
               'cursor-pointer'
             )}
           >

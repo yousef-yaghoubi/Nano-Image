@@ -1,3 +1,4 @@
+import { IsPublicType } from '@/models/enums';
 import { ObjectId } from 'mongoose';
 
 export interface DataType<T> {
@@ -27,21 +28,8 @@ export interface PromptType {
   notes: null | string;
   tags: null | string[];
   isLiked: boolean;
-  isPublic: boolean;
+  isPublic: IsPublicType;
   isFavorited: boolean;
-}
-
-export interface DataFullType {
-  success: boolean;
-  message: string;
-  data: PromptType[];
-  pagination: {
-    total: number;
-    totalPages: number;
-    currentPage: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
 }
 
 export interface UploadImageType {

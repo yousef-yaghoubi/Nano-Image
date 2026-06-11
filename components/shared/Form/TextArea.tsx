@@ -8,11 +8,7 @@ interface TextAreaType {
   name: string;
   label?: string;
 }
-export default function TeaxtArea({
-  name,
-  label,
-  ...props
-}: TextAreaType) {
+export default function TeaxtArea({ name, label, ...props }: TextAreaType) {
   const [field] = useField(name);
   return (
     <div className="mt-2">

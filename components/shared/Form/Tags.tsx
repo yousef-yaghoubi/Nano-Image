@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 
 const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
   const [field, , helpers] = useField<string[]>(name);
-  const t = useTranslations('Filter.filter.tag')
+  const t = useTranslations('Filter.filter.tag');
   const handleRemove = (value: string) => {
     helpers.setValue(field.value.filter((v) => v !== value));
   };
@@ -37,9 +37,7 @@ const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
 
   return (
     <Tags>
-      <Label htmlFor={name}>
-        {label}
-      </Label>
+      <Label htmlFor={name}>{label}</Label>
       <TagsTrigger id={name}>
         {field.value.map((tag) => (
           <TagsValue key={tag} onRemove={() => handleRemove(tag)}>

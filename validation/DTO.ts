@@ -21,9 +21,6 @@ export const favoriteQuerySchema = yup.object({
     .default('likes desc'),
 });
 
-export type FavoriteQueryDTO = yup.InferType<typeof favoriteQuerySchema>;
-
-
 export const promptsQuerySchema = yup.object({
   page: yup
     .number()
@@ -41,7 +38,14 @@ export const promptsQuerySchema = yup.object({
   sort: yup
     .string()
     .nullable()
-    .oneOf(['likes asc', 'likes desc', 'date asc', 'date desc'])
+    .oneOf([
+      'likes asc',
+      'likes desc',
+      'date asc',
+      'date desc',
+      'title asc',
+      'title desc',
+    ])
     .default('likes desc'),
   tags: yup
     .string()
@@ -62,5 +66,3 @@ export const promptsQuerySchema = yup.object({
       return value.trim();
     }),
 });
-
-export type PromptsQueryDTO = yup.InferType<typeof promptsQuerySchema>;

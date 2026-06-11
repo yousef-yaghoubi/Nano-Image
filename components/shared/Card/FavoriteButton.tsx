@@ -1,5 +1,5 @@
 'use client';
-import { AddToFavorite } from '@/app/[locale]/actions/AddToFavorite';
+import useToggleFavorite from '@/hooks/mutations/useToggleFavorite';
 import { Heart, Loader2 } from 'lucide-react';
 import { ObjectId } from 'mongoose';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ export function FavoriteButton({
   promptIsFavorit: boolean;
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate, isPending } = useToggleFavorite();
 
   useEffect(() => {
     if (promptIsFavorit) {
@@ -21,32 +21,33 @@ export function FavoriteButton({
     }
   }, [promptIsFavorit]);
 
-  const handleToggle = async () => {
-    setIsLoading(true);
-    try {
-      const result = await AddToFavorite({ promptId });
-      if (result.success) {
-        setIsFavorite(result.action === 'added');
-        toast.success(result.message);
-      } else {
-        toast.error(result.message);
+  const handleToggle = () => {
+    mutate(
+      { promptId },
+      {
+        onSuccess: (result) => {
+          if (result.success) {
+            setIsFavorite(result.action === 'added');
+            toast.success(result.message);
+          } else {
+            toast.error(result.message);
+          }
+        },
+        onError: () => {
+          toast.error('An error occurred. Please try again.');
+        },
       }
-    } catch (err) {
-      console.log(err);
-      toast.error('An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    );
   };
 
   return (
     <>
       <button
         onClick={handleToggle}
-        disabled={isLoading}
-        className="disabled:opacity-50 cursor-pointer"
+        disabled={isPending}
+        className="cursor-pointer disabled:opacity-50"
       >
-        {isLoading ? (
+        {isPending ? (
           <Loader2 size={15} className="mb-1 animate-spin text-gray-500" />
         ) : isFavorite ? (
           <Heart size={15} className="mb-1 fill-red-600" />

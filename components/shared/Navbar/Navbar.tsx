@@ -1,4 +1,5 @@
 'use client';
+
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import NavList from './Nav';
 import LangSwicher from './LangSwicher';
@@ -7,37 +8,30 @@ import AuthButtons from '../Auth/AuthButtons';
 import { ModeToggle } from './ModeToggle';
 import Logo from './Logo';
 import { Suspense } from 'react';
-// import { useUser } from '@clerk/nextjs';
-// import { getMediaQuery } from '@/lib/getMediaQuery';
-// import { Suspense, use } from 'react';
-// import { Skeleton } from '@/components/ui/skeleton';
+import { useUser } from '@clerk/nextjs';
 
-export default function Navbar({isAuthenticated}: {isAuthenticated: boolean}) {
-  // Use a client-side hook instead of getMediaQuery in a client component
+export default function Navbar() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
-  // const { isSignedIn, user } = useUser();
-  // console.log(isSignedIn);
-
+  const { isSignedIn } = useUser();
   return (
-    <div className="w-full h-20 border-b px-6 fixed top-0 z-70 bg-white/50 dark:bg-black/40 backdrop-blur-3xl">
-      <div className="h-full flex justify-between items-center max-w-7xl mx-auto">
+    <div className="fixed top-0 z-70 h-20 w-full border-b bg-white/50 px-6 backdrop-blur-3xl dark:bg-black/40">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
         <Logo />
         {isDesktop ? (
           <>
             <NavList isDesktop={true} />
             <div className="flex items-center gap-3">
-              <AuthButtons isAuthenticated={isAuthenticated} />
+              <AuthButtons isAuthenticated={isSignedIn} />
               <LangSwicher />
               <ModeToggle />
             </div>
           </>
         ) : (
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <LangSwicher />
             <ModeToggle />
-
             <Suspense>
-            <MobileMenu isAuthenticated={isAuthenticated} />
+              <MobileMenu isAuthenticated={isSignedIn} />
             </Suspense>
           </div>
         )}

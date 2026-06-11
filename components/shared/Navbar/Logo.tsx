@@ -6,7 +6,7 @@ function Logo() {
   return (
     <Link
       href={`/${locale}`}
-      className="text-2xl lg:text-3xl font-extrabold text-gray-600 dark:text-gray-100 shrink-0"
+      className="shrink-0 text-2xl font-extrabold text-gray-600 lg:text-3xl dark:text-gray-100"
     >
       Nano Image
     </Link>
