@@ -54,3 +54,29 @@ export const SchemaImageUpdate = yup.object().shape({
       return !!value;
     }),
 });
+
+export const SchemaEditPrompt = yup
+  .object()
+  .shape({
+    namePrompt: yup
+      .string()
+      .optional()
+      .test('min-length', 'minLengthName', (value) =>
+        !value ? true : value.length >= 3
+      )
+      .test('max-length', 'maxLengthName', (value) =>
+        !value ? true : value.length <= 40
+      ),
+    promptText: yup
+      .string()
+      .optional()
+      .test('min-length', 'minLengthDesc', (value) =>
+        !value ? true : value.length >= 10
+      ),
+  })
+  // حداقل یکی از دو فیلد باید پر باشه
+  .test('at-least-one', 'atLeastOneField', function (values) {
+    const { namePrompt, promptText } = values;
+    return Boolean(namePrompt?.trim() || promptText?.trim());
+  });
+ 

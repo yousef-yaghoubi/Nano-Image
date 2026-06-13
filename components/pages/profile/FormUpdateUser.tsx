@@ -1,84 +1,51 @@
 'use client';
-import { Form, Formik } from 'formik';
-import { SchemaProfileEdit } from '@/validation/Form';
+
+import * as Yup from 'yup';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 import { EditProfile } from '@/app/[locale]/actions/EditProfile';
-import { Button } from '@/components/ui/button';
-import FormField from '@/components/shared/Form/FormField';
-import { Loader2 } from 'lucide-react';
-import { MotionDiv } from '@/components/shared/MotionWarpper';
+import { FormBuilder } from '@/components/shared/Form';
+import type { FieldConfig } from '@/components/shared/Form';
+import { SchemaProfileEdit } from '@/validation/Form';
+import { useUser } from '@clerk/nextjs';
+
+type ProfileValues = Yup.InferType<typeof SchemaProfileEdit>;
+
+const initialValues: ProfileValues = { firstName: '', lastName: '' };
 
 function FormUpdateUser() {
   const tPages = useTranslations('Pages.Profile.Rename');
-  const tMessages = useTranslations('Messages');
-  const initialValues = { firstName: '', lastName: '' };
+  const { user } = useUser();
+
+  const fields: FieldConfig[] = [
+    {
+      name: 'firstName',
+      label: tPages('firstName'),
+      type: 'text',
+      required: false,
+      // placeholder: 'Jane',
+    },
+    {
+      name: 'lastName',
+      label: tPages('lastName'),
+      type: 'text',
+      required: false,
+      // placeholder: 'Doe',
+    },
+  ];
+
   return (
-    <MotionDiv
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <Formik
-        initialValues={initialValues}
-        validationSchema={SchemaProfileEdit}
-        onSubmit={async (values, { resetForm, setValues }) => {
-          const finalValue = {
-            firstName: values.firstName,
-            lastName: values.lastName,
-          };
-
-          const profile = await EditProfile(finalValue);
-
-          if (profile.status) {
-            toast.success(profile.message);
-          } else {
-            toast.error(profile.message);
-          }
-          setValues(initialValues);
-          resetForm();
-        }}
-        validateOnMount
-        validateOnChange
-      >
-        {({ values, isSubmitting, isValid }) => (
-          <Form className="flex flex-col gap-5">
-            <FormField
-              name="firstName"
-              label={tPages('firstName')}
-              type="text"
-              id="firstName"
-            />
-            <FormField
-              name="lastName"
-              label={tPages('lastName')}
-              type="text"
-              id="lastName"
-            />
-
-            <Button
-              type="submit"
-              disabled={
-                !isValid ||
-                isSubmitting ||
-                (['firstName', 'lastName'] as const).every(
-                  (field) => values[field] === initialValues[field]
-                )
-              }
-              className="w-fit"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 /> {tMessages('loading')}
-                </>
-              ) : (
-                'Submit'
-              )}
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </MotionDiv>
+    <FormBuilder<ProfileValues>
+      fields={fields}
+      initialValues={initialValues}
+      validationSchema={SchemaProfileEdit}
+      submitLabel={'submit'}
+      loadingMessageKey="loading"
+      onSubmit={async (values) => {
+        const res = await EditProfile(values);
+        user?.reload();
+        return { status: res.status, message: res.message };
+      }}
+    />
   );
 }
 

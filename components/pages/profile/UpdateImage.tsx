@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import UploadImage from '@/components/shared/UploadImage';
+import { useUser } from '@clerk/nextjs';
 
 function UpdateImage() {
   const t = useTranslations('Messages');
@@ -14,14 +15,16 @@ function UpdateImage() {
 
   const [fileImage, setFileImage] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const { user } = useUser();
 
   const handleSubmit = async () => {
     if (!fileImage) return;
     setUploading(true);
+
     try {
-      // Replace this with your upload API
       const response = await AddImage({ file: fileImage });
       if (response.status) {
+        user?.reload();
         toast.success(response.message);
         setFileImage(null);
       } else {

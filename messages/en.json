@@ -122,7 +122,7 @@
         "status": {
           "status": "Status",
           "True": "Approved",
-          "False": "Cancelled",
+          "False": "Not Approve",
           "Pending": "Pending"
         },
         "buttons": {
@@ -135,7 +135,8 @@
       "Rename": {
         "title": "Rename",
         "firstName": "First Name:",
-        "lastName": "Last Name:"
+        "lastName": "Last Name:",
+        "save": "Submit"
       },
       "Image": {
         "title": "Upload Profile",
@@ -169,11 +170,12 @@
     "generic": "An error occurred. Please try again.",
     "noFile": "File not uploaded. Please try again.",
     "createPrompt": "Prompt created successfully",
+    "editPrompt": "Prompt edited successfully",
     "profileUpdated": "Profile updated successfully",
     "imageUpdated": "Profile image updated successfully",
     "loading": "Loading..."
   },
-  "FormSendPrompt": {
+  "Forms": {
     "minLengthName": "name must be at least 3 characters long.",
     "maxLengthName": "name must be at most 40 characters long.",
     "minLengthLastName": "last name must be at least 3 characters long.",
@@ -208,5 +210,9 @@
     "edit": {
       "edit": "edit"
     }
+  },
+  "Buttons": {
+    "submit": "Submit",
+    "loading": "Loading..."
   }
 }

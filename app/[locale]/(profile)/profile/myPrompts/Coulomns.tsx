@@ -96,7 +96,7 @@ export function getColumns({ t, tTags, page, limit }: GetColumnsOptions) {
             ? 'bg-red-600'
             : value === 'True'
               ? 'bg-primary'
-              : 'bg-white';
+              : 'bg-secondary-foreground';
         return <Badge className={color}>{t(`status.${value}`)}</Badge>;
       },
     }),

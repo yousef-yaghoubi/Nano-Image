@@ -1,19 +1,79 @@
 'use client';
 
+import * as Yup from 'yup';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { DrawerDialog } from '../DrawerDialog';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
+import { FormBuilder } from '@/components/shared/Form';
+import { SchemaEditPrompt } from '@/validation/Form';
+import type { FieldConfig } from '@/components/shared/Form';
+import useEditPrompt from '@/hooks/mutations/useEditPrompt';
+
+type PromptValues = Yup.InferType<typeof SchemaEditPrompt>;
+
+const initialValues: PromptValues = {
+  namePrompt: '',
+  promptText: '',
+};
 
 function EditPromptAction({ promptId }: { promptId: string }) {
-  void promptId;
   const t = useTranslations('Actions');
+  const tForm = useTranslations('Forms');
+  const tMessages = useTranslations('Messages');
+  const { mutateAsync, isPending } = useEditPrompt();
+  const [openModal, setOpenModal] = useState(false);
+  const { user } = useUser();
+
+  const fields: FieldConfig[] = [
+    {
+      name: 'namePrompt',
+      label: tForm('Label.name'),
+      type: 'text',
+    },
+    {
+      name: 'promptText',
+      label: tForm('Label.prompt'),
+      type: 'textarea',
+      rows: 5,
+    },
+  ];
 
   return (
     <DrawerDialog
       trigger={<Button variant="outline">{t('edit.edit')}</Button>}
       title={t('edit.edit')}
       className="flex flex-wrap gap-2"
-    />
+      open={openModal}
+      onOpenChange={setOpenModal}
+    >
+      <FormBuilder<PromptValues>
+        fields={fields}
+        initialValues={initialValues}
+        validationSchema={SchemaEditPrompt}
+        submitLabel="submit"
+        loadingMessageKey="loading"
+        isPending={isPending}
+        requireAnyDirty
+        onSubmit={async (values) => {
+          const result = await mutateAsync({
+            clerkId: user!.id,
+            prompt: {
+              title: values.namePrompt,
+              prompt: values.promptText,
+              id: promptId,
+            },
+          });
+
+          setOpenModal(false);
+          return {
+            status: result.status,
+            message: tMessages(result.message),
+          };
+        }}
+      />
+    </DrawerDialog>
   );
 }
 

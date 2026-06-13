@@ -4,10 +4,10 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 
-interface EditProfileInput {
-  firstName: string;
-  lastName: string;
-}
+type EditProfileInput = {
+  firstName?: string | null;
+  lastName?: string | null;
+};
 
 export async function EditProfile({ firstName, lastName }: EditProfileInput) {
   const t = await getTranslations('Messages');
@@ -23,7 +23,7 @@ export async function EditProfile({ firstName, lastName }: EditProfileInput) {
     }
 
     // Prepare update object only with non-empty fields
-    const finalValue: Partial<EditProfileInput> = {};
+    const finalValue: { firstName?: string; lastName?: string } = {};
     if (firstName && firstName.trim().length > 0)
       finalValue.firstName = firstName.trim();
     if (lastName && lastName.trim().length > 0)
@@ -41,11 +41,6 @@ export async function EditProfile({ firstName, lastName }: EditProfileInput) {
         message: t('generic'),
       };
     }
-
-    // Revalidate profile pages
-    revalidatePath('/fa/profile');
-    revalidatePath('/en/profile');
-    revalidatePath('/ar/profile');
 
     return {
       status: true,

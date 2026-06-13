@@ -1,17 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import UploadImage from './UploadImage';
-import TeaxtArea from './Form/TextArea';
-import { Input } from '../ui/input';
+import { ErrorMessage } from 'formik';
+import { FormBuilder } from '@/components/shared/Form';
 import { SchemaSendPrompt } from '@/validation/Form';
 import useAddPrompt from '@/hooks/mutations/useAddPrompt';
-import { toast } from 'sonner';
-import TagsShowInput from './Form/Tags';
+import UploadImage from '@/components/shared/UploadImage';
+import TagsShowInput from '@/components/shared/Form/Tags';
 
 interface FormValues {
   namePrompt: string;
@@ -20,44 +15,66 @@ interface FormValues {
   tags: string[];
 }
 
+const initialValues: FormValues = {
+  namePrompt: '',
+  promptText: '',
+  imageUrl: '',
+  tags: [],
+};
+
 export default function SendPromptForm({ clerkId }: { clerkId: string }) {
-  const tForm = useTranslations('FormSendPrompt');
+  const tForm = useTranslations('Forms');
   const tMessages = useTranslations('Messages');
   const { mutateAsync, isPending } = useAddPrompt();
-  const initialValues: FormValues = {
-    namePrompt: '',
-    promptText: '',
-    imageUrl: '',
-    tags: [],
-  };
 
   return (
     <div className="mx-auto mt-6 max-w-lg">
-      <Formik
+      <FormBuilder<FormValues>
         initialValues={initialValues}
         validationSchema={SchemaSendPrompt}
+        submitLabel="submit"
+        loadingMessageKey="loading"
+        isPending={isPending}
+        dirtyFields={['namePrompt', 'promptText']}
+        className="space-y-6"
         onSubmit={async (values, { resetForm, setValues }) => {
-          const finalValue = {
-            title: values.namePrompt,
-            prompt: values.promptText,
-            image: values.imageUrl,
-            tags: values.tags,
-          };
-
-          const newPrompt = await mutateAsync({ clerkId, prompt: finalValue });
+          const newPrompt = await mutateAsync({
+            clerkId,
+            prompt: {
+              title: values.namePrompt,
+              prompt: values.promptText,
+              image: values.imageUrl,
+              tags: values.tags,
+            },
+          });
 
           if (newPrompt.status) {
-            toast.success(tMessages(newPrompt.message));
-          } else {
-            toast.error(tMessages(newPrompt.message));
+            setValues(initialValues);
+            resetForm();
           }
-          setValues(initialValues);
-          resetForm();
+
+          return {
+            status: newPrompt.status,
+            message: tMessages(newPrompt.message),
+          };
         }}
-        validateOnMount
-      >
-        {({ values, setFieldValue, isValid, isSubmitting }) => (
-          <Form className="space-y-6">
+        fields={[
+          {
+            name: 'namePrompt',
+            label: tForm('Label.name'),
+            type: 'text',
+            required: true,
+          },
+          {
+            name: 'promptText',
+            label: tForm('Label.prompt'),
+            type: 'textarea',
+            required: true,
+          },
+        ]}
+        customFields={({}) => (
+          <>
+            {/* Image upload */}
             <div>
               <UploadImage
                 name="imageUrl"
@@ -67,53 +84,35 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
               <ErrorMessage
                 name="imageUrl"
                 render={(e) => (
-                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
+                  <span className="text-destructive mt-1 text-sm">
+                    {tForm(e)}
+                  </span>
                 )}
               />
             </div>
 
-            {/* Name Prompt */}
-            <div>
-              <Label htmlFor="namePrompt">
-                {tForm('Label.name')}{' '}
-                <span className="text-destructive">*</span>
-              </Label>
-              <Field
-                as={Input}
-                id="namePrompt"
-                name="namePrompt"
-                value={values.namePrompt}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFieldValue('namePrompt', e.target.value)
-                }
-              />
-              <ErrorMessage
-                name="namePrompt"
-                render={(e) => (
-                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
-                )}
-              />
-            </div>
+            {/* Prompt name — uses config-driven field below, but kept here
+                if you need custom onChange behaviour */}
 
-            {/* Prompt Text */}
-            <div>
-              <TeaxtArea name="promptText" label={tForm('Label.prompt')} />
+            {/* Prompt text */}
+            {/* <div>
+              <TextArea name="promptText" label={tForm('Label.prompt')} />
               <ErrorMessage
                 name="promptText"
                 render={(e) => (
-                  <span className="mt-1 text-sm text-red-500">{tForm(e)}</span>
+                  <span className="mt-1 text-sm text-destructive">
+                    {tForm(e)}
+                  </span>
                 )}
               />
-            </div>
+            </div> */}
 
+            {/* Tags */}
             <TagsShowInput name="tags" label={tForm('Label.tags')} />
-
-            <Button type="submit" disabled={!isValid || isSubmitting || isPending}>
-              {!isSubmitting && !isPending ? <>Submit</> : <>Loding</>}
-            </Button>
-          </Form>
+          </>
         )}
-      </Formik>
+        // Config-driven fields rendered above customFields
+      />
     </div>
   );
 }
