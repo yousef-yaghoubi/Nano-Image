@@ -9,6 +9,7 @@ export interface FetchPromptsParams {
   sort?: string;
   forApi?: PromptsApi;
   limit?: number;
+  isPublic?: 'True' | 'False' | 'Pending';
 }
 
 export type PromptsResponse = DataType<PromptType[]>;
@@ -36,11 +37,13 @@ function buildPromptsUrl(params: FetchPromptsParams) {
     sort,
     forApi = 'prompts',
     limit = 24,
+    isPublic,
   } = params;
 
   const searchParams = new URLSearchParams({
     limit: String(limit),
     page,
+    ...(isPublic && { isPublic }),
     ...(search && { search }),
     ...(tags && { tags }),
     ...(sort && { sort }),

@@ -68,7 +68,7 @@ export default async function RootLayout({
         className="selection:bg-primary/10"
       >
         <body className={`${yekanBakh.className} antialiased`}>
-          <AllProviders>
+          <AllProviders locale={locale}>
             <Navbar />
             <main className="container">{children}</main>
             <Footer />

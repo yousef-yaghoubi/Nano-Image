@@ -30,6 +30,8 @@ export interface PromptType {
   isLiked: boolean;
   isPublic: IsPublicType;
   isFavorited: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UploadImageType {

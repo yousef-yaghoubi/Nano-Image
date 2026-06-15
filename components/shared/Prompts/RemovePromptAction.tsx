@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 function RemovePromptAction({ promptId }: { promptId: string }) {
   const t = useTranslations('Actions');
+  const tButtons = useTranslations('Buttons');
   const [openModal, setOpenModal] = useState(false);
   const { mutate, isPending } = useDeletePrompt();
 
@@ -37,7 +38,7 @@ function RemovePromptAction({ promptId }: { promptId: string }) {
       className="flex flex-wrap gap-2"
     >
       <Button variant="destructive" onClick={handleRemove} disabled={isPending}>
-        {t('remove.yes')}
+        {isPending ? tButtons('loading') : t('remove.yes')}
       </Button>
       <Button variant="outline" onClick={handleNo}>
         {t('remove.no')}

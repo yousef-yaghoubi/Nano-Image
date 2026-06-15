@@ -27,8 +27,13 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const SORT_OPTIONS = [
     { id: 1, title: t('likeDesc'), value: 'likes desc', icon: ThumbsUp },
     { id: 2, title: t('likeAsc'), value: 'likes asc', icon: ThumbsDown },
-    { id: 3, title: t('dateDesc'), value: 'date desc', icon: ClockArrowDown },
-    { id: 4, title: t('dateAsc'), value: 'date asc', icon: ClockArrowUp },
+    {
+      id: 3,
+      title: t('dateDesc'),
+      value: 'createdAt desc',
+      icon: ClockArrowDown,
+    },
+    { id: 4, title: t('dateAsc'), value: 'createdAt asc', icon: ClockArrowUp },
   ] as const;
   const params = useParams();
   const locale = params.locale;

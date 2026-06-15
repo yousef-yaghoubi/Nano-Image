@@ -21,6 +21,7 @@ export async function GET(req: Request) {
         sort: searchParams.get('sort'),
         tags: searchParams.get('tags'),
         search: searchParams.get('search'),
+        isPublic: searchParams.get('isPublic'),
       });
     } catch (err) {
       const errorMessage =
@@ -41,6 +42,7 @@ export async function GET(req: Request) {
       sort: sortParam,
       tags: rawTags,
       search,
+      isPublic,
     } = validatedData;
 
     // ۲. احراز هویت (اجباری برای این مسیر)
@@ -82,11 +84,15 @@ export async function GET(req: Request) {
       ];
     }
 
+    if (isPublic) {
+      where.isPublic = isPublic;
+    }
+
     // ۵. تنظیم سورت
     const sort: Record<string, SortOrder> = {};
     if (sortParam === 'likes desc') sort.likes = -1;
     else if (sortParam === 'likes asc') sort.likes = 1;
-    else if (sortParam === 'date asc') sort.createdAt = 1;
+    else if (sortParam === 'createdAt asc') sort.createdAt = 1;
     else if (sortParam === 'title asc') sort.title = 1;
     else if (sortParam === 'title desc') sort.title = -1;
     else sort.createdAt = -1; // Default: date desc

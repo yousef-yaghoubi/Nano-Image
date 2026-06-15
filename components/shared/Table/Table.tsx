@@ -2,8 +2,10 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -51,6 +53,9 @@ interface Props<TData> {
   onPageChange?: (page: number) => void;
   onLimitChange?: (limit: number) => void;
 
+  columnFilters?: ColumnFiltersState;
+  onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
+
   className?: string;
 }
 
@@ -60,8 +65,8 @@ export function DataTable<TData>({
   data,
   columns,
   isLoading = false,
-  emptyMessage = 'هیچ داده‌ای وجود ندارد',
-  emptyDescription = 'برای افزودن داده جدید، روی دکمه افزودن کلیک کنید',
+  emptyMessage,
+  emptyDescription,
   enableSearch = false,
   searchValue = '',
   searchPlaceholder = 'جستجو...',
@@ -75,6 +80,8 @@ export function DataTable<TData>({
   pageSizeOptions = [5, 10, 25, 50],
   onPageChange,
   onLimitChange,
+  columnFilters: externalColumnFilters,
+  onColumnFiltersChange,
   className = '',
 }: Props<TData>) {
   // اگه onSortingChange پاس داده شده → server-side، وگرنه local state
@@ -82,7 +89,27 @@ export function DataTable<TData>({
 
   const isServerSideSorting = !!onSortingChange;
   const sorting = isServerSideSorting ? (sortingState ?? []) : localSorting;
+  const [localColumnFilters, setLocalColumnFilters] =
+    useState<ColumnFiltersState>([]);
 
+  const isControlledFilters = !!onColumnFiltersChange;
+  const columnFilters = isControlledFilters
+    ? (externalColumnFilters ?? [])
+    : localColumnFilters;
+
+  const handleColumnFiltersChange = (
+    updater:
+      | ColumnFiltersState
+      | ((prev: ColumnFiltersState) => ColumnFiltersState)
+  ) => {
+    const next =
+      typeof updater === 'function' ? updater(columnFilters) : updater;
+    if (isControlledFilters) {
+      onColumnFiltersChange?.(next);
+    } else {
+      setLocalColumnFilters(next);
+    }
+  };
   const handleSortingChange = (
     updater: SortingState | ((prev: SortingState) => SortingState)
   ) => {
@@ -97,9 +124,11 @@ export function DataTable<TData>({
   const table = useReactTable({
     data: data ?? [],
     columns,
-    state: { sorting },
+    state: { sorting, columnFilters },
+    onColumnFiltersChange: handleColumnFiltersChange,
     onSortingChange: handleSortingChange,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: isServerSideSorting ? undefined : getSortedRowModel(),
     manualSorting: isServerSideSorting,
   });
@@ -112,14 +141,16 @@ export function DataTable<TData>({
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
       {/* Search */}
-      {enableSearch && (
-        <SearchBox
-          value={searchValue}
-          placeholder={searchPlaceholder}
-          onChange={(e) => onSearchChange?.(e.target.value)}
-          className="max-w-sm"
-        />
-      )}
+      <div>
+        {enableSearch && (
+          <SearchBox
+            value={searchValue}
+            placeholder={searchPlaceholder}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            className="max-w-sm"
+          />
+        )}
+      </div>
 
       {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
@@ -131,7 +162,7 @@ export function DataTable<TData>({
                   <TableHead
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="cursor-pointer text-center font-bold select-none"
+                    className={`text-center font-bold select-none ${header.column.getCanSort() && 'cursor-pointer hover:opacity-80'}`}
                   >
                     {flexRender(
                       header.column.columnDef.header,

@@ -5,11 +5,20 @@ import EditPromptAction from '@/components/shared/Prompts/EditPromptAction';
 import RemovePromptAction from '@/components/shared/Prompts/RemovePromptAction';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PromptType } from '@/types/data';
 import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
+import { formatDate } from '@/lib/FormatDate';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
 
@@ -20,9 +29,27 @@ interface GetColumnsOptions {
   tTags: TableTranslations;
   page: number;
   limit: number;
+  locale?: string;
+  onStatusFilterChange: (value: string) => void; // ← new
+  statusFilter: string; // ← new
 }
 
-export function getColumns({ t, tTags, page, limit }: GetColumnsOptions) {
+const items = [
+  { label: 'All', value: 'All' },
+  { label: 'False', value: 'False' },
+  { label: 'True', value: 'True' },
+  { label: 'Pending', value: 'Pending' },
+];
+
+export function getColumns({
+  t,
+  tTags,
+  page,
+  limit,
+  locale,
+  onStatusFilterChange,
+  statusFilter,
+}: GetColumnsOptions) {
   return [
     columnHelper.accessor((_row, index) => index, {
       id: 'index',
@@ -88,7 +115,25 @@ export function getColumns({ t, tTags, page, limit }: GetColumnsOptions) {
     }),
 
     columnHelper.accessor('isPublic', {
-      header: t('status.status'),
+      header: () => (
+        <div className="flex w-full items-center justify-center gap-2">
+          {t('status.status')}:
+          <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+            <SelectTrigger className="w-fit cursor-pointer border-none bg-transparent p-0 text-sm ring-0 outline-0 focus-visible:border-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {items.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {t(`status.${item.value}`)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
       cell: (i) => {
         const value = i.getValue();
         const color =
@@ -99,8 +144,30 @@ export function getColumns({ t, tTags, page, limit }: GetColumnsOptions) {
               : 'bg-secondary-foreground';
         return <Badge className={color}>{t(`status.${value}`)}</Badge>;
       },
+      enableSorting: false,
+      filterFn: (row, _columnId, filterValue) => {
+        if (filterValue === 'All') return true;
+        return row.getValue('isPublic') === filterValue;
+      },
+      enableGlobalFilter: true,
     }),
 
+    columnHelper.accessor('createdAt', {
+      header: t('createdAt'),
+      cell: (info) => {
+        const date = info.getValue();
+
+        return (
+          <span>
+            {formatDate(date, {
+              calendar: locale == 'fa' ? 'jalali' : 'gregorian',
+              format: 'DD/MM/YYYY',
+            })}
+          </span>
+        );
+      },
+      enableSorting: true,
+    }),
     columnHelper.accessor('buttons', {
       header: t('buttons.buttons'),
       enableSorting: false,

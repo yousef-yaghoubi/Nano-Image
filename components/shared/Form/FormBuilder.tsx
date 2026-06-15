@@ -38,6 +38,7 @@ function FormBuilder<T extends FormikValues>({
       initial={motionProps?.initial ?? { opacity: 0, x: -20 }}
       animate={motionProps?.animate ?? { opacity: 1, x: 0 }}
       transition={motionProps?.transition ?? { duration: 0.4 }}
+      className='w-full'
     >
       <Formik<T>
         initialValues={initialValues}

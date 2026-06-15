@@ -41,8 +41,8 @@ export const promptsQuerySchema = yup.object({
     .oneOf([
       'likes asc',
       'likes desc',
-      'date asc',
-      'date desc',
+      'createdAt asc',
+      'createdAt desc',
       'title asc',
       'title desc',
     ])
@@ -64,5 +64,13 @@ export const promptsQuerySchema = yup.object({
         return null;
       }
       return value.trim();
+    }),
+  isPublic: yup
+    .string()
+    .nullable()
+    .transform((value) => {
+      if (!value || value === 'undefined') return null;
+      if (['True', 'False', 'Pending'].includes(value)) return value;
+      return null;
     }),
 });

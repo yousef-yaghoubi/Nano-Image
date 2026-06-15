@@ -6,7 +6,13 @@ import QueryProvider from './QueryProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 
-function AllProviders({ children }: { children: React.ReactNode }) {
+function AllProviders({
+  children,
+  locale,
+}: {
+  children: React.ReactNode;
+  locale?: string;
+}) {
   return (
     <ClerkProvider>
       <QueryProvider>
@@ -17,7 +23,7 @@ function AllProviders({ children }: { children: React.ReactNode }) {
           disableTransitionOnChange
         >
           <NextIntlClientProvider>
-            <Toaster position="top-right" />
+            <Toaster position={locale == 'en' ? 'top-left' : 'top-right'} />
             <NextTopLoader color="var(--primary)" showSpinner={false} />
             {children}
           </NextIntlClientProvider>

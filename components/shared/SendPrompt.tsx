@@ -72,7 +72,7 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
             required: true,
           },
         ]}
-        customFields={({}) => (
+        customFields={() => (
           <>
             {/* Image upload */}
             <div>
@@ -90,22 +90,6 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
                 )}
               />
             </div>
-
-            {/* Prompt name — uses config-driven field below, but kept here
-                if you need custom onChange behaviour */}
-
-            {/* Prompt text */}
-            {/* <div>
-              <TextArea name="promptText" label={tForm('Label.prompt')} />
-              <ErrorMessage
-                name="promptText"
-                render={(e) => (
-                  <span className="mt-1 text-sm text-destructive">
-                    {tForm(e)}
-                  </span>
-                )}
-              />
-            </div> */}
 
             {/* Tags */}
             <TagsShowInput name="tags" label={tForm('Label.tags')} />

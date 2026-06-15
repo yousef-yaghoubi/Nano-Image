@@ -1,10 +1,10 @@
 'use client';
-import { useMemo, useState, useEffect, useRef } from 'react';
-import { SortingState } from '@tanstack/react-table';
+import { useState, useEffect, useRef } from 'react';
+import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/shared/Table/Table';
 import usePrompts from '@/hooks/queries/usePrompts';
 import type { MyPromptsResponse } from '@/services/prompts';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { getColumns } from './Coulomns';
 
 export default function PromptsWrapper() {
@@ -13,10 +13,10 @@ export default function PromptsWrapper() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [sorting, setSorting] = useState<SortingState>([]);
-
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const locale = useLocale()
   // ✅ Fixed: track previous search to only reset page when search actually changes
   const prevSearchRef = useRef(search);
 
@@ -47,16 +47,34 @@ export default function PromptsWrapper() {
     page: String(page),
     limit,
     search,
+    isPublic: columnFilters.find((f) => f.id === 'isPublic')?.value as
+      | 'True'
+      | 'False'
+      | 'Pending'
+      | undefined,
     ...(sortString && { sort: sortString }),
     forApi: 'get-me/prompts',
   });
 
-  const columns = useMemo(
-    () => getColumns({ t, tTags, page, limit }),
-    [t, tTags, page, limit]
-  );
+  // const columns = useMemo(
+  //   () => getColumns({ t, tTags, page, limit }),
+  //   [t, tTags, page, limit]
+  // );
 
-  console.log('columns:', columns);
+  const columns = getColumns({
+    t,
+    tTags,
+    page,
+    limit,
+    statusFilter:
+      (columnFilters.find((f) => f.id === 'isPublic')?.value as string) ??
+      'All',
+    locale: locale,
+    onStatusFilterChange: (value) => {
+      setColumnFilters(value === 'All' ? [] : [{ id: 'isPublic', value }]);
+    },
+  });
+  // console.log('columns:', columns);
 
   return (
     <DataTable
@@ -84,7 +102,8 @@ export default function PromptsWrapper() {
       onSearchChange={setSearchInput}
       searchPlaceholder={t('searchPlaceholder')}
       // Empty state
-      emptyMessage="هیچ پرامپتی یافت نشد"
+      emptyMessage={t('messages.emptyMessage')}
+      emptyDescription={t('messages.emptyDescription')}
     />
   );
 }

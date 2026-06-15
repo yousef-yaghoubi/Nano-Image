@@ -21,6 +21,7 @@ export async function GET(req: Request) {
         sort: searchParams.get('sort'),
         tags: searchParams.get('tags'),
         search: searchParams.get('search'),
+        isPublic: searchParams.get('isPublic'),
       });
     } catch (err) {
       const errorMessage =
@@ -37,6 +38,7 @@ export async function GET(req: Request) {
       sort: sortParam,
       tags: rawTags,
       search,
+      isPublic,
     } = validatedData;
     const skip = (page - 1) * limit;
 
@@ -72,12 +74,17 @@ export async function GET(req: Request) {
       ];
     }
 
+    if (isPublic && isPublic !== 'All') {
+      where.isPublic = isPublic;
+    }
+
     const sort: Record<string, SortOrder> = {};
     if (sortParam === 'likes asc') sort.likes = 1;
-    else if (sortParam === 'date desc') sort.createdAt = -1;
-    else if (sortParam === 'date asc') sort.createdAt = 1;
+    else if (sortParam === 'createdAt desc') sort.createdAt = -1;
+    else if (sortParam === 'createdAt asc') sort.createdAt = 1;
     else sort.likes = -1;
 
+    console.log('where:', where);
     const [total, promptsRaw] = await Promise.all([
       Prompts.countDocuments(where),
       Prompts.find(where)

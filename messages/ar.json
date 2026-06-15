@@ -123,12 +123,18 @@
           "status": "الحالة",
           "True": "مقبول",
           "False": "ملغى",
-          "Pending": "قيد الانتظار"
+          "Pending": "قيد الانتظار",
+          "All": "الكل"
         },
         "buttons": {
           "buttons": "مدیریت"
         },
-        "searchPlaceholder": "ابحث عن اسم أو أمر..."
+        "searchPlaceholder": "ابحث عن اسم أو أمر...",
+        "messages": {
+          "emptyMessage": "لا توجد أوامر.",
+          "emptyDescription": "لإضافة أمر جديد، انتقل إلى صفحة 'أمر جديد'."
+        },
+        "createdAt": "تاریخ ساخت"
       }
     },
     "Profile": {

@@ -123,12 +123,18 @@
           "status": "Status",
           "True": "Approved",
           "False": "Not Approve",
-          "Pending": "Pending"
+          "Pending": "Pending",
+          "All": "All"
         },
         "buttons": {
           "buttons": "buttons"
         },
-        "searchPlaceholder": "Search title or prompt..."
+        "searchPlaceholder": "Search title or prompt...",
+        "messages": {
+          "emptyMessage": "No prompts found.",
+          "emptyDescription": "To add a new prompt, go to the 'New Prompt' page."
+        },
+        "createdAt": "created"
       }
     },
     "Profile": {

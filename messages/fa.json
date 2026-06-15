@@ -123,12 +123,18 @@
           "status": "وضعیت",
           "True": "تایید",
           "False": "تایید نشده",
-          "Pending": "انتظار"
+          "Pending": "انتظار",
+          "All": "همه"
         },
         "buttons": {
           "buttons": "مدیریت"
         },
-        "searchPlaceholder": "جستجو بر اساس اسم یا پرامپت (انگلیسی)..."
+        "searchPlaceholder": "جستجو بر اساس اسم یا پرامپت (انگلیسی)...",
+        "messages": {
+          "emptyMessage": "هیچ پرامپتی یافت نشد.",
+          "emptyDescription": "برای افزودن پرامپت جدید، به صفحه 'پرامپت جدید' بروید."
+        },
+        "createdAt": "تاریخ ساخت"
       }
     },
     "Profile": {
