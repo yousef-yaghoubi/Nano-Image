@@ -5,7 +5,7 @@ import { DataTable } from '@/components/shared/Table/Table';
 import usePrompts from '@/hooks/queries/usePrompts';
 import type { MyPromptsResponse } from '@/services/prompts';
 import { useLocale, useTranslations } from 'next-intl';
-import { getColumns } from './Coulomns';
+import { getColumns } from './Columns';
 
 export default function PromptsWrapper() {
   const t = useTranslations('Pages.MyPrompts.Table');
@@ -16,7 +16,7 @@ export default function PromptsWrapper() {
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const locale = useLocale()
+  const locale = useLocale();
   // ✅ Fixed: track previous search to only reset page when search actually changes
   const prevSearchRef = useRef(search);
 
@@ -56,12 +56,12 @@ export default function PromptsWrapper() {
     forApi: 'get-me/prompts',
   });
 
-  // const columns = useMemo(
+  // const Columns = useMemo(
   //   () => getColumns({ t, tTags, page, limit }),
   //   [t, tTags, page, limit]
   // );
 
-  const columns = getColumns({
+  const Columns = getColumns({
     t,
     tTags,
     page,
@@ -74,11 +74,11 @@ export default function PromptsWrapper() {
       setColumnFilters(value === 'All' ? [] : [{ id: 'isPublic', value }]);
     },
   });
-  // console.log('columns:', columns);
+  // console.log('Columns:', Columns);
 
   return (
     <DataTable
-      columns={columns}
+      Columns={Columns}
       data={data?.data ?? []}
       isLoading={isLoading}
       // Sorting
@@ -104,6 +104,7 @@ export default function PromptsWrapper() {
       // Empty state
       emptyMessage={t('messages.emptyMessage')}
       emptyDescription={t('messages.emptyDescription')}
+      enableSelectColumns
     />
   );
 }

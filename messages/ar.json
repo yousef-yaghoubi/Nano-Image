@@ -107,6 +107,7 @@
       "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية أوامرك.",
       "head": "أوامري",
       "Table": {
+        "showCoulomns": "Show Coulomns",
         "pageOf": "صفحة {page} من {total}",
         "rows": "صفوف",
         "rowsPerPage": "صفوف لكل صفحة",
@@ -126,9 +127,8 @@
           "Pending": "قيد الانتظار",
           "All": "الكل"
         },
-        "buttons": {
-          "buttons": "مدیریت"
-        },
+        "buttons": "مدیریت",
+        "isPublic": "status",
         "searchPlaceholder": "ابحث عن اسم أو أمر...",
         "messages": {
           "emptyMessage": "لا توجد أوامر.",

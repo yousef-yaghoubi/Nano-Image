@@ -21,7 +21,7 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
   const pathName = usePathname();
 
   return (
-    <nav>
+    <div>
       <ul
         className={cn('flex gap-3', isDesktop ? 'flex-row' : 'mt-4 flex-col')}
       >
@@ -51,7 +51,7 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
           );
         })}
       </ul>
-    </nav>
+    </div>
   );
 }
 

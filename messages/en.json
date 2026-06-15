@@ -107,6 +107,7 @@
       "notAuthenticated": "You need to sign in to see your prompts.",
       "head": "My Prompts",
       "Table": {
+        "showCoulomns": "Show Coulomns",
         "pageOf": "Page {page} of {total}",
         "rows": "rows",
         "rowsPerPage": "Rows per page",
@@ -126,9 +127,8 @@
           "Pending": "Pending",
           "All": "All"
         },
-        "buttons": {
-          "buttons": "buttons"
-        },
+        "isPublic": "status",
+        "buttons": "buttons",
         "searchPlaceholder": "Search title or prompt...",
         "messages": {
           "emptyMessage": "No prompts found.",

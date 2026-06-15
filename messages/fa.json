@@ -107,6 +107,7 @@
       "notAuthenticated": "برای دیدن پرامپت های خود باید وارد حساب کاربری شوید.",
       "head": "پرامپت های من",
       "Table": {
+        "showCoulomns": "نمایش ستون ها",
         "pageOf": "صفحه {page} از {total}",
         "rows": "ردیف",
         "rowsPerPage": "تعداد در هر صفحه",
@@ -126,9 +127,8 @@
           "Pending": "انتظار",
           "All": "همه"
         },
-        "buttons": {
-          "buttons": "مدیریت"
-        },
+        "buttons": "مدیریت",
+        "isPublic": "وضعیت",
         "searchPlaceholder": "جستجو بر اساس اسم یا پرامپت (انگلیسی)...",
         "messages": {
           "emptyMessage": "هیچ پرامپتی یافت نشد.",
@@ -157,7 +157,7 @@
       "Badges": {
         "prompts": "پرامپت‌ها",
         "tags": "تگ‌ها",
-        "likes": "تعداد لایک"
+        "likes": "لایک ها"
       },
       "headPopular": "پرامپت های پرطرفدار",
       "descPopular": "دوست داشتنی ترین پیام های ارسال شده توسط کاربران"

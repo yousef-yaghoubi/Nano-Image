@@ -57,6 +57,7 @@ export function getColumns({
       cell: (info) => (page - 1) * limit + info.row.index + 1,
       enableSorting: false,
       minSize: 70,
+      enableHiding: false,
     }),
 
     columnHelper.accessor('image', {
@@ -74,6 +75,7 @@ export function getColumns({
           </Suspense>
         </div>
       ),
+      enableHiding: false,
       enableSorting: false,
     }),
 
@@ -83,6 +85,7 @@ export function getColumns({
         <strong className="whitespace-normal">{i.getValue()}</strong>
       ),
       enableSorting: true,
+      enableHiding: false,
       maxSize: 100,
     }),
 
@@ -161,7 +164,7 @@ export function getColumns({
           <span>
             {formatDate(date, {
               calendar: locale == 'fa' ? 'jalali' : 'gregorian',
-              format: 'DD/MM/YYYY',
+              format: locale == 'fa' ? 'DD/MM/YYYY' : 'MM/DD/YYYY',
             })}
           </span>
         );
@@ -169,7 +172,7 @@ export function getColumns({
       enableSorting: true,
     }),
     columnHelper.accessor('buttons', {
-      header: t('buttons.buttons'),
+      header: t('buttons'),
       enableSorting: false,
       cell: (i) => {
         return (

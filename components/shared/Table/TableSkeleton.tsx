@@ -12,8 +12,8 @@ import { clsx } from 'clsx';
 interface TableSkeletonProps {
   /** Number of body rows to render */
   rows?: number;
-  /** Number of columns to render */
-  columns?: number;
+  /** Number of Columns to render */
+  Columns?: number;
   /** Optional heading above the table */
   head?: boolean;
   /** Extra classes for the outer wrapper */
@@ -25,7 +25,7 @@ const TABLE_CELL_MIN_WIDTH = 'min-w-[100px]';
 
 export function TableSkeleton({
   rows = 5,
-  columns = 5,
+  Columns = 5,
   head = false,
   className,
 }: TableSkeletonProps) {
@@ -48,7 +48,7 @@ export function TableSkeleton({
           {/* ── Header ── */}
           <TableHeader>
             <TableRow className="h-16 bg-linear-to-r from-[#4d94b0] via-[#57c785] to-[#00b487]">
-              {Array.from({ length: columns }).map((_, i) => (
+              {Array.from({ length: Columns }).map((_, i) => (
                 <TableHead
                   key={i}
                   className={clsx(
@@ -69,7 +69,7 @@ export function TableSkeleton({
                 key={rowIdx}
                 className={clsx(rowIdx % 2 && 'bg-primary/10')}
               >
-                {Array.from({ length: columns }).map((_, colIdx) => (
+                {Array.from({ length: Columns }).map((_, colIdx) => (
                   <TableCell
                     key={colIdx}
                     className={clsx(
@@ -98,7 +98,7 @@ export function TableSkeleton({
           {/* ── Footer / Pagination ── */}
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={columns} className="p-0">
+              <TableCell colSpan={Columns} className="p-0">
                 <div className="border-border flex flex-col gap-3 border-t px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4 sm:py-3">
                   {/* Page info */}
                   <div className="order-2 flex items-center gap-2 sm:order-1">

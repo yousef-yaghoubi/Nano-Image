@@ -24,10 +24,18 @@ import {
 } from '@/components/ui/table';
 import { Pagination } from './Pagination';
 import SearchBox from '../Form/SearchBox';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface Props<TData> {
   data: TData[];
-  columns: ColumnDef<TData, any>[];
+  Columns: ColumnDef<TData, any>[];
   isLoading?: boolean;
 
   // Empty state
@@ -40,6 +48,7 @@ interface Props<TData> {
   searchPlaceholder?: string;
   onSearchChange?: (value: string) => void;
 
+  enableSelectColumns?: boolean;
   // Sorting (server-side)
   sortingState?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
@@ -63,13 +72,14 @@ const SKELETON_ROWS = 5;
 
 export function DataTable<TData>({
   data,
-  columns,
+  Columns,
   isLoading = false,
   emptyMessage,
   emptyDescription,
   enableSearch = false,
-  searchValue = '',
-  searchPlaceholder = 'جستجو...',
+  enableSelectColumns = false,
+  searchValue,
+  searchPlaceholder,
   onSearchChange,
   sortingState,
   onSortingChange,
@@ -86,7 +96,9 @@ export function DataTable<TData>({
 }: Props<TData>) {
   // اگه onSortingChange پاس داده شده → server-side، وگرنه local state
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
-
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const tTable = useTranslations('Pages.MyPrompts.Table');
+  const locale = useLocale();
   const isServerSideSorting = !!onSortingChange;
   const sorting = isServerSideSorting ? (sortingState ?? []) : localSorting;
   const [localColumnFilters, setLocalColumnFilters] =
@@ -110,6 +122,7 @@ export function DataTable<TData>({
       setLocalColumnFilters(next);
     }
   };
+
   const handleSortingChange = (
     updater: SortingState | ((prev: SortingState) => SortingState)
   ) => {
@@ -123,10 +136,11 @@ export function DataTable<TData>({
 
   const table = useReactTable({
     data: data ?? [],
-    columns,
-    state: { sorting, columnFilters },
+    columns: Columns,
+    state: { sorting, columnFilters, columnVisibility },
     onColumnFiltersChange: handleColumnFiltersChange,
     onSortingChange: handleSortingChange,
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: isServerSideSorting ? undefined : getSortedRowModel(),
@@ -134,14 +148,14 @@ export function DataTable<TData>({
   });
 
   const rows = table.getRowModel().rows;
-  const colCount = columns.length;
+  const colCount = Columns.length;
 
   return (
     <div
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
       {/* Search */}
-      <div>
+      <div className="flex justify-between">
         {enableSearch && (
           <SearchBox
             value={searchValue}
@@ -149,6 +163,32 @@ export function DataTable<TData>({
             onChange={(e) => onSearchChange?.(e.target.value)}
             className="max-w-sm"
           />
+        )}
+        
+        {enableSelectColumns && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">{tTable('showCoulomns')}</Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    dir={locale == 'en' ? 'ltr' : 'rtl'}
+                    key={column.id}
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {tTable(column.id)}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
 

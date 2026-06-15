@@ -14,7 +14,7 @@ export default function Navbar() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const { isSignedIn } = useUser();
   return (
-    <div className="fixed top-0 z-70 h-20 w-full border-b bg-white/50 px-6 backdrop-blur-3xl dark:bg-black/40">
+    <nav className="fixed top-0 z-70 h-20 w-full border-b bg-white/50 px-6 backdrop-blur-3xl dark:bg-black/40">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
         <Logo />
         {isDesktop ? (
@@ -36,6 +36,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
