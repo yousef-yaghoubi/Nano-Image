@@ -12,7 +12,7 @@ import { useUser } from '@clerk/nextjs';
 export default function Navbar() {
   const { isSignedIn } = useUser();
   return (
-    <nav className="fixed top-0 z-70 h-20 w-full border-b bg-white/50 px-6 backdrop-blur-3xl dark:bg-black/40">
+    <nav className="fixed top-0 z-70 h-20 w-full bg-white/50 px-6 backdrop-blur-3xl dark:bg-black/40">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between">
         <div className="hidden w-full items-center justify-around gap-2 md:flex">
           <Logo />

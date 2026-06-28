@@ -9,9 +9,7 @@ import { useSidebar } from '@/context/SidebarContext';
 import { cn } from '@/lib/utils';
 import {
   Files,
-  Logs,
   PanelLeft,
-  PanelLeftClose,
   PanelRight,
   Undo2,
   UsersRound,
@@ -55,10 +53,7 @@ export default function Sidebar() {
     isMobile,
   } = useSidebar();
 
-  /**
-   * اگر موبایل باز باشد
-   * محتوا باید کامل نمایش داده شود
-   */
+  
   const showContent = isExpanded || isMobileOpen;
 
   const handleToggle = () => {
@@ -82,7 +77,7 @@ export default function Sidebar() {
 
       <aside
         className={cn(
-          'bg-background z-50 flex h-screen flex-col justify-between transition-all duration-300',
+          'bg-background fixed inset-y-0 z-50 flex h-screen flex-col justify-between overflow-y-hidden transition-[left,right,width] duration-200 ease-linear',
 
           locale == 'en' ? 'rounded-r-2xl border-r' : 'rounded-l-2xl border-l',
           // Desktop
@@ -101,10 +96,12 @@ export default function Sidebar() {
           <div
             className={cn(
               'mb-6 flex items-center',
-              showContent ? 'justify-between' : 'justify-center'
+              showContent
+                ? 'justify-between'
+                : 'flex-col-reverse justify-center gap-2'
             )}
           >
-            {showContent && <Logo wordMark />}
+            <Logo  />
 
             <Button variant="outline" size="icon" onClick={handleToggle}>
               {isMobileOpen ? (

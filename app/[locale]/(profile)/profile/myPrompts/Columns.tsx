@@ -19,7 +19,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
-import EditStatusPromptAction from '@/components/shared/Prompts/EditStatusPromptAction';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
 
@@ -148,6 +147,9 @@ export function getColumns({
               : 'bg-secondary-foreground';
         return <Badge className={color}>{t(`status.${value}`)}</Badge>;
       },
+      meta: {
+        translationKey: 'status.status',
+      },
       enableSorting: false,
       filterFn: (row, _columnId, filterValue) => {
         if (filterValue === 'All') return true;
@@ -177,15 +179,10 @@ export function getColumns({
       header: t('buttons'),
       enableSorting: false,
       cell: (i) => {
-        const value = i.row.original.status;
         return (
           <div className="flex justify-center gap-3">
             <RemovePromptAction promptId={String(i.row.original._id)} />
             <EditPromptAction promptId={String(i.row.original._id)} />
-            <EditStatusPromptAction
-              promptId={String(i.row.original._id)}
-              status={value}
-            />
           </div>
         );
       },

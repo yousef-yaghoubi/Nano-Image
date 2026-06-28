@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db';
 import { Users } from '@/models';
 import { UserType } from '@/types/data';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { usersQuerySchema } from '@/validation/DTO';
-import { revalidateTag } from 'next/cache';
 
 export async function GET(req: Request) {
   try {
@@ -60,26 +58,7 @@ export async function GET(req: Request) {
       Users.find(where).sort(sort).skip(skip).limit(limit).lean<UserType[]>(),
     ]);
 
-    let users = usersRaw;
-
-    // if (favoriteId && users.length > 0) {
-    //   const promptIds = users.map((p) => p._id);
-    //   const favoritedEntries = await PromptFavorite.find({
-    //     favoriteId,
-    //     promptId: { $in: promptIds },
-    //   })
-    //     .select('promptId')
-    //     .lean();
-
-    //   const favoritedSet = new Set(
-    //     favoritedEntries.map((f) => f.promptId.toString())
-    //   );
-
-    //   users = users.map((p) => ({
-    //     ...p,
-    //     isFavorited: favoritedSet.has(p._id.toString()),
-    //   })) as typeof usersRaw;
-    // }
+    const users = usersRaw;
 
     const totalPages = Math.ceil(total / limit);
 

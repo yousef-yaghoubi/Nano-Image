@@ -165,9 +165,11 @@ export function DataTable<TData>({
         )}
 
         {enableSelectColumns && (
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">{tTable('showCoulomns')}</Button>
+              <Button variant="outline">
+                {tTable('showCoulomns')}
+              </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>

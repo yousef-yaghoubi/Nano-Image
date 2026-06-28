@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
-import Footer from '@/components/shared/Footer';
 import AllProviders from '@/providers/AllProviders';
 import { Suspense } from 'react';
-import Navbar from '@/components/shared/Navbar/Navbar';
 
 const yekanBakh = localFont({
   src: [

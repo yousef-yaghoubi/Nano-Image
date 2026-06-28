@@ -35,7 +35,7 @@ function EditStatusPromptAction({
       } else {
         toast.error(response && tMessages(response.message));
       }
-    } catch (error) {
+    } catch (_e) {
       toast.error(tMessages('generic'));
     } finally {
       setOpenModal(false);

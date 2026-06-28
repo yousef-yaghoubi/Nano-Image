@@ -30,10 +30,10 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
     {
       id: 3,
       title: t('dateDesc'),
-      value: 'createdAt desc',
+      value: 'date desc',
       icon: ClockArrowDown,
     },
-    { id: 4, title: t('dateAsc'), value: 'createdAt asc', icon: ClockArrowUp },
+    { id: 4, title: t('dateAsc'), value: 'date asc', icon: ClockArrowUp },
   ] as const;
   const params = useParams();
   const locale = params.locale;
@@ -49,7 +49,7 @@ export function Sort({ sortQuery, setSortQuery }: SortDropdownProps) {
   const displaySortText = currentSortOption?.title || t('likeDesc');
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="cursor-pointer outline-none" asChild>
         <button
           className="flex min-w-fit items-center justify-center gap-2 text-lg font-medium"

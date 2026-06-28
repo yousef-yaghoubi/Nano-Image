@@ -3,6 +3,7 @@
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
+import { Users } from '@/models';
 
 type EditProfileInput = {
   firstName?: string | null;
@@ -84,6 +85,18 @@ export async function AddImage({ file }: { file: File | Blob }) {
       };
     }
 
+    await Users.findOneAndUpdate(
+      {
+        clerkId: clerkUserId,
+      },
+
+      {
+        $set: {
+          image: updatedUser.imageUrl,
+        },
+      }
+    );
+
     // Revalidate profile pages to refresh the avatar
     revalidatePath('/fa/profile');
     revalidatePath('/en/profile');
@@ -95,7 +108,6 @@ export async function AddImage({ file }: { file: File | Blob }) {
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
-    console.error('AddImage error:', error);
     return {
       status: false,
       message: t('generic'),

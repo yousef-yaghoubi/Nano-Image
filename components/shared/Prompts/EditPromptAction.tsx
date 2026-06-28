@@ -20,7 +20,6 @@ const initialValues: PromptValues = {
 function EditPromptAction({ promptId }: { promptId: string }) {
   const t = useTranslations('Actions');
   const tForm = useTranslations('Forms');
-  const tMessages = useTranslations('Messages');
   const { mutateAsync, isPending } = useEditPrompt();
   const [openModal, setOpenModal] = useState(false);
 
@@ -71,7 +70,7 @@ function EditPromptAction({ promptId }: { promptId: string }) {
           setOpenModal(false);
           return {
             status: result.status,
-            message: tMessages(result.message),
+            message: result.message,
           };
         }}
       />

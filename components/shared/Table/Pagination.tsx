@@ -170,7 +170,7 @@ export function Pagination({
             value={limit.toString()}
           >
             <SelectTrigger
-              className="w-30"
+              className="bg-background w-30"
               dir={locale == 'en' ? 'ltr' : 'rtl'}
             >
               <SelectValue />

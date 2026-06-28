@@ -24,7 +24,7 @@ export default function LangSwicher() {
 
   return (
     <div>
-      <DropdownMenu dir={activeLocale === 'en' ? 'ltr' : 'rtl'}>
+      <DropdownMenu dir={activeLocale === 'en' ? 'ltr' : 'rtl'} modal={false}>
         <DropdownMenuTrigger asChild>
           <Button
             size="icon"

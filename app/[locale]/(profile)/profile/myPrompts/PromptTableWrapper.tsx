@@ -93,7 +93,9 @@ export default function PromptsWrapper() {
       enableSearch
       searchValue={searchInput}
       onSearchChange={setSearchInput}
-      searchPlaceholder={t('searchPlaceholder')}
+      searchPlaceholder={t('searchPlaceholder', {
+        value: `${t('title')} , ${t('prompt')}`,
+      })}
       // Empty state
       emptyMessage={t('messages.emptyMessage')}
       emptyDescription={t('messages.emptyDescription')}

@@ -14,7 +14,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
-import EditStatusPromptAction from '@/components/shared/Prompts/EditStatusPromptAction';
 import EditRoleUserAction from '@/components/pages/admin/users/EditRoleUserAction';
 import { RoleType } from '@/models/enums';
 
@@ -103,7 +102,7 @@ export function getColumns({
       enableHiding: true,
       maxSize: 100,
     }),
-    
+
     columnHelper.accessor('role', {
       cell: (i) => (
         <strong className="whitespace-normal">

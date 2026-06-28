@@ -2,7 +2,6 @@ import { Heart, Plus, User } from 'lucide-react';
 import { FilterOption } from '@/types/filter';
 import { ProfileMenuItem, StatusPrompt } from '@/types/data';
 import { SlideContent } from '@/types/slider';
-import { getTranslations } from 'next-intl/server';
 import { RoleType } from '@/models/enums';
 
 export const FILTERING_OPTIONS: FilterOption[] = [
