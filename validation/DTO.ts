@@ -65,12 +65,58 @@ export const promptsQuerySchema = yup.object({
       }
       return value.trim();
     }),
-  isPublic: yup
+  status: yup
     .string()
     .nullable()
     .transform((value) => {
       if (!value || value === 'undefined') return null;
       if (['True', 'False', 'Pending'].includes(value)) return value;
+      return null;
+    }),
+});
+
+export const usersQuerySchema = yup.object({
+  page: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .integer()
+    .positive()
+    .default(1),
+  limit: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .integer()
+    .positive()
+    .max(100)
+    .default(24),
+  sort: yup
+    .string()
+    .nullable()
+    .oneOf([
+      'firstName asc',
+      'firstName desc',
+      'createdAt asc',
+      'createdAt desc',
+      'lastName asc',
+      'lastName desc',
+    ])
+    .default('firstName desc'),
+  search: yup
+    .string()
+    .nullable()
+    .transform((value) => {
+      // ابتدا چک میکنیم مقدار وجود داشته باشد (null نباشد)
+      if (!value || value === 'undefined' || value.trim() === '') {
+        return null;
+      }
+      return value.trim();
+    }),
+  role: yup
+    .string()
+    .nullable()
+    .transform((value) => {
+      if (!value || value === 'undefined') return null;
+      if (['MEMBER', 'ADMIN', 'SUPER_ADMIN'].includes(value)) return value;
       return null;
     }),
 });

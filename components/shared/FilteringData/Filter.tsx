@@ -10,13 +10,6 @@ import { Sort } from '../SortingData/Sort';
 import { useTranslations } from 'next-intl';
 import { FILTERING_OPTIONS } from '@/lib/data';
 
-// ==========================
-// Constants
-// ==========================
-
-// ==========================
-// FilterDrawer Component
-// ==========================
 interface FilterDrawerProps {
   searchQuery: string;
   setSearchQuery: (value: string) => void;

@@ -2,8 +2,8 @@
   "data": {
     "filter": "Filter",
     "sort": "Sort",
-    "activeFilter": "Activity Filters",
-    "clearAll": "Clear All"
+    "activeFilter": "All filters",
+    "clearAll": "Clear all"
   },
   "Pagination": {
     "next": "Next",
@@ -11,19 +11,19 @@
   },
   "Navbar": {
     "home": "Home",
-    "about": "About Me",
+    "about": "About me",
     "favorite": "Favorites",
-    "newPrompt": "New Prompt",
+    "newPrompt": "New prompt",
     "prompts": "Prompts"
   },
   "Auth": {
-    "signup": "Sign Up",
-    "signin": "Login",
-    "signout": "Sign Out"
+    "signup": "Sign up",
+    "signin": "Sign in",
+    "signout": "Sign out"
   },
   "Footer": {
-    "copyright": "Built with ❤️ by",
-    "name": "Yousef Yaghoubi"
+    "copyright": "Made with ❤️ by",
+    "name": "Yousef Yaghobi"
   },
   "Languages": {
     "fa": "Persian",
@@ -33,21 +33,21 @@
   "Filter": {
     "sorts": {
       "name": "Sort",
-      "likeDesc": "Like Desc",
-      "likeAsc": "Like Asc",
-      "dateDesc": "Date Desc",
-      "dateAsc": "Date Asc"
+      "likeDesc": "Most liked",
+      "likeAsc": "Least liked",
+      "dateDesc": "Newest",
+      "dateAsc": "Oldest"
     },
     "filter": {
       "name": "Filter",
-      "title": "Filter Prompts",
+      "title": "Prompt filters",
       "description": "Filters help you quickly find prompts by style, mood, and genre.",
       "header": {
-        "Artistic Styles": "Artistic Styles",
-        "Corporate & professional": "Corporate & Professional",
-        "Genre & themes": "Genre & Themes",
-        "Mood & tone": "Mood & Tone",
-        "Optional add-ons": "Optional Add-ons"
+        "Artistic Styles": "Artistic styles",
+        "Corporate & professional": "Corporate & professional",
+        "Genre & themes": "Genre & themes",
+        "Mood & tone": "Mood & tone",
+        "Optional add-ons": "Optional add-ons"
       },
       "tag": {
         "Search": "Search:",
@@ -56,11 +56,11 @@
         "Realistic": "Realistic",
         "Architecture": "Architecture",
         "Cartoon": "Cartoon",
-        "3D Render": "3D Render",
+        "3D Render": "3D render",
         "Vector": "Vector",
         "Watercolor": "Watercolor",
-        "Sketch / Line Art": "Sketch / Line Art",
-        "Oil Painting": "Oil Painting",
+        "Sketch / Line Art": "Sketch / line art",
+        "Oil Painting": "Oil painting",
         "Abstract": "Abstract",
         "Surreal": "Surreal",
         "Fashion": "Fashion",
@@ -70,28 +70,28 @@
         "Business": "Business",
         "Minimalist": "Minimalist",
         "Modern": "Modern",
-        "Product / Poster": "Product / Poster",
+        "Product / Poster": "Product / poster",
         "Logo": "Logo",
         "Infographic": "Infographic",
-        "Concept art": "Concept Art",
+        "Concept art": "Concept art",
         "Fantasy": "Fantasy",
         "Sci-Fi": "Sci-Fi",
         "Cyberpunk": "Cyberpunk",
-        "Retro / Vintage": "Retro / Vintage",
+        "Retro / Vintage": "Retro / vintage",
         "Grunge": "Grunge",
-        "Vibrant / Colorful": "Vibrant / Colorful",
+        "Vibrant / Colorful": "Vibrant / colorful",
         "Elegant": "Elegant",
-        "Dark / Moody": "Dark / Moody",
+        "Dark / Moody": "Dark / moody",
         "Glitch": "Glitch",
         "Neon": "Neon",
-        "Flat Design": "Flat Design"
+        "Flat Design": "Flat design"
       },
-      "searchPlaceholder": "Search name or prompt..."
+      "searchPlaceholder": "Search by name or prompt (English)..."
     }
   },
   "Product": {
-    "copy": "copy",
-    "toastCopy": "Prompt copied to clipboard!"
+    "copy": "Copy",
+    "toastCopy": "Prompt copied to clipboard."
   },
   "Theme": {
     "dark": "Dark",
@@ -100,106 +100,93 @@
   },
   "Pages": {
     "MyFavorites": {
-      "notAuthenticated": "You need to sign in to see your favorite prompts.",
-      "head": "My Favorites"
+      "notAuthenticated": "You must sign in to view your favorite prompts.",
+      "head": "My favorites"
     },
     "MyPrompts": {
-      "notAuthenticated": "You need to sign in to see your prompts.",
-      "head": "My Prompts",
-      "Table": {
-        "showCoulomns": "Show Coulomns",
-        "pageOf": "Page {page} of {total}",
-        "rows": "rows",
-        "rowsPerPage": "Rows per page",
-        "previous": "Previous",
-        "next": "Next",
-        "noResults": "No results.",
-        "index": "Index",
-        "title": "Title",
-        "image": "Image",
-        "tags": "Tags",
-        "seeTags": "See tags",
-        "likes": "Likes",
-        "status": {
-          "status": "Status",
-          "True": "Approved",
-          "False": "Not Approve",
-          "Pending": "Pending",
-          "All": "All"
-        },
-        "isPublic": "status",
-        "buttons": "buttons",
-        "searchPlaceholder": "Search title or prompt...",
-        "messages": {
-          "emptyMessage": "No prompts found.",
-          "emptyDescription": "To add a new prompt, go to the 'New Prompt' page."
-        },
-        "createdAt": "created"
-      }
+      "notAuthenticated": "You must sign in to view your prompts.",
+      "head": "My prompts"
     },
     "Profile": {
       "Rename": {
-        "title": "Rename",
-        "firstName": "First Name:",
-        "lastName": "Last Name:",
-        "save": "Submit"
+        "title": "Change name",
+        "firstName": "First name:",
+        "lastName": "Last name:",
+        "save": "Save"
       },
       "Image": {
-        "title": "Upload Profile",
+        "title": "Upload profile",
         "image": "Image:"
       }
     },
     "Home": {
       "head": "This is where ideas turn into images",
-      "description": "No technical knowledge needed — just copy the prompt and use it",
-      "more": "See More...",
+      "description": "No technical knowledge needed — just copy and use the prompt.",
+      "more": "More...",
       "logo": "Nano Image",
       "Badges": {
         "prompts": "Prompts",
         "tags": "Tags",
         "likes": "Likes"
       },
-      "headPopular": "Popular Prompts",
-      "descPopular": "The most lovely prompts posted by users"
+      "headPopular": "Popular prompts",
+      "descPopular": "The most loved prompts shared by users"
+    },
+    "Admin": {
+      "users": {
+        "users": "Users"
+      },
+      "prompts": {
+        "prompts": "Prompts"
+      },
+      "back": {
+        "back": "Back to home"
+      }
     }
   },
   "Messages": {
     "404": {
-      "title": "Page Not Found",
+      "title": "Page not found",
       "description": "Sorry, the page you are looking for does not exist.",
-      "backHome": "Back to Home"
+      "backHome": "Back to home"
     },
-    "addToFavorite": "Added to favorites successfully.",
-    "removeFromFavorite": "Removed from favorites successfully.",
-    "isNotAuthenticated": "You need to sign in to perform this action.",
-    "userNotFound": "User not found in database. Please ensure your account is set up correctly.",
+    "dontAccess": "You do not have permission to perform this action.",
+    "editStatus": "The prompt status was changed successfully.",
+    "addToFavorite": "Successfully added to favorites.",
+    "removeFromFavorite": "Successfully removed from favorites.",
+    "isNotAuthenticated": "You must sign in to perform this action.",
+    "userNotFound": "User not found. Please make sure your account is set up correctly.",
     "generic": "An error occurred. Please try again.",
-    "noFile": "File not uploaded. Please try again.",
-    "createPrompt": "Prompt created successfully",
-    "editPrompt": "Prompt edited successfully",
-    "profileUpdated": "Profile updated successfully",
-    "imageUpdated": "Profile image updated successfully",
-    "loading": "Loading..."
+    "noFile": "No file was uploaded. Please try again.",
+    "createPrompt": "Prompt created successfully.",
+    "editPrompt": "Prompt updated successfully.",
+    "profileUpdated": "Profile updated successfully.",
+    "imageUpdated": "Profile image updated successfully.",
+    "loading": "Loading...",
+    "emptyMessageUsers": "Users not found",
+    "emptyMessagePrompts": "Prompts not found",
+    "emptyDescriptionPrompts": "To add a prompt, go to the 'New Prompt' page",
+    "editRole": "The role user was changed successfully."
   },
   "Forms": {
-    "minLengthName": "name must be at least 3 characters long.",
-    "maxLengthName": "name must be at most 40 characters long.",
-    "minLengthLastName": "last name must be at least 3 characters long.",
-    "maxLengthLastName": "last name must be at most 40 characters long.",
-    "minLengthDesc": "prompt must be at least 10 characters long.",
-    "isRequired": "this field is required.",
+    "minLengthName": "Name must be at least 3 characters long.",
+    "maxLengthName": "Name must be at most 40 characters long.",
+    "minLengthLastName": "Last name must be at least 3 characters long.",
+    "maxLengthLastName": "Last name must be at most 40 characters long.",
+    "minLengthDesc": "Prompt must be at least 10 characters long.",
+    "isRequired": "This field is required.",
     "Label": {
       "image": "Image",
-      "name": "Name Prompt",
+      "name": "Prompt name",
       "prompt": "Prompt",
       "tags": "Tags"
     }
   },
   "Profile": {
-    "myAccount": "my Account",
+    "myAccount": "My account",
     "profile": "Profile",
-    "myFavorites": "My Favorites",
-    "myPrompts": "My Prompts",
+    "myFavorites": "My favorites",
+    "myPrompts": "My prompts",
     "LogOut": {
       "title": "Do you want to sign out of your account?",
       "logOut": "Sign out",
@@ -208,17 +195,68 @@
   },
   "Actions": {
     "remove": {
-      "remove": "remove",
-      "title": "Do you want to remove this prompt?",
-      "yes": "Remove it",
+      "remove": "Remove",
+      "title": "Are you sure you want to delete this prompt?",
+      "yes": "Delete it",
       "no": "No"
     },
     "edit": {
-      "edit": "edit"
+      "edit": "Edit"
+    },
+    "editStatus": {
+      "editStatus": "Edit status",
+      "title": "Change prompt status to:",
+      "True": "Approved",
+      "False": "Not approved",
+      "Pending": "Pending"
+    },
+    "editRoleUser": {
+      "editRoleUser": "Edit role",
+      "title": "Change role user to:"
     }
   },
   "Buttons": {
     "submit": "Submit",
     "loading": "Loading..."
+  },
+  "Table": {
+    "showCoulomns": "Show columns",
+    "pageOf": "Page {page} of {total}",
+    "rows": "rows",
+    "rowsPerPage": "Rows per page",
+    "previous": "Previous",
+    "next": "Next",
+    "noResults": "No results found.",
+    "index": "Index",
+    "title": "Title",
+    "prompt": "Prompt",
+    "image": "Image",
+    "tags": "Tags",
+    "seeTags": "View tags",
+    "likes": "Likes",
+    "status": {
+      "status": "Status",
+      "True": "Approved",
+      "False": "Not approved",
+      "Pending": "Pending",
+      "All": "All"
+    },
+    "buttons": "Actions",
+    "searchPlaceholder": "Search by {value} (English)...",
+    "messages": {
+      "emptyMessage": "No prompts found.",
+      "emptyDescription": "To add a new prompt, go to the 'New prompt' page."
+    },
+    "createdAt": "Created at",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "role": {
+      "role": "Role",
+      "All": "All",
+      "ADMIN": "Admin",
+      "MEMBER": "Member",
+      "SUPER_ADMIN": "Super admin"
+    }
   }
 }

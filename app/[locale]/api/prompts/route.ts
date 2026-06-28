@@ -21,7 +21,7 @@ export async function GET(req: Request) {
         sort: searchParams.get('sort'),
         tags: searchParams.get('tags'),
         search: searchParams.get('search'),
-        isPublic: searchParams.get('isPublic'),
+        status: searchParams.get('status'),
       });
     } catch (err) {
       const errorMessage =
@@ -38,11 +38,14 @@ export async function GET(req: Request) {
       sort: sortParam,
       tags: rawTags,
       search,
-      isPublic,
+      status,
     } = validatedData;
     const skip = (page - 1) * limit;
 
     const { userId: clerkId } = await auth();
+
+    // console.log('clerkId:', clerkId);
+
     let favoriteId: string | null = null;
 
     if (clerkId) {
@@ -74,8 +77,8 @@ export async function GET(req: Request) {
       ];
     }
 
-    if (isPublic && isPublic !== 'All') {
-      where.isPublic = isPublic;
+    if (status && status !== 'All') {
+      where.status = status;
     }
 
     const sort: Record<string, SortOrder> = {};
@@ -84,7 +87,6 @@ export async function GET(req: Request) {
     else if (sortParam === 'createdAt asc') sort.createdAt = 1;
     else sort.likes = -1;
 
-    console.log('where:', where);
     const [total, promptsRaw] = await Promise.all([
       Prompts.countDocuments(where),
       Prompts.find(where)

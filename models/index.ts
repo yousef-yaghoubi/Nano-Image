@@ -1,7 +1,8 @@
 // @/models/index.ts
-import { IFavorite, IUser, IPrompt, IPromptFavorite } from '@/types/models';
-import { IsPublic, Role } from './enums';
+import { IFavorite, IPrompt, IPromptFavorite } from '@/types/models';
+import { status, Role } from './enums';
 import mongoose, { Schema } from 'mongoose';
+import { UserType } from '@/types/data';
 
 // ---------------------- PROMPTS SCHEMA ----------------------
 const promptsSchema = new Schema<IPrompt>(
@@ -21,10 +22,6 @@ const promptsSchema = new Schema<IPrompt>(
       type: String,
       required: true,
     },
-    imageBlur: {
-      type: String,
-      default: '',
-    },
     likes: {
       type: Number,
       required: true,
@@ -41,10 +38,10 @@ const promptsSchema = new Schema<IPrompt>(
       default: [],
       index: true,
     },
-    isPublic: {
+    status: {
       type: String,
-      enum: Object.values(IsPublic),
-      default: IsPublic.Pending,
+      enum: Object.values(status),
+      default: status.Pending,
     },
   },
   {
@@ -69,7 +66,7 @@ promptsSchema.virtual('favoritesCount', {
 });
 
 // ---------------------- USERS SCHEMA ----------------------
-const usersSchema = new Schema<IUser>(
+const usersSchema = new Schema<UserType>(
   {
     clerkId: {
       type: String,
@@ -83,6 +80,11 @@ const usersSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
       index: true,
+    },
+    image: {
+      type: String,
+      required: false,
+      trim: true,
     },
     firstName: {
       type: String,
@@ -172,7 +174,7 @@ export const Prompts =
   mongoose.models.Prompts || mongoose.model<IPrompt>('Prompts', promptsSchema);
 
 export const Users =
-  mongoose.models.Users || mongoose.model<IUser>('Users', usersSchema);
+  mongoose.models.Users || mongoose.model<UserType>('Users', usersSchema);
 
 export const Favorite =
   mongoose.models.Favorite ||

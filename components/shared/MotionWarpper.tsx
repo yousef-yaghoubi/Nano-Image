@@ -25,3 +25,4 @@ export const MotionButton = createMotion(motion.button);
 export const MotionSpan = createMotion(motion.span);
 export const MotionP = createMotion(motion.p);
 export const MotionH1 = createMotion(motion.h1);
+export const MotionLi = createMotion(motion.li);

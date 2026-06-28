@@ -97,7 +97,7 @@ export function DataTable<TData>({
   // اگه onSortingChange پاس داده شده → server-side، وگرنه local state
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const tTable = useTranslations('Pages.MyPrompts.Table');
+  const tTable = useTranslations('Table');
   const locale = useLocale();
   const isServerSideSorting = !!onSortingChange;
   const sorting = isServerSideSorting ? (sortingState ?? []) : localSorting;
@@ -155,16 +155,15 @@ export function DataTable<TData>({
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
       {/* Search */}
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-2">
         {enableSearch && (
           <SearchBox
             value={searchValue}
             placeholder={searchPlaceholder}
             onChange={(e) => onSearchChange?.(e.target.value)}
-            className="max-w-sm"
           />
         )}
-        
+
         {enableSelectColumns && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -184,7 +183,7 @@ export function DataTable<TData>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {tTable(column.id)}
+                    {tTable(column.columnDef.meta?.translationKey || column.id)}
                   </DropdownMenuCheckboxItem>
                 ))}
             </DropdownMenuContent>

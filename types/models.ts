@@ -1,5 +1,5 @@
 import { Types, Document } from 'mongoose';
-import type { IsPublicType, RoleType } from '@/models/enums';
+import type { statusType, RoleType } from '@/models/enums';
 // ---------------------- USER TYPES ----------------------
 export interface IUser extends Document {
   _id: Types.ObjectId;
@@ -29,11 +29,10 @@ export interface IPrompt extends Document {
   title: string;
   prompt?: string;
   image: string;
-  imageBlur?: string;
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];
-  isPublic: IsPublicType;
+  status: statusType;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,7 +46,7 @@ export type PromptLean = {
   likes: number;
   creatorId: Types.ObjectId;
   tags: string[];
-  isPublic: IsPublicType;
+  status: statusType;
   createdAt: Date;
   updatedAt: Date;
 };

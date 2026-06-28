@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import clsx from 'clsx';
 export default function SearchBox(control: React.ComponentProps<'input'>) {
   return (
-    <div className="mb-2 *:not-first:mt-2">
+    <div className="mb-2 *:not-first:mt-2 w-full">
       <div className="relative">
         <Input
           placeholder="Search in title and prompt..."

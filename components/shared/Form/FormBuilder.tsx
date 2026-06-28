@@ -38,7 +38,7 @@ function FormBuilder<T extends FormikValues>({
       initial={motionProps?.initial ?? { opacity: 0, x: -20 }}
       animate={motionProps?.animate ?? { opacity: 1, x: 0 }}
       transition={motionProps?.transition ?? { duration: 0.4 }}
-      className='w-full'
+      className="w-full"
     >
       <Formik<T>
         initialValues={initialValues}
@@ -50,13 +50,13 @@ function FormBuilder<T extends FormikValues>({
 
           if (result) {
             if (result.status) {
-              if (result.message) toast.success(result.message);
+              if (result.message) toast.success(tMessages(result.message));
               if (resetOnSuccess) {
                 helpers.resetForm();
                 helpers.setValues(initialValues);
               }
             } else {
-              if (result.message) toast.error(result.message);
+              if (result.message) toast.error(tMessages(result.message));
             }
           }
 

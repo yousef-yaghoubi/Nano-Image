@@ -1,4 +1,5 @@
 import type { FetchPromptsParams } from '@/services/prompts';
+import { FetchUsersParams } from '@/services/users';
 
 export const queryKeys = {
   prompts: {
@@ -10,5 +11,11 @@ export const queryKeys = {
   },
   quantities: {
     all: ['quantities'] as const,
+  },
+  users: {
+    all: ['users'] as const,
+    lists: () => [...queryKeys.users.all, 'list'] as const,
+    list: (params: FetchUsersParams) =>
+      [...queryKeys.users.lists(), params] as const,
   },
 };

@@ -105,37 +105,7 @@
     },
     "MyPrompts": {
       "notAuthenticated": "برای دیدن پرامپت های خود باید وارد حساب کاربری شوید.",
-      "head": "پرامپت های من",
-      "Table": {
-        "showCoulomns": "نمایش ستون ها",
-        "pageOf": "صفحه {page} از {total}",
-        "rows": "ردیف",
-        "rowsPerPage": "تعداد در هر صفحه",
-        "previous": "قبلی",
-        "next": "بعدی",
-        "noResults": "نتیجه‌ای یافت نشد.",
-        "index": "ردیف",
-        "title": "عنوان",
-        "image": "تصویر",
-        "tags": "تگ‌ها",
-        "seeTags": "مشاهده تگ‌ها",
-        "likes": "لایک",
-        "status": {
-          "status": "وضعیت",
-          "True": "تایید",
-          "False": "تایید نشده",
-          "Pending": "انتظار",
-          "All": "همه"
-        },
-        "buttons": "مدیریت",
-        "isPublic": "وضعیت",
-        "searchPlaceholder": "جستجو بر اساس اسم یا پرامپت (انگلیسی)...",
-        "messages": {
-          "emptyMessage": "هیچ پرامپتی یافت نشد.",
-          "emptyDescription": "برای افزودن پرامپت جدید، به صفحه 'پرامپت جدید' بروید."
-        },
-        "createdAt": "تاریخ ساخت"
-      }
+      "head": "پرامپت های من"
     },
     "Profile": {
       "Rename": {
@@ -161,6 +131,17 @@
       },
       "headPopular": "پرامپت های پرطرفدار",
       "descPopular": "دوست داشتنی ترین پیام های ارسال شده توسط کاربران"
+    },
+    "Admin": {
+      "users": {
+        "users": "کاربرها"
+      },
+      "prompts": {
+        "prompts": "پرامپت‌ها"
+      },
+      "back": {
+        "back": "بازگشت به صفحه اصلی"
+      }
     }
   },
   "Messages": {
@@ -169,6 +150,8 @@
       "description": "متاسفیم، صفحه‌ای که به دنبال آن هستید وجود ندارد.",
       "backHome": "بازگشت به صفحه اصلی"
     },
+    "dontAccess": "شما دسترسی برای انجام این عمل را ندارید.",
+    "editStatus": "وضعیت پرامپ با موفقیت تغییر کرد.",
     "addToFavorite": "با موفقیت به علاقه مندی ها اضافه شد.",
     "removeFromFavorite": "با موفقیت از علاقه مندی ها حذف شد.",
     "isNotAuthenticated": "برای انجام این عملیات باید وارد حساب کاربری شوید.",
@@ -179,7 +162,11 @@
     "editPrompt": "پرامپت با موفقیت ویرایش شد.",
     "profileUpdated": "پروفایل با موفقیت به‌روزرسانی شد.",
     "imageUpdated": "تصویر پروفایل با موفقیت به‌روزرسانی شد.",
-    "loading": "درحال بارگذاری..."
+    "loading": "درحال بارگذاری...",
+    "emptyMessageUsers": "کاربری پیدا نشد",
+    "emptyMessagePrompts": "پرامپتی پیدا نشد",
+    "emptyDescriptionPrompts": "برای افزودن پرامپت، به صفحه «پرامپت جدید» بروید",
+    "editRole": "نقش کاربر با موفقیت تغییر کرد."
   },
   "Forms": {
     "minLengthName": "نام حداقل باید 3 کاراکتر داشته باشه.",
@@ -215,10 +202,61 @@
     },
     "edit": {
       "edit": "ویرایش"
+    },
+    "editStatus": {
+      "editStatus": "ویرایش وضعیت",
+      "title": "تغییر وضغیت پرامپت به:",
+      "True": "تایید شده",
+      "False": "تایید نشده",
+      "Pending": "انتظار"
+    },
+    "editRoleUser": {
+      "editRoleUser": "ویرایش نقش",
+      "title": "تغییر نقش کاربر به:"
     }
   },
   "Buttons": {
     "submit": "ثبت",
     "loading": "درحال بارگذاری..."
+  },
+  "Table": {
+    "showCoulomns": "نمایش ستون ها",
+    "pageOf": "صفحه {page} از {total}",
+    "rows": "ردیف",
+    "rowsPerPage": "تعداد در هر صفحه",
+    "previous": "قبلی",
+    "next": "بعدی",
+    "noResults": "نتیجه‌ای یافت نشد.",
+    "index": "ردیف",
+    "title": "عنوان",
+    "prompt": "پرامپت",
+    "image": "تصویر",
+    "tags": "تگ‌ها",
+    "seeTags": "مشاهده تگ‌ها",
+    "likes": "لایک",
+    "status": {
+      "status": "وضعیت",
+      "True": "تایید",
+      "False": "تایید نشده",
+      "Pending": "انتظار",
+      "All": "همه"
+    },
+    "buttons": "مدیریت",
+    "searchPlaceholder": "جستجو بر اساس {value} (انگلیسی)...",
+    "messages": {
+      "emptyMessage": "هیچ پرامپتی یافت نشد.",
+      "emptyDescription": "برای افزودن پرامپت جدید، به صفحه 'پرامپت جدید' بروید."
+    },
+    "createdAt": "تاریخ ساخت",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "email": "ایمیل",
+    "role": {
+      "role": "نقش",
+      "All": "همه",
+      "ADMIN": "ادمین",
+      "MEMBER": "کاربر",
+      "SUPER_ADMIN": "سوپر ادمین"
+    }
   }
 }

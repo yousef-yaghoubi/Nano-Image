@@ -5,6 +5,7 @@ import { ThemeProvider } from './ThemeProvider';
 import QueryProvider from './QueryProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 function AllProviders({
   children,
@@ -23,9 +24,11 @@ function AllProviders({
           disableTransitionOnChange
         >
           <NextIntlClientProvider>
-            <Toaster position={locale == 'en' ? 'top-left' : 'top-right'} />
-            <NextTopLoader color="var(--primary)" showSpinner={false} />
-            {children}
+            <TooltipProvider>
+              <Toaster position={locale == 'en' ? 'top-left' : 'top-right'} />
+              <NextTopLoader color="var(--primary)" showSpinner={false} />
+              {children}
+            </TooltipProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </QueryProvider>

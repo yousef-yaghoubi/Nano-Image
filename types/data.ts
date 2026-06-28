@@ -1,4 +1,4 @@
-import { IsPublicType } from '@/models/enums';
+import { statusType } from '@/models/enums';
 import { ObjectId } from 'mongoose';
 
 export interface DataType<T> {
@@ -20,7 +20,6 @@ export interface PromptType {
   title: string;
   prompt: string;
   image: string;
-  imageBlur: string;
   likes: number;
   layout: string;
   creatorName: string;
@@ -28,10 +27,22 @@ export interface PromptType {
   notes: null | string;
   tags: null | string[];
   isLiked: boolean;
-  isPublic: IsPublicType;
+  status: statusType;
   isFavorited: boolean;
   createdAt: string;
   updatedAt: string;
+}
+export interface UserType {
+  _id: ObjectId;
+  clerkId: string;
+  createdAt: string;
+  email: string;
+  firstName: string;
+  image: string;
+  lastName: string;
+  role: string;
+  updatedAt: string;
+  waitForAdmin: boolean;
 }
 
 export interface UploadImageType {
@@ -63,4 +74,9 @@ export interface ProfileMenuItem {
   title: string;
   link: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
+}
+
+export interface StatusPrompt {
+  title: string;
+  value: 'True' | 'False' | 'Pending';
 }

@@ -9,3 +9,11 @@ declare global {
     role: 'ADMIN' | 'MEMBER' | 'SUPER_ADMIN';
   }
 }
+
+import '@tanstack/react-table';
+
+declare module '@tanstack/react-table' {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    translationKey?: string;
+  }
+}

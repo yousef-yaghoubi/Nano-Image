@@ -1,5 +1,4 @@
 'use client';
-
 import { Skeleton } from '@/components/ui/skeleton';
 import useQuantities from '@/hooks/queries/useQuantities';
 import { Counter } from './Counter';

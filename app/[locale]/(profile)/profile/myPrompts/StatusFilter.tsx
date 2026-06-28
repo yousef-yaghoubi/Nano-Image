@@ -13,7 +13,7 @@ interface StatusFilterProps {
 }
 
 export function StatusFilter({ table, t }: StatusFilterProps) {
-  const column = table.getColumn('isPublic');
+  const column = table.getColumn('status');
   const selected = (column?.getFilterValue() as string[]) ?? [];
 
   const toggle = (value: string) => {

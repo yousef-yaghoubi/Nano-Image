@@ -5,6 +5,7 @@ import usePrompts from '@/hooks/queries/usePrompts';
 import ShowPrompts from './ShowPrompts';
 import type { PromptsApi } from '@/services/prompts';
 import { DataType, PromptType } from '@/types/data';
+import { useTranslations } from 'next-intl';
 
 type ShowPromptsContainerProps = {
   gridClass?: string;
@@ -24,6 +25,7 @@ function ShowPromptsContainer({
   limit = 24,
 }: ShowPromptsContainerProps) {
   const searchParams = useSearchParams();
+  const tMessages = useTranslations('Messages');
 
   const page = searchParams.get('page') || '1';
   const search =
@@ -39,7 +41,9 @@ function ShowPromptsContainer({
       ? (searchParams.get('sort') as string)
       : '';
 
-  const { data, isLoading, isError, error } = usePrompts<DataType<PromptType[]>>({
+  const { data, isLoading, isError, error } = usePrompts<
+    DataType<PromptType[]>
+  >({
     page,
     tags,
     search,
@@ -51,7 +55,9 @@ function ShowPromptsContainer({
   if (isError) {
     return (
       <p className="text-destructive text-sm">
-        {error?.message || data?.message || 'Failed to load prompts'}
+        {tMessages(error?.message) ||
+          (data?.message && tMessages(data?.message)) ||
+          'Failed to load prompts'}
       </p>
     );
   }

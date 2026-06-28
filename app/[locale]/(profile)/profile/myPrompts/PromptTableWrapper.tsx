@@ -8,7 +8,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { getColumns } from './Columns';
 
 export default function PromptsWrapper() {
-  const t = useTranslations('Pages.MyPrompts.Table');
+  const t = useTranslations('Table');
   const tTags = useTranslations('Filter.filter.tag');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -47,7 +47,7 @@ export default function PromptsWrapper() {
     page: String(page),
     limit,
     search,
-    isPublic: columnFilters.find((f) => f.id === 'isPublic')?.value as
+    status: columnFilters.find((f) => f.id === 'status')?.value as
       | 'True'
       | 'False'
       | 'Pending'
@@ -56,25 +56,18 @@ export default function PromptsWrapper() {
     forApi: 'get-me/prompts',
   });
 
-  // const Columns = useMemo(
-  //   () => getColumns({ t, tTags, page, limit }),
-  //   [t, tTags, page, limit]
-  // );
-
   const Columns = getColumns({
     t,
     tTags,
     page,
     limit,
     statusFilter:
-      (columnFilters.find((f) => f.id === 'isPublic')?.value as string) ??
-      'All',
+      (columnFilters.find((f) => f.id === 'status')?.value as string) ?? 'All',
     locale: locale,
     onStatusFilterChange: (value) => {
-      setColumnFilters(value === 'All' ? [] : [{ id: 'isPublic', value }]);
+      setColumnFilters(value === 'All' ? [] : [{ id: 'status', value }]);
     },
   });
-  // console.log('Columns:', Columns);
 
   return (
     <DataTable

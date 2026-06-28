@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/drawer';
 import { useParams } from 'next/navigation';
 import clsx from 'clsx';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 type DrawerDialogProps = {
   children?: React.ReactNode;
@@ -26,7 +27,7 @@ type DrawerDialogProps = {
   title?: React.ReactNode;
   desc?: React.ReactNode;
   className?: string;
-
+  tooltipContent?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
@@ -37,6 +38,7 @@ export function DrawerDialog({
   title,
   desc,
   className,
+  tooltipContent,
   open,
   onOpenChange,
 }: DrawerDialogProps) {
@@ -61,7 +63,20 @@ export function DrawerDialog({
   if (isDesktop) {
     return (
       <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogTrigger asChild>
+          {tooltipContent ? (
+            <Tooltip>
+              <TooltipTrigger asChild onClick={() => handleOpenChange(true)}>
+                {trigger}
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{tooltipContent}</p>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            trigger
+          )}
+        </DialogTrigger>
 
         <DialogContent
           className={'no-scrollbar max-h-4/5 w-full overflow-scroll'}

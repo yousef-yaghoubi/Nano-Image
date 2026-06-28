@@ -2,6 +2,7 @@
 import { DrawerDialog } from '../DrawerDialog';
 import { Button } from '@/components/ui/button';
 import useDeletePrompt from '@/hooks/mutations/useDeletePrompt';
+import { Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -9,6 +10,8 @@ import { toast } from 'sonner';
 function RemovePromptAction({ promptId }: { promptId: string }) {
   const t = useTranslations('Actions');
   const tButtons = useTranslations('Buttons');
+  const tMessages = useTranslations('Messages');
+
   const [openModal, setOpenModal] = useState(false);
   const { mutate, isPending } = useDeletePrompt();
 
@@ -16,10 +19,10 @@ function RemovePromptAction({ promptId }: { promptId: string }) {
     mutate(promptId, {
       onSuccess: (data) => {
         setOpenModal(false);
-        toast.success(data.message);
+        toast.success(tMessages(data.message));
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(tMessages(error.message));
       },
     });
   };
@@ -32,7 +35,15 @@ function RemovePromptAction({ promptId }: { promptId: string }) {
     <DrawerDialog
       open={openModal}
       onOpenChange={setOpenModal}
-      trigger={<Button variant={'destructive'}>{t('remove.remove')}</Button>}
+      tooltipContent={t('remove.remove')}
+      trigger={
+        <Trash2
+          size={24}
+          color="red"
+          className="cursor-pointer"
+          onClick={() => setOpenModal(true)}
+        />
+      }
       title={t('remove.remove')}
       desc={t('remove.title')}
       className="flex flex-wrap gap-2"

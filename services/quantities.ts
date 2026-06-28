@@ -1,3 +1,4 @@
+import { getBaseUrl } from '@/lib/baseUrl';
 import { DataType } from '@/types/data';
 
 export interface QuantitiesData {
@@ -8,8 +9,9 @@ export interface QuantitiesData {
 export type QuantitiesResponse = DataType<QuantitiesData>;
 
 export async function fetchQuantities(): Promise<QuantitiesResponse> {
-  const res = await fetch('/api/prompts/quantity');
+  const res = await fetch(`${getBaseUrl()}/api/prompts/quantity`);
 
+  // console.log(getBaseUrl());
   if (!res.ok) {
     throw new Error(`Failed to fetch quantities: ${res.statusText}`);
   }

@@ -2,7 +2,7 @@
   "data": {
     "filter": "تصفية",
     "sort": "ترتيب",
-    "activeFilter": "الفلاتر النشطة",
+    "activeFilter": "جميع الفلاتر",
     "clearAll": "مسح الكل"
   },
   "Pagination": {
@@ -13,8 +13,8 @@
     "home": "الرئيسية",
     "about": "عني",
     "favorite": "المفضلة",
-    "newPrompt": "أمر جديد",
-    "prompts": "الأوامر"
+    "newPrompt": "موجه جديد",
+    "prompts": "الموجهات"
   },
   "Auth": {
     "signup": "إنشاء حساب",
@@ -22,7 +22,7 @@
     "signout": "تسجيل الخروج"
   },
   "Footer": {
-    "copyright": "صُنع بـ ❤️ بواسطة",
+    "copyright": "صنع بـ ❤️ بواسطة",
     "name": "يوسف يعقوبي"
   },
   "Languages": {
@@ -32,20 +32,20 @@
   },
   "Filter": {
     "sorts": {
-      "name": "ترتيب حسب",
-      "likeDesc": "الأكثر إعجاباً",
-      "likeAsc": "الأقل إعجاباً",
+      "name": "ترتيب",
+      "likeDesc": "الأكثر إعجابًا",
+      "likeAsc": "الأقل إعجابًا",
       "dateDesc": "الأحدث",
       "dateAsc": "الأقدم"
     },
     "filter": {
       "name": "تصفية",
-      "title": "تصفية الأوامر",
-      "description": "تساعدك الفلاتر في العثور بسرعة على الأوامر حسب النمط، والمزاج، والنوع.",
+      "title": "تصفية الموجهات",
+      "description": "تساعدك الفلاتر على العثور بسرعة على الموجهات حسب النمط والحالة والمجال.",
       "header": {
         "Artistic Styles": "الأنماط الفنية",
         "Corporate & professional": "الشركات والاحترافية",
-        "Genre & themes": "النوع والموضوعات",
+        "Genre & themes": "الأنواع والموضوعات",
         "Mood & tone": "المزاج والنبرة",
         "Optional add-ons": "إضافات اختيارية"
       },
@@ -54,44 +54,44 @@
         "Anime": "أنمي",
         "Cinematic": "سينمائي",
         "Realistic": "واقعي",
-        "Architecture": "هندسة معمارية",
+        "Architecture": "عمارة",
         "Cartoon": "كرتون",
-        "3D Render": "رندر ثلاثي الأبعاد",
-        "Vector": "فيكتور",
+        "3D Render": "ثلاثي الأبعاد",
+        "Vector": "متجه",
         "Watercolor": "ألوان مائية",
         "Sketch / Line Art": "رسم تخطيطي / فن الخط",
         "Oil Painting": "لوحة زيتية",
         "Abstract": "تجريدي",
         "Surreal": "سريالي",
-        "Fashion": "موضة",
+        "Fashion": "أزياء",
         "Photography": "تصوير فوتوغرافي",
         "Portrait": "بورتريه",
         "Corporate": "شركات",
         "Business": "أعمال",
-        "Minimalist": "تبسيطي",
+        "Minimalist": "بسيط",
         "Modern": "حديث",
-        "Product / Poster": "منتج / بوستر",
+        "Product / Poster": "منتج / ملصق",
         "Logo": "شعار",
         "Infographic": "إنفوجرافيك",
         "Concept art": "فن مفاهيمي",
-        "Fantasy": "خيالي",
+        "Fantasy": "فانتازيا",
         "Sci-Fi": "خيال علمي",
         "Cyberpunk": "سايبربانك",
-        "Retro / Vintage": "عتيق / فينتاج",
-        "Grunge": "جرانج",
-        "Vibrant / Colorful": "حيوي / ملون",
+        "Retro / Vintage": "رجعي / كلاسيكي",
+        "Grunge": "غرانج",
+        "Vibrant / Colorful": "نابض بالحياة / ملون",
         "Elegant": "أنيق",
-        "Dark / Moody": "داكن / غامض",
-        "Glitch": "جليتش",
+        "Dark / Moody": "داكن / كئيب",
+        "Glitch": "تشويش",
         "Neon": "نيون",
         "Flat Design": "تصميم مسطح"
       },
-      "searchPlaceholder": "ابحث عن اسم أو أمر..."
+      "searchPlaceholder": "ابحث حسب الاسم أو الموجه (بالإنجليزية)..."
     }
   },
   "Product": {
     "copy": "نسخ",
-    "toastCopy": "تم نسخ الأمر إلى الحافظة!"
+    "toastCopy": "تم نسخ الموجه إلى الحافظة."
   },
   "Theme": {
     "dark": "داكن",
@@ -100,106 +100,93 @@
   },
   "Pages": {
     "MyFavorites": {
-      "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية أوامرك المفضلة.",
-      "head": "مفضلاتي"
+      "notAuthenticated": "يجب عليك تسجيل الدخول لعرض الموجهات المفضلة لديك.",
+      "head": "المفضلة لدي"
     },
     "MyPrompts": {
-      "notAuthenticated": "يجب عليك تسجيل الدخول لرؤية أوامرك.",
-      "head": "أوامري",
-      "Table": {
-        "showCoulomns": "Show Coulomns",
-        "pageOf": "صفحة {page} من {total}",
-        "rows": "صفوف",
-        "rowsPerPage": "صفوف لكل صفحة",
-        "previous": "السابق",
-        "next": "التالي",
-        "noResults": "لا توجد نتائج.",
-        "index": "صف",
-        "title": "العنوان",
-        "image": "الصورة",
-        "tags": "الوسوم",
-        "seeTags": "عرض الوسوم",
-        "likes": "الإعجابات",
-        "status": {
-          "status": "الحالة",
-          "True": "مقبول",
-          "False": "ملغى",
-          "Pending": "قيد الانتظار",
-          "All": "الكل"
-        },
-        "buttons": "مدیریت",
-        "isPublic": "status",
-        "searchPlaceholder": "ابحث عن اسم أو أمر...",
-        "messages": {
-          "emptyMessage": "لا توجد أوامر.",
-          "emptyDescription": "لإضافة أمر جديد، انتقل إلى صفحة 'أمر جديد'."
-        },
-        "createdAt": "تاریخ ساخت"
-      }
+      "notAuthenticated": "يجب عليك تسجيل الدخول لعرض موجهاتك.",
+      "head": "موجهاتي"
     },
     "Profile": {
       "Rename": {
         "title": "تغيير الاسم",
         "firstName": "الاسم الأول:",
         "lastName": "اسم العائلة:",
-        "save": "ثبت"
+        "save": "حفظ"
       },
       "Image": {
-        "title": "تحميل صورة الملف الشخصي",
+        "title": "رفع صورة الملف الشخصي",
         "image": "الصورة:"
       }
     },
     "Home": {
       "head": "هنا تتحول الأفكار إلى صور",
-      "description": "لا حاجة لمعرفة تقنية — فقط انسخ الأمر واستخدمه",
-      "more": "عرض المزيد...",
-      "logo": "نانو إيمج",
+      "description": "لا تحتاج إلى معرفة تقنية، فقط انسخ الموجه واستخدمه.",
+      "more": "المزيد...",
+      "logo": "نانو إيميج",
       "Badges": {
-        "prompts": "الأوامر",
+        "prompts": "الموجهات",
         "tags": "الوسوم",
         "likes": "الإعجابات"
       },
-      "headPopular": "الأوامر الشائعة",
-      "descPopular": "أكثر الأوامر التي نالت إعجاب المستخدمين"
+      "headPopular": "الموجهات الشائعة",
+      "descPopular": "أكثر الموجهات المحبوبة التي شاركها المستخدمون"
+    },
+    "Admin": {
+      "users": {
+        "users": "المستخدمون"
+      },
+      "prompts": {
+        "prompts": "الموجهات"
+      },
+      "back": {
+        "back": "العودة إلى الصفحة الرئيسية"
+      }
     }
   },
   "Messages": {
     "404": {
       "title": "الصفحة غير موجودة",
-      "description": "عذراً، الصفحة التي تبحث عنها غير موجودة.",
-      "backHome": "العودة للرئيسية"
+      "description": "عذرًا، الصفحة التي تبحث عنها غير موجودة.",
+      "backHome": "العودة إلى الصفحة الرئيسية"
     },
+    "dontAccess": "ليس لديك إذن لتنفيذ هذا الإجراء.",
+    "editStatus": "تم تغيير حالة الموجه بنجاح.",
     "addToFavorite": "تمت الإضافة إلى المفضلة بنجاح.",
     "removeFromFavorite": "تمت الإزالة من المفضلة بنجاح.",
-    "isNotAuthenticated": "يجب عليك تسجيل الدخول للقيام بهذا الإجراء.",
-    "userNotFound": "المستخدم غير موجود. يرجى التأكد من إعداد حسابك بشكل صحيح.",
-    "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-    "noFile": "لم يتم رفع الملف. يرجى المحاولة مرة أخرى.",
-    "createPrompt": "تم إنشاء الأمر بنجاح",
-    "editPrompt": "پرامپت با موفقیت ویرایش شد.",
-    "profileUpdated": "تم تحديث الملف الشخصي بنجاح",
-    "imageUpdated": "تم تحديث صورة الملف الشخصي بنجاح",
-    "loading": "جاري التحميل..."
+    "isNotAuthenticated": "يجب عليك تسجيل الدخول لتنفيذ هذا الإجراء.",
+    "userNotFound": "لم يتم العثور على المستخدم. يرجى التأكد من أن حسابك مُعد بشكل صحيح.",
+    "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "noFile": "لم يتم رفع أي ملف. يرجى المحاولة مرة أخرى.",
+    "createPrompt": "تم إنشاء الموجه بنجاح.",
+    "editPrompt": "تم تعديل الموجه بنجاح.",
+    "profileUpdated": "تم تحديث الملف الشخصي بنجاح.",
+    "imageUpdated": "تم تحديث صورة الملف الشخصي بنجاح.",
+    "loading": "جارٍ التحميل...",
+    "emptyMessageUsers": "کاربری پیدا نشد",
+    "emptyMessagePrompts": "پرامپتی پیدا نشد",
+    "emptyDescriptionPrompts": "برای افزودن پرامپت، به صفحه «پرامپت جدید» بروید",
+    "editRole": "نقش کاربر با موفقیت تغییر کرد."
   },
   "Forms": {
-    "minLengthName": "يجب أن يكون الاسم 3 أحرف على الأقل.",
-    "maxLengthName": "يجب ألا يتجاوز الاسم 40 حرفاً.",
-    "minLengthLastName": "يجب أن يكون اسم العائلة 3 أحرف على الأقل.",
-    "maxLengthLastName": "يجب ألا يتجاوز اسم العائلة 40 حرفاً.",
-    "minLengthDesc": "يجب أن يكون الأمر 10 أحرف على الأقل.",
+    "minLengthName": "يجب أن يتكون الاسم من 3 أحرف على الأقل.",
+    "maxLengthName": "يجب ألا يتجاوز الاسم 40 حرفًا.",
+    "minLengthLastName": "يجب أن يتكون اسم العائلة من 3 أحرف على الأقل.",
+    "maxLengthLastName": "يجب ألا يتجاوز اسم العائلة 40 حرفًا.",
+    "minLengthDesc": "يجب أن يتكون الموجه من 10 أحرف على الأقل.",
     "isRequired": "هذا الحقل مطلوب.",
     "Label": {
       "image": "الصورة",
-      "name": "اسم الأمر",
-      "prompt": "الأمر",
+      "name": "اسم الموجه",
+      "prompt": "الموجه",
       "tags": "الوسوم"
     }
   },
   "Profile": {
     "myAccount": "حسابي",
     "profile": "الملف الشخصي",
-    "myFavorites": "مفضلاتي",
-    "myPrompts": "أوامري",
+    "myFavorites": "مفضلتي",
+    "myPrompts": "موجهاتي",
     "LogOut": {
       "title": "هل تريد تسجيل الخروج من حسابك؟",
       "logOut": "تسجيل الخروج",
@@ -209,16 +196,67 @@
   "Actions": {
     "remove": {
       "remove": "حذف",
-      "title": "مطمئنی میخوای این پرامپت رو حذف کنی؟",
-      "yes": "حذفش کن",
+      "title": "هل أنت متأكد أنك تريد حذف هذا الموجه؟",
+      "yes": "احذفه",
       "no": "لا"
     },
     "edit": {
-      "edit": "ویرایش"
+      "edit": "تعديل"
+    },
+    "editStatus": {
+      "editStatus": "تعديل الحالة",
+      "title": "تغيير حالة الموجه إلى:",
+      "True": "مقبول",
+      "False": "غير مقبول",
+      "Pending": "قيد الانتظار"
+    },
+    "editRoleUser": {
+      "editRoleUser": "Edit role",
+      "title": "Change role user to:"
     }
   },
   "Buttons": {
-    "submit": "ثبت",
-    "loading": "جاري التحميل..."
+    "submit": "إرسال",
+    "loading": "جارٍ التحميل..."
+  },
+  "Table": {
+    "showCoulomns": "إظهار الأعمدة",
+    "pageOf": "الصفحة {page} من {total}",
+    "rows": "صفوف",
+    "rowsPerPage": "الصفوف في كل صفحة",
+    "previous": "السابق",
+    "next": "التالي",
+    "noResults": "لم يتم العثور على نتائج.",
+    "index": "الرقم",
+    "title": "العنوان",
+    "prompt": "الموجه",
+    "image": "الصورة",
+    "tags": "الوسوم",
+    "seeTags": "عرض الوسوم",
+    "likes": "الإعجابات",
+    "status": {
+      "status": "الحالة",
+      "True": "مقبول",
+      "False": "غير مقبول",
+      "Pending": "قيد الانتظار",
+      "All": "الكل"
+    },
+    "buttons": "إدارة",
+    "searchPlaceholder": "ابحث حسب {value} (بالإنجليزية)...",
+    "messages": {
+      "emptyMessage": "لم يتم العثور على أي موجهات.",
+      "emptyDescription": "لإضافة موجه جديد، انتقل إلى صفحة 'موجه جديد'."
+    },
+    "createdAt": "تاريخ الإنشاء",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "role": {
+      "role": "الدور",
+      "All": "الكل",
+      "ADMIN": "مدير",
+      "MEMBER": "عضو",
+      "SUPER_ADMIN": "مدير أعلى"
+    }
   }
 }

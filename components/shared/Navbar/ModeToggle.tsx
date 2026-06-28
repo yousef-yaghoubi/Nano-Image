@@ -13,6 +13,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const themes = [
   { id: 1, title: 'light', icon: SunIcon },
@@ -32,7 +33,7 @@ export function ModeToggle() {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <Skeleton className="h-10 w-10" />;
   }
 
   const currentTheme = activeTheme || 'light';

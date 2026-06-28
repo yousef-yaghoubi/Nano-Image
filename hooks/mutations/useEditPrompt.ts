@@ -2,22 +2,31 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
-import { EditPrompt } from '@/app/[locale]/actions/EditPrompt';
+import {
+  EditPrompt,
+  EditStatusPrompt,
+} from '@/app/[locale]/actions/EditPrompt';
+import {
+  EditPromptType,
+  EditStatusPromptType,
+} from '@/types/inputs/EditPrompt';
 
-interface EditPromptInput {
-  clerkId: string;
-  prompt: {
-    title?: string;
-    prompt?: string;
-    id: string;
-  };
-}
-
-export default function useEditPrompt() {
+export function useEditPrompt() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: EditPromptInput) => EditPrompt(input),
+    mutationFn: (input: EditPromptType) => EditPrompt(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
+    },
+  });
+}
+
+export function useEditStatusPrompt() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: EditStatusPromptType) => EditStatusPrompt(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
     },

@@ -33,7 +33,7 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       image: prompt.image,
       creatorId: user._id,
       tags: prompt.tags || [],
-      isPublic: 'Pending',
+      status: 'Pending',
     });
 
     return {

@@ -19,6 +19,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
+import EditStatusPromptAction from '@/components/shared/Prompts/EditStatusPromptAction';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
 
@@ -117,7 +118,7 @@ export function getColumns({
       enableSorting: true,
     }),
 
-    columnHelper.accessor('isPublic', {
+    columnHelper.accessor('status', {
       header: () => (
         <div className="flex w-full items-center justify-center gap-2">
           {t('status.status')}:
@@ -150,7 +151,7 @@ export function getColumns({
       enableSorting: false,
       filterFn: (row, _columnId, filterValue) => {
         if (filterValue === 'All') return true;
-        return row.getValue('isPublic') === filterValue;
+        return row.getValue('status') === filterValue;
       },
       enableGlobalFilter: true,
     }),
@@ -171,14 +172,20 @@ export function getColumns({
       },
       enableSorting: true,
     }),
+
     columnHelper.accessor('buttons', {
       header: t('buttons'),
       enableSorting: false,
       cell: (i) => {
+        const value = i.row.original.status;
         return (
           <div className="flex justify-center gap-3">
             <RemovePromptAction promptId={String(i.row.original._id)} />
             <EditPromptAction promptId={String(i.row.original._id)} />
+            <EditStatusPromptAction
+              promptId={String(i.row.original._id)}
+              status={value}
+            />
           </div>
         );
       },

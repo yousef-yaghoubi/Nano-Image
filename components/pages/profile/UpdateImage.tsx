@@ -25,10 +25,10 @@ function UpdateImage() {
       const response = await AddImage({ file: fileImage });
       if (response.status) {
         user?.reload();
-        toast.success(response.message);
+        toast.success(t(response.message));
         setFileImage(null);
       } else {
-        toast.error(response && response.message);
+        toast.error(response && t(response.message));
       }
     } catch (error) {
       toast.error('Upload failed');

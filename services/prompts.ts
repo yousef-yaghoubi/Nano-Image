@@ -1,3 +1,4 @@
+import { getBaseUrl } from '@/lib/baseUrl';
 import { DataType, PromptType } from '@/types/data';
 
 export type PromptsApi = 'prompts' | 'favorites' | 'get-me/prompts';
@@ -9,7 +10,7 @@ export interface FetchPromptsParams {
   sort?: string;
   forApi?: PromptsApi;
   limit?: number;
-  isPublic?: 'True' | 'False' | 'Pending';
+  status?: 'True' | 'False' | 'Pending';
 }
 
 export type PromptsResponse = DataType<PromptType[]>;
@@ -37,30 +38,31 @@ function buildPromptsUrl(params: FetchPromptsParams) {
     sort,
     forApi = 'prompts',
     limit = 24,
-    isPublic,
+    status,
   } = params;
 
   const searchParams = new URLSearchParams({
     limit: String(limit),
     page,
-    ...(isPublic && { isPublic }),
+    ...(status && { status }),
     ...(search && { search }),
     ...(tags && { tags }),
     ...(sort && { sort }),
   });
 
-  return `/api/${forApi}?${searchParams.toString()}`;
+  return `${getBaseUrl()}/api/${forApi}?${searchParams.toString()}`;
 }
 
 export async function fetchPrompts<T = PromptsResponse>(
   params: FetchPromptsParams
 ): Promise<T> {
+  // const {} =
   const res = await fetch(buildPromptsUrl(params));
 
   if (!res.ok) {
     throw new Error(`Failed to fetch prompts: ${res.statusText}`);
   }
-
+  
   return res.json();
 }
 

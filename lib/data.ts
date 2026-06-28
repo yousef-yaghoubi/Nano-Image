@@ -1,7 +1,9 @@
 import { Heart, Plus, User } from 'lucide-react';
 import { FilterOption } from '@/types/filter';
-import { ProfileMenuItem } from '@/types/data';
+import { ProfileMenuItem, StatusPrompt } from '@/types/data';
 import { SlideContent } from '@/types/slider';
+import { getTranslations } from 'next-intl/server';
+import { RoleType } from '@/models/enums';
 
 export const FILTERING_OPTIONS: FilterOption[] = [
   {
@@ -99,4 +101,16 @@ export const slideTexts = [
   { text: 'Fotor' },
   { text: 'DALL·E' },
   { text: 'Phot Ai' },
+];
+
+export const statusPrompt: StatusPrompt[] = [
+  { title: 'status.True', value: 'True' },
+  { title: 'status.False', value: 'False' },
+  { title: 'status.Pending', value: 'Pending' },
+];
+
+export const roleUser: { title: string; value: RoleType }[] = [
+  { title: 'role.ADMIN', value: 'ADMIN' },
+  { title: 'role.MEMBER', value: 'MEMBER' },
+  { title: 'role.SUPER_ADMIN', value: 'SUPER_ADMIN' },
 ];

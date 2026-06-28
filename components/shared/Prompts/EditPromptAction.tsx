@@ -3,13 +3,12 @@
 import * as Yup from 'yup';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useUser } from '@clerk/nextjs';
 import { DrawerDialog } from '../DrawerDialog';
-import { Button } from '@/components/ui/button';
 import { FormBuilder } from '@/components/shared/Form';
 import { SchemaEditPrompt } from '@/validation/Form';
 import type { FieldConfig } from '@/components/shared/Form';
-import useEditPrompt from '@/hooks/mutations/useEditPrompt';
+import { useEditPrompt } from '@/hooks/mutations/useEditPrompt';
+import { SquarePen } from 'lucide-react';
 
 type PromptValues = Yup.InferType<typeof SchemaEditPrompt>;
 
@@ -24,7 +23,6 @@ function EditPromptAction({ promptId }: { promptId: string }) {
   const tMessages = useTranslations('Messages');
   const { mutateAsync, isPending } = useEditPrompt();
   const [openModal, setOpenModal] = useState(false);
-  const { user } = useUser();
 
   const fields: FieldConfig[] = [
     {
@@ -42,7 +40,14 @@ function EditPromptAction({ promptId }: { promptId: string }) {
 
   return (
     <DrawerDialog
-      trigger={<Button variant="outline">{t('edit.edit')}</Button>}
+      tooltipContent={t('edit.edit')}
+      trigger={
+        <SquarePen
+          size={24}
+          className="cursor-pointer"
+          onClick={() => setOpenModal(true)}
+        />
+      }
       title={t('edit.edit')}
       className="flex flex-wrap gap-2"
       open={openModal}
@@ -58,12 +63,9 @@ function EditPromptAction({ promptId }: { promptId: string }) {
         requireAnyDirty
         onSubmit={async (values) => {
           const result = await mutateAsync({
-            clerkId: user!.id,
-            prompt: {
-              title: values.namePrompt,
-              prompt: values.promptText,
-              id: promptId,
-            },
+            title: values.namePrompt,
+            prompt: values.promptText,
+            id: promptId,
           });
 
           setOpenModal(false);

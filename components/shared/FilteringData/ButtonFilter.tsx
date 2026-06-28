@@ -13,6 +13,7 @@ function ButtonFilter({
   tags: string[];
   setTags: Dispatch<SetStateAction<string[]>>;
 }) {
+  
   const handleTagClick = async (option: string) => {
     if (option.includes('search:')) {
       setTags((prev) => prev.filter((item) => !item.startsWith('search: ')));

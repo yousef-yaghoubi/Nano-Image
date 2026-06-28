@@ -21,7 +21,7 @@ export async function GET(req: Request) {
         sort: searchParams.get('sort'),
         tags: searchParams.get('tags'),
         search: searchParams.get('search'),
-        isPublic: searchParams.get('isPublic'),
+        status: searchParams.get('status'),
       });
     } catch (err) {
       const errorMessage =
@@ -42,7 +42,7 @@ export async function GET(req: Request) {
       sort: sortParam,
       tags: rawTags,
       search,
-      isPublic,
+      status,
     } = validatedData;
 
     // ۲. احراز هویت (اجباری برای این مسیر)
@@ -84,8 +84,8 @@ export async function GET(req: Request) {
       ];
     }
 
-    if (isPublic) {
-      where.isPublic = isPublic;
+    if (status) {
+      where.status = status;
     }
 
     // ۵. تنظیم سورت

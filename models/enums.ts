@@ -6,10 +6,10 @@ export const Role = {
 
 export type RoleType = (typeof Role)[keyof typeof Role];
 
-export const IsPublic = {
+export const status = {
   True: 'True',
   False: 'False',
   Pending: 'Pending',
 } as const;
 
-export type IsPublicType = (typeof IsPublic)[keyof typeof IsPublic];
+export type statusType = (typeof status)[keyof typeof status];

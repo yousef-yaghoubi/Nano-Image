@@ -20,6 +20,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { useSearchParams } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 
 type BasePaginationProps = {
   page: number;
@@ -62,7 +63,8 @@ export function Pagination({
   const totalPages = Math.ceil(totalCount / limit); // ✅ derived, no stale state
   const [isMobile, setIsMobile] = useState(false);
   const searchParams = useSearchParams();
-
+  const tTable = useTranslations('Table');
+  const locale = useLocale();
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     handleResize();
@@ -150,8 +152,10 @@ export function Pagination({
     >
       {showInfo && (
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          {/* ✅ Fixed: Math.min avoids showing more than totalCount on last page */}
-          نمایش {Math.min(limit * page, totalCount)} از {totalCount}
+          {tTable('pageOf', {
+            page: Math.min(limit * page, totalCount),
+            total: totalCount,
+          })}
         </div>
       )}
 
@@ -165,9 +169,12 @@ export function Pagination({
             }}
             value={limit.toString()}
           >
-            <SelectTrigger className="w-30">
+            <SelectTrigger
+              className="w-30"
+              dir={locale == 'en' ? 'ltr' : 'rtl'}
+            >
               <SelectValue />
-              <span>نمایش</span>
+              <span>{tTable('rows')}</span>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
