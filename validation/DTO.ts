@@ -41,8 +41,8 @@ export const promptsQuerySchema = yup.object({
     .oneOf([
       'likes asc',
       'likes desc',
-      'createdAt asc',
-      'createdAt desc',
+      'date asc',
+      'date desc',
       'title asc',
       'title desc',
     ])

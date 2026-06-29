@@ -4,8 +4,8 @@ import { auth } from '@clerk/nextjs/server';
 import mongoose, { ObjectId } from 'mongoose';
 import dbConnect from '@/lib/db';
 import { Users, Prompts } from '@/models';
-import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
   const t = await getTranslations('Messages');
@@ -68,8 +68,7 @@ export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
       { new: true }
     );
 
-    revalidatePath('/favorites');
-    revalidatePath('/prompts');
+    bustCache(CacheTags.favorites, CacheTags.prompts);
 
     return {
       success: true,

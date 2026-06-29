@@ -94,6 +94,7 @@ export function getColumns({
       cell: (i) => {
         const tags = i.getValue();
         if (!tags?.length) return null;
+        console.log(tags.find((t) => t == 'Product'));
         return (
           <DrawerDialog
             trigger={
@@ -179,10 +180,16 @@ export function getColumns({
       header: t('buttons'),
       enableSorting: false,
       cell: (i) => {
+        const prompt = i.row.original.prompt;
+        const title = i.row.original.title;
         return (
           <div className="flex justify-center gap-3">
             <RemovePromptAction promptId={String(i.row.original._id)} />
-            <EditPromptAction promptId={String(i.row.original._id)} />
+            <EditPromptAction
+              promptId={String(i.row.original._id)}
+              prompt={prompt}
+              title={title}
+            />
           </div>
         );
       },

@@ -4,7 +4,7 @@ export const SchemaSendPrompt = yup.object().shape({
   namePrompt: yup
     .string()
     .min(3, 'minLengthName')
-    .max(40, 'maxLengthName')
+    .max(80, 'maxLengthName')
     .required('isRequired'),
   imageUrl: yup.string().url().required('isRequired'),
   promptText: yup.string().min(10, 'minLengthDesc').required('isRequired'),
@@ -65,7 +65,7 @@ export const SchemaEditPrompt = yup
         !value ? true : value.length >= 3
       )
       .test('max-length', 'maxLengthName', (value) =>
-        !value ? true : value.length <= 40
+        !value ? true : value.length <= 80
       ),
     promptText: yup
       .string()
@@ -79,4 +79,3 @@ export const SchemaEditPrompt = yup
     const { namePrompt, promptText } = values;
     return Boolean(namePrompt?.trim() || promptText?.trim());
   });
- 

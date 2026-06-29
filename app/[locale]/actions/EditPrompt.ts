@@ -8,6 +8,7 @@ import {
 } from '@/types/inputs/EditPrompt';
 import { IUser } from '@/types/models';
 import { auth } from '@clerk/nextjs/server';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 export async function EditPrompt(prompt: EditPromptType) {
   try {
@@ -69,6 +70,8 @@ export async function EditPrompt(prompt: EditPromptType) {
         message: 'promptNotFound',
       };
     }
+
+    bustCache(CacheTags.prompts);
 
     return {
       status: true,
@@ -137,6 +140,8 @@ export async function EditStatusPrompt(prompt: EditStatusPromptType) {
     if (!promptEdited) {
       throw new Error();
     }
+
+    bustCache(CacheTags.prompts);
 
     return {
       status: true,

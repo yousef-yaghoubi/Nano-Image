@@ -6,11 +6,95 @@ import { IFavorite, IUser } from '@/types/models';
 import { PromptType } from '@/types/data';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { promptsQuerySchema } from '@/validation/DTO';
-import { revalidateTag } from 'next/cache';
+import { CacheTags, bustCache, cacheLife, cacheTag } from '@/lib/cache';
+
+const getCachedPrompts = async (
+  page: number,
+  limit: number,
+  sortParam: string | undefined,
+  rawTags: string | undefined,
+  search: string | undefined,
+  status: string | undefined,
+  favoriteId: string | null
+) => {
+  'use cache';
+
+  cacheTag(CacheTags.prompts, CacheTags.favorites);
+  cacheLife('weeks');
+
+  await dbConnect();
+
+  const skip = (page - 1) * limit;
+
+  const where: FilterQuery<PromptType> = {};
+
+  if (rawTags) {
+    const tagsArray = rawTags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+    if (tagsArray.length > 0) where.tags = { $in: tagsArray };
+  }
+
+  if (search) {
+    where.$or = [
+      { title: { $regex: search, $options: 'i' } },
+      { prompt: { $regex: search, $options: 'i' } },
+    ];
+  }
+
+  if (status && status !== 'All') {
+    where.status = status;
+  }
+
+  const sort: Record<string, SortOrder> = {};
+  if (sortParam === 'likes asc') sort.likes = 1;
+  else if (sortParam === 'date desc') sort.createdAt = -1;
+  else if (sortParam === 'date asc') sort.createdAt = 1;
+  else sort.likes = -1;
+
+  const [total, promptsRaw] = await Promise.all([
+    Prompts.countDocuments(where),
+    Prompts.find(where).sort(sort).skip(skip).limit(limit).lean<PromptType[]>(),
+  ]);
+
+  let prompts = promptsRaw;
+
+  if (favoriteId && prompts.length > 0) {
+    const promptIds = prompts.map((p) => p._id);
+    const favoritedEntries = await PromptFavorite.find({
+      favoriteId,
+      promptId: { $in: promptIds },
+    })
+      .select('promptId')
+      .lean();
+
+    const favoritedSet = new Set(
+      favoritedEntries.map((f) => f.promptId.toString())
+    );
+
+    prompts = prompts.map((p) => ({
+      ...p,
+      isFavorited: favoritedSet.has(p._id.toString()),
+    })) as typeof promptsRaw;
+  }
+
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data: JSON.parse(JSON.stringify(prompts)),
+    pagination: {
+      total,
+      totalPages,
+      currentPage: page,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
+  };
+};
 
 export async function GET(req: Request) {
   try {
-    await dbConnect();
     const { searchParams } = new URL(req.url);
 
     let validatedData;
@@ -40,15 +124,13 @@ export async function GET(req: Request) {
       search,
       status,
     } = validatedData;
-    const skip = (page - 1) * limit;
 
+    // Resolve favoriteId for the current user (not cached, per-request)
+    let favoriteId: string | null = null;
     const { userId: clerkId } = await auth();
 
-    // console.log('clerkId:', clerkId);
-
-    let favoriteId: string | null = null;
-
     if (clerkId) {
+      await dbConnect();
       const user = await Users.findOne({ clerkId })
         .select('_id')
         .lean<IUser | null>();
@@ -60,76 +142,20 @@ export async function GET(req: Request) {
       }
     }
 
-    const where: FilterQuery<PromptType> = {};
-
-    if (rawTags) {
-      const tagsArray = rawTags
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean);
-      if (tagsArray.length > 0) where.tags = { $in: tagsArray };
-    }
-
-    if (search) {
-      where.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { prompt: { $regex: search, $options: 'i' } },
-      ];
-    }
-
-    if (status && status !== 'All') {
-      where.status = status;
-    }
-
-    const sort: Record<string, SortOrder> = {};
-    if (sortParam === 'likes asc') sort.likes = 1;
-    else if (sortParam === 'createdAt desc') sort.createdAt = -1;
-    else if (sortParam === 'createdAt asc') sort.createdAt = 1;
-    else sort.likes = -1;
-
-    const [total, promptsRaw] = await Promise.all([
-      Prompts.countDocuments(where),
-      Prompts.find(where)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean<PromptType[]>(),
-    ]);
-
-    let prompts = promptsRaw;
-
-    if (favoriteId && prompts.length > 0) {
-      const promptIds = prompts.map((p) => p._id);
-      const favoritedEntries = await PromptFavorite.find({
-        favoriteId,
-        promptId: { $in: promptIds },
-      })
-        .select('promptId')
-        .lean();
-
-      const favoritedSet = new Set(
-        favoritedEntries.map((f) => f.promptId.toString())
-      );
-
-      prompts = prompts.map((p) => ({
-        ...p,
-        isFavorited: favoritedSet.has(p._id.toString()),
-      })) as typeof promptsRaw;
-    }
-
-    const totalPages = Math.ceil(total / limit);
+    const result = await getCachedPrompts(
+      page,
+      limit,
+      sortParam ?? 'likes desc',
+      rawTags ?? undefined,
+      search ?? undefined,
+      status ?? undefined,
+      favoriteId
+    );
 
     return NextResponse.json({
       success: true,
       message: 'Prompts fetched successfully',
-      data: prompts,
-      pagination: {
-        total,
-        totalPages,
-        currentPage: page,
-        hasNextPage: page < totalPages,
-        hasPrevPage: page > 1,
-      },
+      ...result,
     });
   } catch (error) {
     console.error('Fetch Error:', error);
@@ -169,7 +195,9 @@ export async function DELETE(req: Request) {
     }
 
     await Prompts.findByIdAndDelete(promptId);
-    revalidateTag('prompts', 'max');
+
+    // Bust the prompts cache after deletion
+    bustCache(CacheTags.prompts);
 
     return NextResponse.json({
       success: true,

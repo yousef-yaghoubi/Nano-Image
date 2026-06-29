@@ -180,15 +180,20 @@ export function getColumns({
       header: t('buttons'),
       enableSorting: false,
       cell: (i) => {
-        const value = i.row.original.status;
-
+        const status = i.row.original.status;
+        const prompt = i.row.original.prompt;
+        const title = i.row.original.title;
         return (
           <div className="flex items-center justify-center gap-3">
             <RemovePromptAction promptId={String(i.row.original._id)} />
-            <EditPromptAction promptId={String(i.row.original._id)} />
+            <EditPromptAction
+              promptId={String(i.row.original._id)}
+              prompt={prompt}
+              title={title}
+            />
             <EditStatusPromptAction
               promptId={String(i.row.original._id)}
-              status={value}
+              status={status}
             />
           </div>
         );

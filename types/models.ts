@@ -1,8 +1,8 @@
-import { Types, Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import type { statusType, RoleType } from '@/models/enums';
 // ---------------------- USER TYPES ----------------------
 export interface IUser extends Document {
-  _id: Types.ObjectId;
+  _id: ObjectId;
   clerkId: string;
   firstName: string;
   lastName: string;
@@ -14,7 +14,7 @@ export interface IUser extends Document {
 }
 
 export type UserLean = {
-  _id: Types.ObjectId;
+  _id: ObjectId;
   clerkId: string;
   email: string;
   role: RoleType;
@@ -25,12 +25,12 @@ export type UserLean = {
 
 // ---------------------- PROMPT TYPES ----------------------
 export interface IPrompt extends Document {
-  _id: Types.ObjectId;
+  _id: ObjectId;
   title: string;
   prompt?: string;
   image: string;
   likes: number;
-  creatorId: Types.ObjectId;
+  creatorId: ObjectId;
   tags: string[];
   status: statusType;
   createdAt: Date;
@@ -38,13 +38,12 @@ export interface IPrompt extends Document {
 }
 
 export type PromptLean = {
-  _id: Types.ObjectId;
+  _id: ObjectId;
   title: string;
   prompt?: string;
   image: string;
-  imageBlur?: string;
   likes: number;
-  creatorId: Types.ObjectId;
+  creatorId: ObjectId;
   tags: string[];
   status: statusType;
   createdAt: Date;
@@ -53,28 +52,28 @@ export type PromptLean = {
 
 // ---------------------- FAVORITE TYPES ----------------------
 export interface IFavorite extends Document {
-  _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  _id: ObjectId;
+  userId: ObjectId;
   prompts?: IPromptFavorite[];
 }
 
 export type FavoriteLean = {
-  _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  _id: ObjectId;
+  userId: ObjectId;
 };
 
 // ---------------------- PROMPT FAVORITE TYPES ----------------------
 export interface IPromptFavorite extends Document {
-  _id: Types.ObjectId;
-  promptId: Types.ObjectId;
-  favoriteId: Types.ObjectId;
+  _id: ObjectId;
+  promptId: ObjectId;
+  favoriteId: ObjectId;
   createdAt: Date;
 }
 
 export type PromptFavoriteLean = {
-  _id: Types.ObjectId;
-  promptId: Types.ObjectId;
-  favoriteId: Types.ObjectId;
+  _id: ObjectId;
+  promptId: ObjectId;
+  favoriteId: ObjectId;
   createdAt: Date;
 };
 
@@ -100,9 +99,9 @@ export interface IPromptFavoritePopulated extends Omit<
 }
 
 export type PromptFavoritePopulatedLean = {
-  _id: Types.ObjectId;
+  _id: string;
   promptId: PromptLean;
-  favoriteId: Types.ObjectId;
+  favoriteId: string;
   createdAt: Date;
 };
 

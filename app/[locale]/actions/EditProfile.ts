@@ -1,9 +1,9 @@
 'use server';
 
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { Users } from '@/models';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 type EditProfileInput = {
   firstName?: string | null;
@@ -98,9 +98,7 @@ export async function AddImage({ file }: { file: File | Blob }) {
     );
 
     // Revalidate profile pages to refresh the avatar
-    revalidatePath('/fa/profile');
-    revalidatePath('/en/profile');
-    revalidatePath('/ar/profile');
+    bustCache(CacheTags.users);
 
     return {
       status: true,

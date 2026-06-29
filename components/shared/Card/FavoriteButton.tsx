@@ -13,7 +13,7 @@ export function FavoriteButton({
   promptIsFavorit: boolean;
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
-  const { mutate, isPending } = useToggleFavorite();
+  const { mutateAsync, isPending } = useToggleFavorite();
 
   useEffect(() => {
     if (promptIsFavorit) {
@@ -22,7 +22,7 @@ export function FavoriteButton({
   }, [promptIsFavorit]);
 
   const handleToggle = () => {
-    mutate(
+    mutateAsync(
       { promptId },
       {
         onSuccess: (result) => {

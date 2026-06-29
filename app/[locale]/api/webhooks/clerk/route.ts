@@ -4,8 +4,8 @@ import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { Favorite, PromptFavorite, Users } from '@/models';
-import { ObjectId } from 'mongoose';
 import { RoleType } from '@/models/enums';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 // export const runtime = 'nodejs';.
 // export const dynamic = 'force-dynamic';
@@ -91,6 +91,7 @@ export async function POST(req: Request) {
         });
 
         console.log(`User created/synced: ${id}`);
+        bustCache(CacheTags.users);
         return new Response('User created', { status: 200 });
       }
 
@@ -122,6 +123,7 @@ export async function POST(req: Request) {
         await Users.findOneAndUpdate({ clerkId: id }, updateData);
 
         console.log(`User updated: ${id}`);
+        bustCache(CacheTags.users);
         return new Response('User updated', { status: 200 });
       }
 
@@ -145,6 +147,7 @@ export async function POST(req: Request) {
 
         await Users.deleteOne({ _id: user._id });
         console.log(`User deleted: ${id}`);
+        bustCache(CacheTags.users);
         return new Response('User deleted', { status: 200 });
       }
       case 'session.created': {
@@ -153,7 +156,7 @@ export async function POST(req: Request) {
         // 1. Fetch user role from your DB
         const user = await Users.findOne({ clerkId: userId })
           .select('role')
-          .lean<{ _id: ObjectId; role: RoleType }>();
+          .lean<{ _id: string; role: RoleType }>();
         console.log('user: ', user);
         console.log('userId: ', userId);
 

@@ -3,6 +3,7 @@
 import dbConnect from '@/lib/db';
 import { Prompts, Users } from '@/models';
 import { IUser } from '@/types/models';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 interface AddPromptInput {
   clerkId: string;
@@ -35,6 +36,8 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
       tags: prompt.tags || [],
       status: 'Pending',
     });
+
+    bustCache(CacheTags.prompts)
 
     return {
       status: true,

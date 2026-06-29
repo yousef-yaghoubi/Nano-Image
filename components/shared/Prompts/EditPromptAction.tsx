@@ -12,12 +12,15 @@ import { SquarePen } from 'lucide-react';
 
 type PromptValues = Yup.InferType<typeof SchemaEditPrompt>;
 
-const initialValues: PromptValues = {
-  namePrompt: '',
-  promptText: '',
-};
-
-function EditPromptAction({ promptId }: { promptId: string }) {
+function EditPromptAction({
+  promptId,
+  prompt,
+  title,
+}: {
+  promptId: string;
+  prompt: string;
+  title: string;
+}) {
   const t = useTranslations('Actions');
   const tForm = useTranslations('Forms');
   const { mutateAsync, isPending } = useEditPrompt();
@@ -54,7 +57,7 @@ function EditPromptAction({ promptId }: { promptId: string }) {
     >
       <FormBuilder<PromptValues>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={{ promptText: prompt, namePrompt: title }}
         validationSchema={SchemaEditPrompt}
         submitLabel="submit"
         loadingMessageKey="loading"

@@ -5,6 +5,7 @@ import { Users } from '@/models';
 import { EditRoleUserType } from '@/types/inputs/EditUser';
 import { IUser } from '@/types/models';
 import { auth } from '@clerk/nextjs/server';
+import { bustCache, CacheTags } from '@/lib/cache';
 
 export async function EditRoleUser(userInput: EditRoleUserType) {
   try {
@@ -58,6 +59,8 @@ export async function EditRoleUser(userInput: EditRoleUserType) {
     if (!userEdited) {
       throw new Error();
     }
+
+    bustCache(CacheTags.users);
 
     return {
       status: true,

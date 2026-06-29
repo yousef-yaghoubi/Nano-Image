@@ -50,6 +50,7 @@ function ShowPromptsContainer({
     sort,
     forApi,
     limit,
+    status: 'True',
   });
 
   if (isError) {

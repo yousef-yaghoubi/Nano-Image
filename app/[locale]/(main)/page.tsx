@@ -4,83 +4,74 @@ import { slides, slideTexts } from '@/lib/data';
 import { Suspense } from 'react';
 import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
 import ParentCounterClient from '@/components/pages/homePage/ParentCounterClient';
-import { getQueryClient } from '@/lib/query-client';
-import { fetchQuantities } from '@/services/quantities';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query-keys';
 import ShowPromptsContainer from '@/components/shared/Prompts/ShowPromptsContainer';
 import HomeSkeleton from '@/components/pages/homePage/HomeSkeleton';
 
+
+
 async function HomeContent() {
   const t = await getTranslations('Pages.Home');
-  const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: queryKeys.quantities.all,
-    queryFn: fetchQuantities,
-  });
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <section className="mb-5 flex h-fit w-full flex-col gap-5 md:justify-around xl:flex-row">
-          <div className="my-5 flex w-full flex-col justify-around gap-5">
-            <div className="flex flex-col gap-5">
-              <h1
-                className="textGradient text-gradient-shadow w-fit bg-clip-text text-4xl font-black text-transparent md:text-7xl"
-                data-text="Nano Prompt"
-              >
-                {t('logo')}
-              </h1>
+      {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
+      <section className="mb-5 flex h-fit w-full flex-col gap-5 md:justify-around xl:flex-row">
+        <div className="my-5 flex w-full flex-col justify-around gap-5">
+          <div className="flex flex-col gap-5">
+            <h1
+              className="textGradient text-gradient-shadow w-fit bg-clip-text text-4xl font-black text-transparent md:text-7xl"
+              data-text="Nano Prompt"
+            >
+              {t('logo')}
+            </h1>
 
-              <h3
-                className="textGradient text-gradient-shadow w-fit text-xl md:text-4xl"
-                data-text={t('head')}
-              >
-                {t('head')}
-              </h3>
-            </div>
-            <ParentCounterClient
-              promptsLabel={t('Badges.prompts')}
-              tagsLabel={t('Badges.tags')}
-              likesLabel={t('Badges.likes')}
-            />
+            <h3
+              className="textGradient text-gradient-shadow w-fit text-xl md:text-4xl"
+              data-text={t('head')}
+            >
+              {t('head')}
+            </h3>
           </div>
-          <EmblaSlider slides={slides} />
-        </section>
-
-        <div className="backgroundSecond mx-auto my-20 flex w-full items-center justify-around rounded-3xl border border-gray-300 p-2 md:my-48 md:p-5 dark:border-gray-700">
-          <EmblaSlider
-            slides={slideTexts}
-            enableFade={false}
-            aspectRatio={false}
-            slidesPerViewMobile={3}
-            slidesPerViewTablet={4}
-            slidesPerViewDesktop={5}
-            minSlideWidth={100}
-            autoplayDelay={2000}
+          <ParentCounterClient
+            promptsLabel={t('Badges.prompts')}
+            tagsLabel={t('Badges.tags')}
+            likesLabel={t('Badges.likes')}
           />
         </div>
+        <EmblaSlider slides={slides} />
+      </section>
 
-        <Suspense
-          fallback={<ShowPromptsSkeleton showSimple showHead showDesc />}
-        >
-          <ShowPromptsContainer
-            gridClass={
-              'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
-            }
-            showSimple
-            head={t('headPopular')}
-            desc={t('descPopular')}
-            limit={24}
-          />
-          {/* <ShowPromptsWrapper
+      <div className="backgroundSecond mx-auto my-20 flex w-full items-center justify-around rounded-3xl border border-gray-300 p-2 md:my-48 md:p-5 dark:border-gray-700">
+        <EmblaSlider
+          slides={slideTexts}
+          enableFade={false}
+          aspectRatio={false}
+          slidesPerViewMobile={3}
+          slidesPerViewTablet={4}
+          slidesPerViewDesktop={5}
+          minSlideWidth={100}
+          autoplayDelay={2000}
+        />
+      </div>
+
+      <Suspense fallback={<ShowPromptsSkeleton showSimple showHead showDesc />}>
+        <ShowPromptsContainer
+          gridClass={
+            'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
+          }
+          showSimple
+          head={t('headPopular')}
+          desc={t('descPopular')}
+          limit={24}
+        />
+        {/* <ShowPromptsWrapper
             showSimple
             head={t('headPopular')}
             desc={t('descPopular')}
           /> */}
-        </Suspense>
-      </HydrationBoundary>
+      </Suspense>
+      {/* </HydrationBoundary> */}
     </>
   );
 }
