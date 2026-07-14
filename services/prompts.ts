@@ -60,7 +60,7 @@ export async function fetchPrompts<T = PromptsResponse>(
   const res = await fetch(buildPromptsUrl(params));
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch prompts: ${res.statusText}`);
+    throw new Error('generic');
   }
   
   return res.json();

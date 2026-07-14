@@ -5,7 +5,10 @@ import { routing } from './i18n/routing';
 // export default clerkMiddleware();
 const intlMiddleware = createMiddleware(routing);
 
-const isProtectedRoute = createRouteMatcher(['/(en|fa|ar)/profile(.*)']);
+const isProtectedRoute = createRouteMatcher([
+  '/(en|fa|ar)/profile(.*)',
+  '/(en|fa|ar)/admin(.*)',
+]);
 // export default function proxy(request: Request) {
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) await auth.protect();

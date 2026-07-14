@@ -47,7 +47,8 @@
         "Corporate & professional": "الشركات والاحترافية",
         "Genre & themes": "الأنواع والموضوعات",
         "Mood & tone": "المزاج والنبرة",
-        "Optional add-ons": "إضافات اختيارية"
+        "Optional add-ons": "إضافات اختيارية",
+        "Language": "Language"
       },
       "tag": {
         "Search": "بحث:",
@@ -85,7 +86,12 @@
         "Dark / Moody": "داكن / كئيب",
         "Glitch": "تشويش",
         "Neon": "نيون",
-        "Flat Design": "تصميم مسطح"
+        "Flat Design": "تصميم مسطح",
+        "English": "انگلیسی",
+        "Spanish": "اسپانیایی",
+        "Arabic": "عربی",
+        "French": "فرانسوی",
+        "Portuguese": "پرتغالی"
       },
       "searchPlaceholder": "ابحث حسب الاسم أو الموجه (بالإنجليزية)..."
     }
@@ -118,6 +124,27 @@
       "Image": {
         "title": "رفع صورة الملف الشخصي",
         "image": "الصورة:"
+      },
+      "Password": {
+        "title": "تغيير كلمة المرور",
+        "newPassword": "كلمة المرور الجديدة",
+        "confirmPassword": "تأكيد كلمة المرور الجديدة"
+      }
+    },
+    "RequestRole": {
+      "head": "طلب دور المشرف",
+      "description": "إذا كنت بحاجة إلى صلاحيات المشرف، يمكنك إرسال طلب ليقوم المشرفون بمراجعته.",
+      "currentRole": "الدور الحالي",
+      "requestButton": "طلب دور المشرف",
+      "cancelButton": "إلغاء الطلب",
+      "pending": "طلبك قيد المراجعة",
+      "adminApproval": "بانتظار موافقة المشرف",
+      "premissonList": "تشمل صلاحيات المشرف:",
+      "premissions": {
+        "panel": "عرض إلى لوحة الإدارة وإدارتها",
+        "prompts": "عرض المستخدمين أو رفضها",
+        "users": "عرض المستخدمين وأدوارهم",
+        "stats": "عرض إحصائيات الموقع"
       }
     },
     "Home": {
@@ -134,11 +161,41 @@
       "descPopular": "أكثر الموجهات المحبوبة التي شاركها المستخدمون"
     },
     "Admin": {
+      "overview": {
+        "overview": "لوحة التحكم",
+        "totalPrompts": "إجمالي الموجهات",
+        "totalLikes": "إجمالي الإعجابات",
+        "totalUsers": "إجمالي المستخدمين",
+        "activePrompts": "نشط",
+        "pendingPrompts": "قيد الانتظار",
+        "rejectedPrompts": "مرفوض",
+        "adminRequests": "طلبات المشرف",
+        "membersCount": "الأعضاء",
+        "adminsCount": "المشرفون",
+        "quickActions": "إجراءات سريعة",
+        "recentActivity": "النشاط الأخير",
+        "recentPrompts": "أحدث الموجهات",
+        "recentUsers": "المستخدمون الجدد",
+        "noData": "لا توجد بيانات"
+      },
+      "admin": {
+        "updatePrompts": "افزودن پرامپت از سرور"
+      },
       "users": {
-        "users": "المستخدمون"
+        "users": "المستخدمون",
+        "role": {
+          "ADMIN": "مشرف",
+          "MEMBER": "عضو",
+          "SUPER_ADMIN": "مشرف أعلى"
+        }
       },
       "prompts": {
-        "prompts": "الموجهات"
+        "prompts": "الموجهات",
+        "status": {
+          "True": "مقبول",
+          "False": "غير مقبول",
+          "Pending": "قيد الانتظار"
+        }
       },
       "back": {
         "back": "العودة إلى الصفحة الرئيسية"
@@ -160,6 +217,7 @@
     "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
     "noFile": "لم يتم رفع أي ملف. يرجى المحاولة مرة أخرى.",
     "createPrompt": "تم إنشاء الموجه بنجاح.",
+    "createPromptsList": "Number of {length} prompt created successfully.",
     "editPrompt": "تم تعديل الموجه بنجاح.",
     "profileUpdated": "تم تحديث الملف الشخصي بنجاح.",
     "imageUpdated": "تم تحديث صورة الملف الشخصي بنجاح.",
@@ -167,7 +225,13 @@
     "emptyMessageUsers": "کاربری پیدا نشد",
     "emptyMessagePrompts": "پرامپتی پیدا نشد",
     "emptyDescriptionPrompts": "برای افزودن پرامپت، به صفحه «پرامپت جدید» بروید",
-    "editRole": "نقش کاربر با موفقیت تغییر کرد."
+    "editRole": "تم تغيير دور المستخدم بنجاح.",
+    "requestRole": "تم تقديم طلب دور المشرف بنجاح.",
+    "cancelRequestRole": "تم إلغاء طلب دور المشرف.",
+    "alreadyRequested": "لقد طلبت بالفعل دور المشرف.",
+    "rejectRoleRequest": "تم رفض طلب دور المشرف.",
+    "passwordChanged": "تم تغيير كلمة المرور بنجاح.",
+    "passwordNotEnabled": "كلمة المرور غير مفعلة لهذا الحساب. يرجى استخدام تسجيل الدخول بكلمة المرور."
   },
   "Forms": {
     "minLengthName": "يجب أن يتكون الاسم من 3 أحرف على الأقل.",
@@ -175,6 +239,14 @@
     "minLengthLastName": "يجب أن يتكون اسم العائلة من 3 أحرف على الأقل.",
     "maxLengthLastName": "يجب ألا يتجاوز اسم العائلة 40 حرفًا.",
     "minLengthDesc": "يجب أن يتكون الموجه من 10 أحرف على الأقل.",
+    "passwordMinLength": "يجب أن تتكون كلمة المرور من 8 حرفًا على الأقل.",
+    "passwordMaxLength": "يجب ألا تتجاوز كلمة المرور 128 حرفًا.",
+    "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي صغير واحد على الأقل (a-z).",
+    "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي كبير واحد على الأقل (A-Z).",
+    "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+    "passwordSpecialCharacter": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل مثل !@#$%^&*.",
+    "passwordNoSpaces": "يجب ألا تحتوي كلمة المرور على مسافات.",
+    "passwordMismatch": "كلمة المرور وتأكيدها غير متطابقتين.",
     "isRequired": "هذا الحقل مطلوب.",
     "Label": {
       "image": "الصورة",
@@ -188,6 +260,7 @@
     "profile": "الملف الشخصي",
     "myFavorites": "مفضلتي",
     "myPrompts": "موجهاتي",
+    "requestRole": "طلب دور المشرف",
     "LogOut": {
       "title": "هل تريد تسجيل الخروج من حسابك؟",
       "logOut": "تسجيل الخروج",
@@ -212,8 +285,13 @@
       "Pending": "قيد الانتظار"
     },
     "editRoleUser": {
-      "editRoleUser": "Edit role",
-      "title": "Change role user to:"
+      "editRoleUser": "تعديل الدور",
+      "title": "تغيير دور المستخدم إلى:"
+    },
+    "acceptRoleRequest": {
+      "accept": "قبول الطلب",
+      "reject": "رفض الطلب",
+      "title": "إدارة طلب الدور"
     }
   },
   "Buttons": {
@@ -258,6 +336,9 @@
       "ADMIN": "مدير",
       "MEMBER": "عضو",
       "SUPER_ADMIN": "مدير أعلى"
-    }
+    },
+    "waitForAdmin": "طلب الدور",
+    "waitForAdmin_true": "قيد الانتظار",
+    "waitForAdmin_false": "---"
   }
 }

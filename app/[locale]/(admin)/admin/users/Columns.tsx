@@ -154,6 +154,26 @@ export function getColumns({
       enableHiding: true,
     }),
 
+    columnHelper.accessor('waitForAdmin', {
+      header: t('waitForAdmin'),
+      cell: (info) => {
+        const value = info.getValue();
+        return (
+          <span
+            className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
+              value
+                ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                : 'text-muted-foreground'
+            }`}
+          >
+            {t(value ? 'waitForAdmin_true' : 'waitForAdmin_false')}
+          </span>
+        );
+      },
+      enableSorting: false,
+      enableHiding: true,
+    }),
+
     columnHelper.accessor('buttons', {
       header: t('buttons'),
       cell: (i) => {
@@ -164,6 +184,7 @@ export function getColumns({
             <EditRoleUserAction
               userId={String(i.row.original._id)}
               role={value as RoleType}
+              waitForAdmin={i.row.original.waitForAdmin}
             />
           </div>
         );

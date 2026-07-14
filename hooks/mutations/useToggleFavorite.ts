@@ -14,6 +14,7 @@ export default function useToggleFavorite() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.quantities.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.admin.overview });
     },
   });
 }

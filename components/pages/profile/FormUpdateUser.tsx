@@ -3,8 +3,7 @@
 import * as Yup from 'yup';
 import { useTranslations } from 'next-intl';
 import { EditProfile } from '@/app/[locale]/actions/EditProfile';
-import { FormBuilder } from '@/components/shared/Form';
-import type { FieldConfig } from '@/components/shared/Form';
+import { FormBuilder, type FieldConfig } from '@/components/shared/Form';
 import { SchemaProfileEdit } from '@/validation/Form';
 import { useUser } from '@clerk/nextjs';
 

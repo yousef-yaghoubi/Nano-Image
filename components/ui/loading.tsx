@@ -7,7 +7,8 @@ type LoadingProps = {
   text?: string;
   fullScreen?: boolean;
   size?: 'sm' | 'md' | 'lg';
-  className?: string;
+  className?: React.ComponentProps<'div'>['className'];
+  classNameLoading?: React.ComponentProps<'svg'>['className'];
 };
 
 const sizes = {
@@ -21,18 +22,25 @@ export function Loading({
   fullScreen = false,
   size = 'md',
   className,
+  classNameLoading,
 }: LoadingProps) {
   const tMessages = useTranslations('Messages');
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-3',
+        'flex items-center justify-center gap-3',
         fullScreen && 'bg-background/80 fixed inset-0 z-50 backdrop-blur-sm',
         !fullScreen && 'py-10',
         className
       )}
     >
-      <LoaderCircle className={cn('text-primary animate-spin', sizes[size])} />
+      <LoaderCircle
+        className={cn(
+          'text-primary animate-spin',
+          classNameLoading,
+          sizes[size]
+        )}
+      />
 
       {text && (
         <p className="text-muted-foreground text-sm font-medium">

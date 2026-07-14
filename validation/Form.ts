@@ -55,6 +55,27 @@ export const SchemaImageUpdate = yup.object().shape({
     }),
 });
 
+export const SchemaChangePassword = yup.object({
+  newPassword: yup
+    .string()
+    .required('isRequired')
+    .min(8, 'passwordMinLength')
+    .max(128, 'passwordMaxLength')
+    .matches(/[a-z]/, 'passwordLowercase')
+    .matches(/[A-Z]/, 'passwordUppercase')
+    .matches(/[0-9]/, 'passwordNumber')
+    .matches(
+      /[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?`~]/,
+      'passwordSpecialCharacter'
+    )
+    .test('no-spaces', 'passwordNoSpaces', (value) => !/\s/.test(value ?? '')),
+
+  confirmPassword: yup
+    .string()
+    .required('isRequired')
+    .oneOf([yup.ref('newPassword')], 'passwordMismatch'),
+});
+
 export const SchemaEditPrompt = yup
   .object()
   .shape({

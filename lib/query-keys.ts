@@ -18,4 +18,7 @@ export const queryKeys = {
     list: (params: FetchUsersParams) =>
       [...queryKeys.users.lists(), params] as const,
   },
+  admin: {
+    overview: ['admin', 'overview'] as const,
+  },
 };

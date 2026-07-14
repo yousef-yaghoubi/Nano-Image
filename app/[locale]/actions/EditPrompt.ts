@@ -1,5 +1,6 @@
 'use server';
 
+import * as yup from 'yup';
 import dbConnect from '@/lib/db';
 import { Prompts, Users } from '@/models';
 import {
@@ -9,6 +10,7 @@ import {
 import { IUser } from '@/types/models';
 import { auth } from '@clerk/nextjs/server';
 import { bustCache, CacheTags } from '@/lib/cache';
+import { SchemaEditPrompt } from '@/validation/Form';
 
 export async function EditPrompt(prompt: EditPromptType) {
   try {
@@ -28,6 +30,11 @@ export async function EditPrompt(prompt: EditPromptType) {
       };
     }
 
+    const validatedFields = await SchemaEditPrompt.validate({
+      namePrompt: prompt.title,
+      promptText: prompt.prompt,
+    });
+
     await dbConnect();
 
     const user = (await Users.findOne({
@@ -42,10 +49,16 @@ export async function EditPrompt(prompt: EditPromptType) {
     }
 
     const finalValue: { title?: string; prompt?: string } = {};
-    if (prompt.title && prompt.title.trim().length > 0)
-      finalValue.title = prompt.title.trim();
-    if (prompt.prompt && prompt.prompt.trim().length > 0)
-      finalValue.prompt = prompt.prompt.trim();
+    if (
+      validatedFields.namePrompt &&
+      validatedFields.namePrompt.trim().length > 0
+    )
+      finalValue.title = validatedFields.namePrompt.trim();
+    if (
+      validatedFields.promptText &&
+      validatedFields.promptText.trim().length > 0
+    )
+      finalValue.prompt = validatedFields.promptText.trim();
 
     const editedPrompt = await Prompts.findOneAndUpdate(
       {
@@ -71,7 +84,7 @@ export async function EditPrompt(prompt: EditPromptType) {
       };
     }
 
-    bustCache(CacheTags.prompts);
+    bustCache(CacheTags.prompts, CacheTags.admin);
 
     return {
       status: true,
@@ -79,7 +92,9 @@ export async function EditPrompt(prompt: EditPromptType) {
       data: JSON.parse(JSON.stringify(editedPrompt)),
     };
   } catch (error) {
-    console.error('EditPrompt error:', error);
+    if (error instanceof yup.ValidationError) {
+      return { status: false, message: error.message };
+    }
 
     return {
       status: false,
@@ -142,12 +157,16 @@ export async function EditStatusPrompt(prompt: EditStatusPromptType) {
     }
 
     bustCache(CacheTags.prompts);
+    bustCache(CacheTags.admin);
 
     return {
       status: true,
       message: 'editStatus',
     };
   } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      return { status: false, message: error.message };
+    }
     return {
       status: false,
       message: 'generic',

@@ -42,7 +42,7 @@ export default function page() {
   // ✅ Removed unused sortField and sortOrder variables
 
   const sortString = sorting[0]
-    ? `${sorting[0].id} ${sorting[0].desc ? 'desc' : 'asc'}`
+    ? `${sorting[0].id === 'createdAt' ? 'date' : sorting[0].id} ${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
   const { data, isLoading } = useUsers<MyUsersResponse>({

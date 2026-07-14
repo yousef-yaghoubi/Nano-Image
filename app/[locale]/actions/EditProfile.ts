@@ -1,9 +1,14 @@
 'use server';
 
+import * as yup from 'yup';
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { getTranslations } from 'next-intl/server';
 import { Users } from '@/models';
 import { bustCache, CacheTags } from '@/lib/cache';
+import {
+  SchemaProfileEdit,
+  SchemaImageUpdate,
+  SchemaChangePassword,
+} from '@/validation/Form';
 
 type EditProfileInput = {
   firstName?: string | null;
@@ -11,7 +16,6 @@ type EditProfileInput = {
 };
 
 export async function EditProfile({ firstName, lastName }: EditProfileInput) {
-  const t = await getTranslations('Messages');
   const clientClerk = await clerkClient();
 
   try {
@@ -19,16 +23,18 @@ export async function EditProfile({ firstName, lastName }: EditProfileInput) {
     if (!clerkUserId) {
       return {
         status: false,
-        message: t('isNotAuthenticated'),
+        message: 'isNotAuthenticated',
       };
     }
 
+    const validated = await SchemaProfileEdit.validate({ firstName, lastName });
+
     // Prepare update object only with non-empty fields
     const finalValue: { firstName?: string; lastName?: string } = {};
-    if (firstName && firstName.trim().length > 0)
-      finalValue.firstName = firstName.trim();
-    if (lastName && lastName.trim().length > 0)
-      finalValue.lastName = lastName.trim();
+    if (validated.firstName && validated.firstName.trim().length > 0)
+      finalValue.firstName = validated.firstName.trim();
+    if (validated.lastName && validated.lastName.trim().length > 0)
+      finalValue.lastName = validated.lastName.trim();
 
     // Update user profile in Clerk
     const updatedUser = await clientClerk.users.updateUser(
@@ -39,36 +45,40 @@ export async function EditProfile({ firstName, lastName }: EditProfileInput) {
     if (!updatedUser) {
       return {
         status: false,
-        message: t('generic'),
+        message: 'generic',
       };
     }
 
     return {
       status: true,
-      message: t('profileUpdated'),
+      message: 'profileUpdated',
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      return { status: false, message: error.message };
+    }
     console.error('EditProfile error:', error);
     return {
       status: false,
-      message: t('generic'),
+      message: 'generic',
     };
   }
 }
 
 export async function AddImage({ file }: { file: File | Blob }) {
   const clientClerk = await clerkClient();
-  const t = await getTranslations('Messages');
 
   try {
     const { userId: clerkUserId } = await auth();
     if (!clerkUserId) {
       return {
         status: false,
-        message: t('isNotAuthenticated'),
+        message: 'isNotAuthenticated',
       };
     }
+
+    await SchemaImageUpdate.validate({ file });
 
     // Send file to Clerk as profile image
     const updatedUser = await clientClerk.users.updateUserProfileImage(
@@ -81,7 +91,7 @@ export async function AddImage({ file }: { file: File | Blob }) {
     if (!updatedUser) {
       return {
         status: false,
-        message: t('generic'),
+        message: 'generic',
       };
     }
 
@@ -102,13 +112,54 @@ export async function AddImage({ file }: { file: File | Blob }) {
 
     return {
       status: true,
-      message: t('imageUpdated'),
+      message: 'imageUpdated',
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      return { status: false, message: error.message };
+    }
     return {
       status: false,
-      message: t('generic'),
+      message: 'generic',
     };
+  }
+}
+
+export async function ChangePassword({
+  newPassword,
+  confirmPassword,
+}: {
+  newPassword: string;
+  confirmPassword: string;
+}) {
+  try {
+    const { userId: clerkUserId } = await auth();
+    if (!clerkUserId) {
+      return { status: false, message: 'isNotAuthenticated' };
+    }
+
+    const passwordValidated = await SchemaChangePassword.validate({
+      newPassword,
+      confirmPassword,
+    });
+
+    const clientClerk = await clerkClient();
+    const user = await clientClerk.users.getUser(clerkUserId);
+
+    if (user.passwordEnabled === false) {
+      return { status: false, message: 'passwordNotEnabled' };
+    }
+
+    await clientClerk.users.updateUser(clerkUserId, {
+      password: passwordValidated.newPassword,
+    });
+
+    return { status: true, message: 'passwordChanged' };
+  } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      return { status: false, message: error.message };
+    }
+    return { status: false, message: 'generic' };
   }
 }

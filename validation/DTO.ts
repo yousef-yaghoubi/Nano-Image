@@ -95,8 +95,8 @@ export const usersQuerySchema = yup.object({
     .oneOf([
       'firstName asc',
       'firstName desc',
-      'createdAt asc',
-      'createdAt desc',
+      'date asc',
+      'date desc',
       'lastName asc',
       'lastName desc',
     ])

@@ -1,20 +1,28 @@
 import FormUpdateUser from '@/components/pages/profile/FormUpdateUser';
+import Head3Client from '@/components/pages/profile/Head3Client';
 import UpdateImage from '@/components/pages/profile/UpdateImage';
+import UpdatePassword from '@/components/pages/profile/UpdatePassword';
 import { getTranslations } from 'next-intl/server';
 
 export default async function Page() {
   const t = await getTranslations('Pages.Profile');
 
+  const sections = [
+    { title: t('Rename.title'), component: <FormUpdateUser /> },
+    { title: t('Password.title'), component: <UpdatePassword /> },
+    { title: t('Image.title'), component: <UpdateImage /> },
+  ];
+
   return (
     <div className="flex w-full flex-col gap-10">
-      <div className="backgroundSecond rounded-3xl border border-gray-300 p-5 shadow-xl dark:border-gray-700">
-        <h3 className="heading-3 mb-3">{t('Rename.title')}</h3>
-        <FormUpdateUser />
-      </div>
-      <div className="backgroundSecond rounded-3xl border border-gray-300 p-5 shadow-xl dark:border-gray-700">
-        <h3 className="heading-3 mb-3">{t('Image.title')}</h3>
-        <UpdateImage />
-      </div>
+      {sections.map((section) => (
+        <div key={section.title}>
+          <Head3Client title={section.title} />
+          <div className="backgroundSecond rounded-3xl border border-gray-300 p-5 shadow-xl dark:border-gray-700">
+            {section.component}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

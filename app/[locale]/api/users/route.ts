@@ -39,8 +39,8 @@ const getCachedUsers = async (
 
   const sort: Record<string, SortOrder> = {};
   if (sortParam === 'firstName asc') sort.firstName = 1;
-  else if (sortParam === 'createdAt desc') sort.createdAt = -1;
-  else if (sortParam === 'createdAt asc') sort.createdAt = 1;
+  else if (sortParam === 'date desc') sort.createdAt = -1;
+  else if (sortParam === 'date asc') sort.createdAt = 1;
   else if (sortParam === 'lastName desc') sort.lastName = -1;
   else if (sortParam === 'lastName asc') sort.lastName = 1;
   else sort.firstName = -1;

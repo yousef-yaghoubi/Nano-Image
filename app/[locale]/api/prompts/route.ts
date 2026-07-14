@@ -196,8 +196,7 @@ export async function DELETE(req: Request) {
 
     await Prompts.findByIdAndDelete(promptId);
 
-    // Bust the prompts cache after deletion
-    bustCache(CacheTags.prompts);
+    bustCache(CacheTags.prompts, CacheTags.admin);
 
     return NextResponse.json({
       success: true,

@@ -9,6 +9,7 @@ import { useSidebar } from '@/context/SidebarContext';
 import { cn } from '@/lib/utils';
 import {
   Files,
+  LayoutDashboard,
   PanelLeft,
   PanelRight,
   Undo2,
@@ -22,18 +23,24 @@ import { usePathname } from 'next/navigation';
 const LINKS = [
   {
     id: 1,
+    title: 'overview',
+    href: '/admin',
+    icon: LayoutDashboard,
+  },
+  {
+    id: 2,
     title: 'users',
     href: '/admin/users',
     icon: UsersRound,
   },
   {
-    id: 2,
+    id: 3,
     title: 'prompts',
     href: '/admin/prompts',
     icon: Files,
   },
   {
-    id: 3,
+    id: 4,
     title: 'back',
     href: '/',
     icon: Undo2,

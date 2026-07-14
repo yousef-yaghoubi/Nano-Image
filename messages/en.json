@@ -47,7 +47,8 @@
         "Corporate & professional": "Corporate & professional",
         "Genre & themes": "Genre & themes",
         "Mood & tone": "Mood & tone",
-        "Optional add-ons": "Optional add-ons"
+        "Optional add-ons": "Optional add-ons",
+        "Language": "Language"
       },
       "tag": {
         "Search": "Search:",
@@ -85,7 +86,12 @@
         "Dark / Moody": "Dark / moody",
         "Glitch": "Glitch",
         "Neon": "Neon",
-        "Flat Design": "Flat design"
+        "Flat Design": "Flat design",
+        "English": "English",
+        "Spanish": "Spanish",
+        "Arabic": "Arabic",
+        "French": "French",
+        "Portuguese": "Portuguese"
       },
       "searchPlaceholder": "Search by name or prompt (English)..."
     }
@@ -118,6 +124,27 @@
       "Image": {
         "title": "Upload profile",
         "image": "Image:"
+      },
+      "Password": {
+        "title": "Change Password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password"
+      }
+    },
+    "RequestRole": {
+      "head": "Request Admin Role",
+      "description": "If you need admin access, you can send a request for the admins to review.",
+      "currentRole": "Current Role",
+      "requestButton": "Request Admin Role",
+      "cancelButton": "Cancel Request",
+      "pending": "Your request is pending review",
+      "adminApproval": "admin approved",
+      "premissonList": "Admin permissions include:",
+      "premissions": {
+        "panel": "View the admin panel",
+        "prompts": "View user prompts",
+        "users": "View users and their roles",
+        "stats": "View site statistics"
       }
     },
     "Home": {
@@ -134,11 +161,41 @@
       "descPopular": "The most loved prompts shared by users"
     },
     "Admin": {
+      "overview": {
+        "overview": "Dashboard",
+        "totalPrompts": "Total Prompts",
+        "totalLikes": "Total Likes",
+        "totalUsers": "Total Users",
+        "activePrompts": "Active",
+        "pendingPrompts": "Pending",
+        "rejectedPrompts": "Rejected",
+        "adminRequests": "Admin Requests",
+        "membersCount": "Members",
+        "adminsCount": "Admins",
+        "quickActions": "Quick Actions",
+        "recentActivity": "Recent Activity",
+        "recentPrompts": "Recent Prompts",
+        "recentUsers": "Recent Users",
+        "noData": "No data available"
+      },
+      "admin": {
+        "updatePrompts": "Create prompts from API"
+      },
       "users": {
-        "users": "Users"
+        "users": "Users",
+        "role": {
+          "ADMIN": "Admin",
+          "MEMBER": "Member",
+          "SUPER_ADMIN": "Super admin"
+        }
       },
       "prompts": {
-        "prompts": "Prompts"
+        "prompts": "Prompts",
+        "status": {
+          "True": "Approved",
+          "False": "Not Approved",
+          "Pending": "Pending"
+        }
       },
       "back": {
         "back": "Back to home"
@@ -160,6 +217,7 @@
     "generic": "An error occurred. Please try again.",
     "noFile": "No file was uploaded. Please try again.",
     "createPrompt": "Prompt created successfully.",
+    "createPromptsList": "Number of {length} prompt created successfully.",
     "editPrompt": "Prompt updated successfully.",
     "profileUpdated": "Profile updated successfully.",
     "imageUpdated": "Profile image updated successfully.",
@@ -167,7 +225,13 @@
     "emptyMessageUsers": "Users not found",
     "emptyMessagePrompts": "Prompts not found",
     "emptyDescriptionPrompts": "To add a prompt, go to the 'New Prompt' page",
-    "editRole": "The role user was changed successfully."
+    "editRole": "The role user was changed successfully.",
+    "requestRole": "Admin role request submitted successfully.",
+    "cancelRequestRole": "Admin role request cancelled.",
+    "alreadyRequested": "You have already requested the admin role.",
+    "rejectRoleRequest": "Admin role request rejected.",
+    "passwordChanged": "Password changed successfully.",
+    "passwordNotEnabled": "Password is not enabled for this account. Please use password sign-in."
   },
   "Forms": {
     "minLengthName": "Name must be at least 3 characters long.",
@@ -175,6 +239,14 @@
     "minLengthLastName": "Last name must be at least 3 characters long.",
     "maxLengthLastName": "Last name must be at most 40 characters long.",
     "minLengthDesc": "Prompt must be at least 10 characters long.",
+    "passwordMinLength": "Password must be at least 8 characters.",
+    "passwordMaxLength": "Password cannot exceed 128 characters.",
+    "passwordLowercase": "Password must contain at least one lowercase letter.",
+    "passwordUppercase": "Password must contain at least one uppercase letter.",
+    "passwordNumber": "Password must contain at least one number.",
+    "passwordSpecialCharacter": "Password must contain at least one special character.",
+    "passwordNoSpaces": "Password cannot contain spaces.",
+    "passwordMismatch": "Passwords do not match.",
     "isRequired": "This field is required.",
     "Label": {
       "image": "Image",
@@ -188,6 +260,7 @@
     "profile": "Profile",
     "myFavorites": "My favorites",
     "myPrompts": "My prompts",
+    "requestRole": "Request Admin Role",
     "LogOut": {
       "title": "Do you want to sign out of your account?",
       "logOut": "Sign out",
@@ -214,6 +287,11 @@
     "editRoleUser": {
       "editRoleUser": "Edit role",
       "title": "Change role user to:"
+    },
+    "acceptRoleRequest": {
+      "accept": "Accept Request",
+      "reject": "Reject Request",
+      "title": "Manage Role Request"
     }
   },
   "Buttons": {
@@ -258,6 +336,9 @@
       "ADMIN": "Admin",
       "MEMBER": "Member",
       "SUPER_ADMIN": "Super admin"
-    }
+    },
+    "waitForAdmin": "Role Request",
+    "waitForAdmin_true": "Pending",
+    "waitForAdmin_false": "---"
   }
 }

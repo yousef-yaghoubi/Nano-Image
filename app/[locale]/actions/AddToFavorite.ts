@@ -4,19 +4,16 @@ import { auth } from '@clerk/nextjs/server';
 import mongoose, { ObjectId } from 'mongoose';
 import dbConnect from '@/lib/db';
 import { Users, Prompts } from '@/models';
-import { getTranslations } from 'next-intl/server';
 import { bustCache, CacheTags } from '@/lib/cache';
 
 export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
-  const t = await getTranslations('Messages');
-
   try {
     const { userId: clerkUserId } = await auth();
     if (!clerkUserId) {
       return {
         success: false,
         action: null,
-        message: t('isNotAuthenticated'),
+        message: 'isNotAuthenticated',
       };
     }
 
@@ -27,7 +24,7 @@ export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
       return {
         success: false,
         action: null,
-        message: t('userNotFound'),
+        message: 'userNotFound',
       };
     }
 
@@ -68,20 +65,19 @@ export async function AddToFavorite({ promptId }: { promptId: ObjectId }) {
       { new: true }
     );
 
-    bustCache(CacheTags.favorites, CacheTags.prompts);
+    bustCache(CacheTags.favorites, CacheTags.prompts, CacheTags.admin);
 
     return {
       success: true,
       action,
-      message:
-        action === 'added' ? t('addToFavorite') : t('removeFromFavorite'),
+      message: action === 'added' ? 'addToFavorite' : 'removeFromFavorite',
     };
   } catch (error) {
     console.error('Error toggling favorite:', error);
     return {
       success: false,
       action: null,
-      message: t('generic'),
+      message: 'generic',
     };
   }
 }

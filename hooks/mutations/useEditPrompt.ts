@@ -18,6 +18,7 @@ export function useEditPrompt() {
     mutationFn: (input: EditPromptType) => EditPrompt(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.admin.overview });
     },
   });
 }
@@ -29,6 +30,7 @@ export function useEditStatusPrompt() {
     mutationFn: (input: EditStatusPromptType) => EditStatusPrompt(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.admin.overview });
     },
   });
 }

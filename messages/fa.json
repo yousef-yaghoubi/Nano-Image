@@ -47,7 +47,8 @@
         "Corporate & professional": "شرکتی و حرفه ای",
         "Genre & themes": "ژانر و مضامین",
         "Mood & tone": "حالت و لحن",
-        "Optional add-ons": "افزونه های اختیاری"
+        "Optional add-ons": "افزونه های اختیاری",
+        "Language": "زبان"
       },
       "tag": {
         "Search": "جستجو :",
@@ -85,7 +86,12 @@
         "Dark / Moody": "تیره‌ و تار",
         "Glitch": "اختلال",
         "Neon": "نئون",
-        "Flat Design": "طراحی تخت"
+        "Flat Design": "طراحی تخت",
+        "English": "انگلیسی",
+        "Spanish": "اسپانیایی",
+        "Arabic": "عربی",
+        "French": "فرانسوی",
+        "Portuguese": "پرتغالی"
       },
       "searchPlaceholder": "جستجو بر اساس اسم یا پرامپت (انگلیسی)..."
     }
@@ -118,6 +124,27 @@
       "Image": {
         "title": "آپلود پروفایل",
         "image": "تصویر:"
+      },
+      "Password": {
+        "title": "تغییر رمز عبور",
+        "newPassword": "رمز عبور جدید",
+        "confirmPassword": "تکرار رمز عبور جدید"
+      }
+    },
+    "RequestRole": {
+      "head": "درخواست نقش ادمین",
+      "description": "اگر نیاز به دسترسی ادمین داری، می‌تونی درخواست بدی تا مدیران سیستم درخواست تو بررسی کنن.",
+      "currentRole": "نقش فعلی",
+      "requestButton": "درخواست نقش ادمین",
+      "cancelButton": "لغو درخواست",
+      "pending": "درخواست تو در حال بررسی است",
+      "adminApproval": "تایید شده",
+      "premissonList": "دسترسی‌های ادمین شامل:",
+      "premissions": {
+        "panel": "مشاهده پنل ادمین",
+        "prompts": "مشاهده پرامپت‌های کاربران",
+        "users": "مشاهده کاربران و نقش‌های آن‌ها",
+        "stats": "مشاهده آمار سایت"
       }
     },
     "Home": {
@@ -134,11 +161,41 @@
       "descPopular": "دوست داشتنی ترین پیام های ارسال شده توسط کاربران"
     },
     "Admin": {
+      "overview": {
+        "overview": "داشبورد",
+        "totalPrompts": "تعداد پرامپت‌ها",
+        "totalLikes": "تعداد لایک‌ها",
+        "totalUsers": "تعداد کاربران",
+        "activePrompts": "فعال",
+        "pendingPrompts": "در انتظار",
+        "rejectedPrompts": "رد شده",
+        "adminRequests": "درخواست ادمین",
+        "membersCount": "اعضا",
+        "adminsCount": "مدیران",
+        "quickActions": "اقدامات سریع",
+        "recentActivity": "فعالیت‌های اخیر",
+        "recentPrompts": "پرامپت‌های اخیر",
+        "recentUsers": "کاربران جدید",
+        "noData": "داده‌ای موجود نیست"
+      },
+      "admin": {
+        "updatePrompts": "افزودن پرامپت از سرور"
+      },
       "users": {
-        "users": "کاربرها"
+        "users": "کاربرها",
+        "role": {
+          "ADMIN": "ادمین",
+          "MEMBER": "کاربر",
+          "SUPER_ADMIN": "سوپر ادمین"
+        }
       },
       "prompts": {
-        "prompts": "پرامپت‌ها"
+        "prompts": "پرامپت‌ها",
+        "status": {
+          "True": "تایید",
+          "False": "تایید نشده",
+          "Pending": "انتظار"
+        }
       },
       "back": {
         "back": "بازگشت به صفحه اصلی"
@@ -160,6 +217,7 @@
     "generic": "خطایی رخ داد. لطفاً دوباره تلاش کنید.",
     "noFile": "فایلی اپلود نشده. دوباره تلاش کنید.",
     "createPrompt": "پرامپت با موفقیت ایجاد شد.",
+    "createPromptsList": "تعداد {length} پرامپت با موفقیت ایجاد شد.",
     "editPrompt": "پرامپت با موفقیت ویرایش شد.",
     "profileUpdated": "پروفایل با موفقیت به‌روزرسانی شد.",
     "imageUpdated": "تصویر پروفایل با موفقیت به‌روزرسانی شد.",
@@ -167,7 +225,13 @@
     "emptyMessageUsers": "کاربری پیدا نشد",
     "emptyMessagePrompts": "پرامپتی پیدا نشد",
     "emptyDescriptionPrompts": "برای افزودن پرامپت، به صفحه «پرامپت جدید» بروید",
-    "editRole": "نقش کاربر با موفقیت تغییر کرد."
+    "editRole": "نقش کاربر با موفقیت تغییر کرد.",
+    "requestRole": "درخواست نقش ادمین با موفقیت ثبت شد.",
+    "cancelRequestRole": "درخواست نقش ادمین لغو شد.",
+    "alreadyRequested": "شما قبلاً درخواست نقش ادمین داده‌اید.",
+    "rejectRoleRequest": "درخواست نقش ادمین رد شد.",
+    "passwordChanged": "رمز عبور با موفقیت تغییر کرد.",
+    "passwordNotEnabled": "رمز عبور برای این حساب فعال نیست. لطفاً از ورود با رمز عبور استفاده کنید."
   },
   "Forms": {
     "minLengthName": "نام حداقل باید 3 کاراکتر داشته باشه.",
@@ -175,6 +239,14 @@
     "minLengthLastName": "نام حداقل باید 3 کاراکتر داشته باشه.",
     "maxLengthLastName": "نام حداکثر باید 40 کاراکتر داشته باشه.",
     "minLengthDesc": "پرامپت حداقل باید 10 کاراکتر داشته باشه.",
+    "passwordMinLength": "رمز عبور باید حداقل 8 کاراکتر باشد.",
+    "passwordMaxLength": "رمز عبور نباید بیشتر از 128 کاراکتر باشد.",
+    "passwordLowercase": "رمز عبور باید حداقل شامل یک حرف کوچک انگلیسی (a-z) باشد.",
+    "passwordUppercase": "رمز عبور باید حداقل شامل یک حرف بزرگ انگلیسی (A-Z) باشد.",
+    "passwordNumber": "رمز عبور باید حداقل شامل یک عدد باشد.",
+    "passwordSpecialCharacter": "رمز عبور باید حداقل شامل یک کاراکتر ویژه مانند !@#$%^&* باشد.",
+    "passwordNoSpaces": "رمز عبور نباید شامل فاصله باشد.",
+    "passwordMismatch": "رمز عبور و تکرار آن یکسان نیستند.",
     "isRequired": "این فیلد الزامی است.",
     "Label": {
       "image": "تصویر",
@@ -188,6 +260,7 @@
     "profile": "پروفایل",
     "myFavorites": "علاقه مندی های من",
     "myPrompts": "پرامپت های من",
+    "requestRole": "درخواست نقش ادمین",
     "LogOut": {
       "title": "آیا میخواهید از حساب خود خارج شوید؟",
       "logOut": "خروج",
@@ -214,6 +287,11 @@
     "editRoleUser": {
       "editRoleUser": "ویرایش نقش",
       "title": "تغییر نقش کاربر به:"
+    },
+    "acceptRoleRequest": {
+      "accept": "تایید درخواست",
+      "reject": "رد درخواست",
+      "title": "مدیریت درخواست نقش"
     }
   },
   "Buttons": {
@@ -258,6 +336,9 @@
       "ADMIN": "ادمین",
       "MEMBER": "کاربر",
       "SUPER_ADMIN": "سوپر ادمین"
-    }
+    },
+    "waitForAdmin": "درخواست نقش",
+    "waitForAdmin_true": "در انتظار",
+    "waitForAdmin_false": "---"
   }
 }

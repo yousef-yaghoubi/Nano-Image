@@ -1,6 +1,6 @@
 'use client';
 
-import { DrawerDialog } from '@/components/shared/DrawerDialog';
+// import { DrawerDialog } from '@/components/shared/DrawerDialog';
 import EditPromptAction from '@/components/shared/Prompts/EditPromptAction';
 import RemovePromptAction from '@/components/shared/Prompts/RemovePromptAction';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,8 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
+import { DrawerDialog } from '@/components/shared/DrawerDialog';
+
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
 

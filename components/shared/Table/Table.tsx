@@ -155,7 +155,7 @@ export function DataTable<TData>({
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
       {/* Search */}
-      <div className="flex justify-between gap-2">
+      <div className="flex flex-col justify-between gap-2 sm:flex-row">
         {enableSearch && (
           <SearchBox
             value={searchValue}
@@ -167,9 +167,7 @@ export function DataTable<TData>({
         {enableSelectColumns && (
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {tTable('showCoulomns')}
-              </Button>
+              <Button variant="outline">{tTable('showCoulomns')}</Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>

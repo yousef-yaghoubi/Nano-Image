@@ -5,7 +5,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { Favorite, PromptFavorite, Users } from '@/models';
 import { RoleType } from '@/models/enums';
-import { bustCache, CacheTags } from '@/lib/cache';
+import { CacheTags } from '@/lib/cache';
+import { revalidateTag } from 'next/cache';
 
 // export const runtime = 'nodejs';.
 // export const dynamic = 'force-dynamic';
@@ -91,12 +92,12 @@ export async function POST(req: Request) {
         });
 
         console.log(`User created/synced: ${id}`);
-        bustCache(CacheTags.users);
+        revalidateTag(CacheTags.users, 'default');
         return new Response('User created', { status: 200 });
       }
 
       case 'user.updated': {
-        const { id, email_addresses, image_url, first_name, last_name } =
+        const { id, email_addresses, image_url, first_name, last_name, public_metadata } =
           evt.data;
 
         // Update email, image, firstName, and lastName
@@ -105,6 +106,7 @@ export async function POST(req: Request) {
           image?: string;
           firstName?: string;
           lastName?: string;
+          public_metadata?: Record<string, any>;
         } = {};
 
         if (email_addresses?.[0]?.email_address) {
@@ -119,11 +121,14 @@ export async function POST(req: Request) {
         if (last_name !== undefined && last_name !== null) {
           updateData.lastName = last_name;
         }
+        if (public_metadata) {
+          updateData.public_metadata = public_metadata;
+        }
 
         await Users.findOneAndUpdate({ clerkId: id }, updateData);
 
         console.log(`User updated: ${id}`);
-        bustCache(CacheTags.users);
+        revalidateTag(CacheTags.users, 'default');
         return new Response('User updated', { status: 200 });
       }
 
@@ -147,7 +152,7 @@ export async function POST(req: Request) {
 
         await Users.deleteOne({ _id: user._id });
         console.log(`User deleted: ${id}`);
-        bustCache(CacheTags.users);
+        revalidateTag(CacheTags.users, 'default');
         return new Response('User deleted', { status: 200 });
       }
       case 'session.created': {
@@ -170,6 +175,7 @@ export async function POST(req: Request) {
         }
 
         console.log(`Session created for user: ${userId}`);
+        revalidateTag(CacheTags.users, 'default');
         return new Response('Session created', { status: 200 });
       }
 

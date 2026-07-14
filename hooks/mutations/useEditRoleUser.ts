@@ -12,6 +12,7 @@ export function useEditRoleUser() {
     mutationFn: (input: EditRoleUserType) => EditRoleUser(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.admin.overview });
     },
   });
 }

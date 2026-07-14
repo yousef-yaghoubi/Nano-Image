@@ -1,7 +1,26 @@
 import { SidebarProvider } from '@/context/SidebarContext';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-function layout({ children }: { children: React.ReactNode }) {
+async function layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { sessionClaims } = await auth();
+  const { locale } = await params;
+
+  const role = (
+    sessionClaims?.public_metadata as SessionPublicMetadata | undefined
+  )?.role;
+
+  if (!role || role === 'MEMBER') {
+    redirect(`/${locale}`);
+  }
+
   return (
     <SidebarProvider>
       {children}

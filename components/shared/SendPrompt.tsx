@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl';
 import { ErrorMessage } from 'formik';
 import { FormBuilder } from '@/components/shared/Form';
 import { SchemaSendPrompt } from '@/validation/Form';
-import useAddPrompt from '@/hooks/mutations/useAddPrompt';
 import UploadImage from '@/components/shared/UploadImage';
 import TagsShowInput from '@/components/shared/Form/Tags';
+import { useAddPrompt } from '@/hooks/mutations/useAddPrompt';
 
 interface FormValues {
   namePrompt: string;
@@ -95,7 +95,6 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
             <TagsShowInput name="tags" label={tForm('Label.tags')} />
           </>
         )}
-        // Config-driven fields rendered above customFields
       />
     </div>
   );
