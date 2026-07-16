@@ -139,6 +139,7 @@
       "cancelButton": "Cancel Request",
       "pending": "Your request is pending review",
       "adminApproval": "admin approved",
+      "goToAdmin": "Go to Admin Panel",
       "premissonList": "Admin permissions include:",
       "premissions": {
         "panel": "View the admin panel",

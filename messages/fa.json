@@ -139,6 +139,7 @@
       "cancelButton": "لغو درخواست",
       "pending": "درخواست تو در حال بررسی است",
       "adminApproval": "تایید شده",
+      "goToAdmin": "رفتن به پنل ادمین",
       "premissonList": "دسترسی‌های ادمین شامل:",
       "premissions": {
         "panel": "مشاهده پنل ادمین",

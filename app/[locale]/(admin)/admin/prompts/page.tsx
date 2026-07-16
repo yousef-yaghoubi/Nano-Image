@@ -60,18 +60,6 @@ export default function page() {
     forApi: 'prompts',
   });
 
-  console.log({
-    page,
-    search,
-    limit,
-    status: columnFilters.find((f) => f.id === 'status')?.value as
-      | 'True'
-      | 'False'
-      | 'Pending'
-      | undefined,
-    sortString,
-  });
-
   const Columns = getColumns({
     t,
     tTags,

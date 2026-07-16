@@ -42,17 +42,17 @@ function StatCard({
       initial={{ y: 40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="backgroundSecond text-card-foreground flex items-center gap-4 rounded-xl border p-6 shadow-sm"
+      className="backgroundSecond text-card-foreground flex items-center gap-3 rounded-xl border p-4 shadow-sm sm:gap-4 sm:p-6"
     >
-      <div className={cn('rounded-lg p-3', color)}>
-        <Icon size={28} className="text-white" />
+      <div className={cn('rounded-lg p-2 sm:p-3', color)}>
+        <Icon size={22} className="text-white sm:size-7" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-muted-foreground text-sm">{label}</p>
+        <p className="text-muted-foreground text-xs sm:text-sm">{label}</p>
         {loading ? (
-          <Skeleton className="mt-1 h-8 w-16" />
+          <Skeleton className="mt-1 h-6 w-14 sm:h-8 sm:w-16" />
         ) : (
-          <p className="text-2xl font-bold">{value}</p>
+          <p className="text-xl font-bold sm:text-2xl">{value}</p>
         )}
         {subtitle && (
           <p className="text-muted-foreground mt-0.5 text-xs">{subtitle}</p>
@@ -140,39 +140,40 @@ function Page() {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
         {/* Recent Prompts */}
         <MotionDiv
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="backgroundSecond text-card-foreground rounded-xl border p-6 shadow-sm"
+          className="backgroundSecond text-card-foreground rounded-xl border p-4 shadow-sm sm:p-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">
+          <div className="mb-3 flex items-center justify-between sm:mb-4">
+            <h2 className="text-sm font-semibold sm:text-lg">
               {tAdmin('overview.recentPrompts')}
             </h2>
             <Link
               href={`/${locale}/admin/prompts`}
-              className="text-primary text-sm hover:underline"
+              className="text-primary text-xs hover:underline sm:text-sm"
             >
               {tAdmin('prompts.prompts')}
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {isLoading ? (
-              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-8 w-full sm:h-10" />
             ) : stats?.recentPrompts?.length ? (
               stats.recentPrompts.map((prompt) => (
                 <div
                   key={prompt._id}
-                  className="flex items-center justify-between gap-2"
+                  className="flex flex-col gap-1 border-b pb-2 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:border-0 sm:pb-0"
                 >
-                  <span className="min-w-0 flex-1 truncate text-sm">
-                    {prompt.title}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground text-xs">
+                  <p className="line-clamp-3 truncate text-xs sm:text-sm">
+                    {prompt.title.slice(0, 30)}
+                    {prompt.title.length > 30 ? '...' : ''}
+                  </p>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="text-muted-foreground text-[10px] sm:text-xs">
                       ♥ {prompt.likes}
                     </span>
                     <Badge
@@ -183,7 +184,7 @@ function Page() {
                             ? 'secondary'
                             : 'destructive'
                       }
-                      className="text-[10px] capitalize"
+                      className="text-[9px] capitalize sm:text-[10px]"
                     >
                       {tAdmin(`prompts.status.${prompt.status}`)}
                     </Badge>
@@ -191,7 +192,7 @@ function Page() {
                 </div>
               ))
             ) : (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs sm:text-sm">
                 {tAdmin('overview.noData')}
               </p>
             )}
@@ -203,33 +204,33 @@ function Page() {
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="backgroundSecond text-card-foreground rounded-xl border p-6 shadow-sm"
+          className="backgroundSecond text-card-foreground rounded-xl border p-4 shadow-sm sm:p-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">
+          <div className="mb-3 flex items-center justify-between sm:mb-4">
+            <h2 className="text-sm font-semibold sm:text-lg">
               {tAdmin('overview.recentUsers')}
             </h2>
             <Link
               href={`/${locale}/admin/users`}
-              className="text-primary text-sm hover:underline"
+              className="text-primary text-xs hover:underline sm:text-sm"
             >
               {tAdmin('users.users')}
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {isLoading ? (
-              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-8 w-full sm:h-10" />
             ) : stats?.recentUsers?.length ? (
               stats.recentUsers.map((user) => (
                 <div
                   key={user._id}
-                  className="flex items-center justify-between gap-2"
+                  className="flex flex-col gap-1 border-b pb-2 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:border-0 sm:pb-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">
+                    <p className="truncate text-xs font-medium sm:text-sm">
                       {user.firstName} {user.lastName}
                     </p>
-                    <p className="text-muted-foreground truncate text-xs">
+                    <p className="text-muted-foreground truncate text-[10px] sm:text-xs">
                       {user.email}
                     </p>
                   </div>
@@ -239,14 +240,14 @@ function Page() {
                         ? 'default'
                         : 'secondary'
                     }
-                    className="shrink-0 text-[10px] capitalize"
+                    className="shrink-0 self-start text-[9px] capitalize sm:self-auto sm:text-[10px]"
                   >
                     {tAdmin(`users.role.${user.role}`)}
                   </Badge>
                 </div>
               ))
             ) : (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs sm:text-sm">
                 {tAdmin('overview.noData')}
               </p>
             )}
@@ -268,14 +269,14 @@ function Page() {
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-wrap gap-3"
+          className="flex flex-col gap-3 sm:flex-row sm:flex-wrap"
         >
           <Button
             variant="default"
             size="lg"
             onClick={handleUpdatePrompts}
             disabled={isPending}
-            className="gap-2"
+            className="w-full gap-2 sm:w-auto"
           >
             {isPending ? (
               <Loader size={18} className="animate-spin" />
@@ -285,15 +286,15 @@ function Page() {
             {isPending ? tMessages('loading') : tAdmin('admin.updatePrompts')}
           </Button>
 
-          <Link href={`/${locale}/admin/prompts`}>
-            <Button variant="outline" size="lg" className="gap-2">
+          <Link href={`/${locale}/admin/prompts`} className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="w-full gap-2">
               <Files size={18} />
               {tAdmin('prompts.prompts')}
             </Button>
           </Link>
 
-          <Link href={`/${locale}/admin/users`}>
-            <Button variant="outline" size="lg" className="gap-2">
+          <Link href={`/${locale}/admin/users`} className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="w-full gap-2">
               <UserCog size={18} />
               {tAdmin('users.users')}
             </Button>

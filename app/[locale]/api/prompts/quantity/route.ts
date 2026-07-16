@@ -4,8 +4,6 @@ import { Prompts } from '@/models';
 import { cacheLife, cacheTag } from 'next/cache';
 import { CacheTags } from '@/lib/cache';
 
- 
-
 const getCachedQuantities = async () => {
   'use cache';
 
@@ -28,7 +26,7 @@ const getCachedQuantities = async () => {
   const likePromptsQuantity = likesResult[0]?.totalLikes || 0;
 
   return {
-    prompts: Math.floor(promptsQuantity / 10) * 10,
+    prompts: Math.floor(promptsQuantity / 50) * 50,
     likes: Math.floor(likePromptsQuantity / 100) * 100,
   };
 };

@@ -259,7 +259,7 @@ export function DataTable<TData>({
                     <TableCell
                       key={cell.id}
                       style={{ maxWidth: cell.column.columnDef.maxSize }}
-                      className="py-3 text-gray-700 dark:text-gray-200"
+                      className="py-3 wrap-break-word whitespace-normal text-gray-700 dark:text-gray-200"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

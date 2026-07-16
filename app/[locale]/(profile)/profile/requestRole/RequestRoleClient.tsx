@@ -12,6 +12,7 @@ import {
   Users,
   BarChart3,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
@@ -95,12 +96,20 @@ function RequestRoleClient({ role, waitForAdmin }: RequestRoleClientProps) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex items-center gap-3 rounded-xl bg-green-50 p-4 dark:bg-green-900/20"
+            className="flex flex-col gap-4"
           >
-            <ShieldCheck size={24} className="shrink-0 text-green-600" />
-            <span className="font-medium text-green-700 dark:text-green-400">
-              {t('adminApproval')}
-            </span>
+            <div className="flex items-center gap-3 rounded-xl bg-green-50 p-4 dark:bg-green-900/20">
+              <ShieldCheck size={24} className="shrink-0 text-green-600" />
+              <span className="font-medium text-green-700 dark:text-green-400">
+                {t('adminApproval')}
+              </span>
+            </div>
+            <Link href={`/${locale}/admin`}>
+              <Button variant="default" className="w-fit">
+                <LayoutDashboard size={16} />
+                {t('goToAdmin')}
+              </Button>
+            </Link>
           </MotionDiv>
         ) : (
           <>

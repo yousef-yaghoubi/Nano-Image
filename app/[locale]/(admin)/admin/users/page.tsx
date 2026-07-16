@@ -55,20 +55,7 @@ export default function page() {
       | 'SUPER_ADMIN'
       | undefined,
     ...(sortString && { sort: sortString }),
-    // forApi: 'prompts',
   });
-
-  // console.log({
-  //   page,
-  //   search,
-  //   limit,
-  //   role: columnFilters.find((f) => f.id === 'role')?.value as
-  //     | 'Admin'
-  //     | 'Member'
-  //     | 'Super Admin'
-  //     | undefined,
-  //   sortString,
-  // });
 
   const Columns = getColumns({
     t,
