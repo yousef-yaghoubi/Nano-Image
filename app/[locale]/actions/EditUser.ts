@@ -76,7 +76,7 @@ export async function EditRoleUser(userInput: EditRoleUserType) {
       status: true,
       message: 'editRole',
     };
-  } catch (error) {
+      } catch {
     return {
       status: false,
       message: 'generic',
@@ -107,7 +107,7 @@ export async function RejectRoleRequest(userId: string) {
     bustCache(CacheTags.users, CacheTags.admin);
 
     return { status: true, message: 'rejectRoleRequest' };
-  } catch (error) {
+  } catch {
     return { status: false, message: 'generic' };
   }
 }
@@ -144,7 +144,7 @@ export async function RequestRole() {
       status: true,
       message: newWaitForAdmin ? 'requestRole' : 'cancelRequestRole',
     };
-  } catch (error) {
+  } catch {
     return { status: false, message: 'generic' };
   }
 }

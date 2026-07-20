@@ -2,6 +2,8 @@ import { getTranslations } from 'next-intl/server';
 import { slides, slideTexts } from '@/lib/data';
 import { Suspense } from 'react';
 import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
+import type { Metadata } from 'next';
+import { routing } from '@/i18n/routing';
 
 import dynamic from 'next/dynamic';
 import ParentCounterClient from '@/components/pages/homePage/ParentCounterClient';
@@ -10,6 +12,40 @@ import EmblaSlider from '@/components/pages/homePage/slider/Slider';
 const ShowPromptsContainer = dynamic(
   () => import('@/components/shared/Prompts/ShowPromptsContainer')
 );
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'SEO.home' });
+  const path = `/${locale}`;
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      url: path,
+      locale: locale === 'fa' ? 'fa_IR' : locale === 'ar' ? 'ar_SA' : 'en_US',
+    },
+    twitter: {
+      title: t('title'),
+      description: t('description'),
+    },
+    alternates: {
+      canonical: path,
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((l) => [l, `/${l}`])
+        ),
+        'x-default': `/${routing.defaultLocale}`,
+      },
+    },
+  };
+}
 
 export default async function Home() {
   const t = await getTranslations('Pages.Home');

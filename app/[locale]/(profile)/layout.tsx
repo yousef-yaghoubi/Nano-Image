@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import Sidebar from '@/components/pages/profile/Sidebar';
 import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar/Navbar';
 import React from 'react';
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 function layout({ children }: { children: React.ReactNode }) {
   return (

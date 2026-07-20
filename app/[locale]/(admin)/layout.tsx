@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 async function layout({
   children,

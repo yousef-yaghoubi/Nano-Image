@@ -137,8 +137,7 @@ export async function AddPromptsList(): Promise<{
     // ========= FIX #1 — smaller batch size =========
     const batchSize = 200;
 
-    let inserted = 0;
-    let skipped = 0;
+  let inserted = 0;
 
     for (let i = 0; i < prompts.length; i += batchSize) {
       const batch = prompts.slice(i, i + batchSize);
@@ -156,7 +155,6 @@ export async function AddPromptsList(): Promise<{
       );
 
       if (newDocs.length === 0) {
-        skipped += batch.length;
         continue;
       }
 
@@ -176,7 +174,6 @@ export async function AddPromptsList(): Promise<{
           inserted += newDocs.length;
         } catch (finalErr) {
           console.error('❌ FINAL FAIL for this batch:', finalErr);
-          skipped += newDocs.length;
         }
       }
 
@@ -199,9 +196,8 @@ export async function AddPromptsList(): Promise<{
       success: true,
       message: 'createPromptsList',
       inserted,
-      // skipped,
     };
-  } catch (error: unknown) {
+  } catch {
     return { success: false, message: 'generic' };
   }
 }

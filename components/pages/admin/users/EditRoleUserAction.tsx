@@ -42,7 +42,7 @@ function EditRoleUserAction({
       } else {
         toast.error(response && tMessages(response.message));
       }
-    } catch (error) {
+    } catch {
       toast.error(tMessages('generic'));
     } finally {
       setOpenModal(false);

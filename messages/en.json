@@ -1,4 +1,39 @@
 {
+  "SEO": {
+    "home": {
+      "title": "Nano Image — AI Image Prompts",
+      "description": "Discover and share AI image prompts. Browse thousands of creative prompts for AI image generation — no technical knowledge needed."
+    },
+    "prompts": {
+      "title": "Browse Prompts",
+      "description": "Browse our collection of AI image prompts. Filter by style, mood, genre, and more to find the perfect prompt."
+    },
+    "newPrompt": {
+      "title": "Create a New Prompt",
+      "description": "Create and share a new AI image prompt with the community."
+    },
+    "profile": {
+      "title": "My Profile"
+    },
+    "myFavorites": {
+      "title": "My Favorites"
+    },
+    "myPrompts": {
+      "title": "My Prompts"
+    },
+    "requestRole": {
+      "title": "Request Admin Role"
+    },
+    "admin": {
+      "title": "Admin Dashboard"
+    },
+    "adminUsers": {
+      "title": "Manage Users"
+    },
+    "adminPrompts": {
+      "title": "Manage Prompts"
+    }
+  },
   "data": {
     "filter": "Filter",
     "sort": "Sort",

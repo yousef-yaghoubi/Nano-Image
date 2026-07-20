@@ -30,7 +30,7 @@ function UpdateImage() {
       } else {
         toast.error(response && response.message);
       }
-    } catch (error) {
+    } catch {
       toast.error(t('generic'));
     } finally {
       setUploading(false);
