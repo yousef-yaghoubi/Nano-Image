@@ -1,12 +1,9 @@
-import { Suspense } from 'react';
-import PromptTableWrapper from './PromptTableWrapper';
-import { TableSkeleton } from '../../../../../components/shared/Table/TableSkeleton';
-import HeadPage from '@/components/shared/Prompts/HeadPage';
+import dynamic from 'next/dynamic';
 import { MotionDiv } from '@/components/shared/MotionWarpper';
-import { getTranslations } from 'next-intl/server';
+
+const PromptTableWrapper = dynamic(()=> import('./PromptTableWrapper'))
 
 async function page() {
-  const t = await getTranslations('Pages.MyPrompts');
   return (
     <MotionDiv
       initial={{ opacity: 0, y: 20 }}
@@ -14,14 +11,9 @@ async function page() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-    <div className="w-full min-w-0">
-      <div className="w-full min-w-0 overflow-hidden">
-        <HeadPage head={t('head')} />
-        <Suspense fallback={<TableSkeleton head />}>
+      <div className="w-full min-w-0">
           <PromptTableWrapper />
-        </Suspense>
       </div>
-    </div>
     </MotionDiv>
   );
 }
