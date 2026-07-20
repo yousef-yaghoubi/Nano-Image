@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MotionDiv } from '@/components/shared/MotionWarpper';
 import FormFieldRenderer from './FormFieldRenderer';
 import type { FormBuilderProps } from '@/types/form/types';
 
@@ -21,7 +20,6 @@ function FormBuilder<T extends FormikValues>({
   requireAnyDirty = false,
   resetOnSuccess = true,
   className = 'flex flex-col gap-5',
-  motionProps,
   isPending = false,
 }: FormBuilderProps<T>) {
   const tMessages = useTranslations('Messages');
@@ -34,12 +32,7 @@ function FormBuilder<T extends FormikValues>({
     : 'Loading...';
 
   return (
-    <MotionDiv
-      initial={motionProps?.initial ?? { opacity: 0, x: -20 }}
-      animate={motionProps?.animate ?? { opacity: 1, x: 0 }}
-      transition={motionProps?.transition ?? { duration: 0.4 }}
-      className="w-full"
-    >
+    <div className="w-full">
       <Formik<T>
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -107,7 +100,7 @@ function FormBuilder<T extends FormikValues>({
           );
         }}
       </Formik>
-    </MotionDiv>
+    </div>
   );
 }
 

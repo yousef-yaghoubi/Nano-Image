@@ -9,13 +9,21 @@ const DEFAULTS = {
   AUTOPLAY_DELAY: 5000,
 } as const;
 
-const SlideImage: React.FC<{ slide: SlideContent }> = ({ slide }) => {
+interface ImageOptions {
+  priority?: boolean;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'auto';
+}
+interface SlideImageProps {
+  slide: SlideContent;
+  options?: ImageOptions;
+}
+const SlideImage: React.FC<SlideImageProps> = ({ slide, options }) => {
   const {
     image,
     imageAlt,
     title,
     imageSizes = DEFAULTS.IMAGE_SIZES,
-    imagePriority = false,
     imageClassName = DEFAULTS.IMAGE_CLASSNAME,
     showSpotlight = true,
     showGradient = true,
@@ -31,7 +39,9 @@ const SlideImage: React.FC<{ slide: SlideContent }> = ({ slide }) => {
         fill
         className={imageClassName}
         sizes={imageSizes}
-        priority={imagePriority}
+        priority={options?.priority}
+        loading={options?.loading}
+        fetchPriority={options?.fetchPriority}
       />
 
       {showSpotlight && (

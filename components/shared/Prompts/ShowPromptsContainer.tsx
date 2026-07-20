@@ -1,7 +1,9 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import usePrompts from '@/hooks/queries/usePrompts';
+import useFavoriteIds from '@/hooks/queries/useFavoriteIds';
 import ShowPrompts from './ShowPrompts';
 import type { PromptsApi } from '@/services/prompts';
 import { DataType, PromptType } from '@/types/data';
@@ -41,7 +43,7 @@ function ShowPromptsContainer({
       ? (searchParams.get('sort') as string)
       : '';
 
-  const { data, isLoading, isError, error } = usePrompts<
+  const { data: promptsData, isLoading, isError, error } = usePrompts<
     DataType<PromptType[]>
   >({
     page,
@@ -52,6 +54,24 @@ function ShowPromptsContainer({
     limit,
     status: 'True',
   });
+
+  const { data: favoriteIdsData } = useFavoriteIds();
+
+  const favoriteIds = useMemo(() => {
+    if (!favoriteIdsData?.data?.promptIds) return new Set<string>();
+    return new Set(favoriteIdsData.data.promptIds);
+  }, [favoriteIdsData]);
+
+  const data = useMemo(() => {
+    if (!promptsData?.data) return promptsData;
+    return {
+      ...promptsData,
+      data: promptsData.data.map((p) => ({
+        ...p,
+        isFavorited: favoriteIds.has(String(p._id)),
+      })),
+    };
+  }, [promptsData, favoriteIds]);
 
   if (isError) {
     return (

@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import dbConnect from '@/lib/db';
 import { Users } from '@/models';
 import RequestRoleClient from './RequestRoleClient';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 import { IUser } from '@/types/models';
 
 async function page() {
@@ -21,10 +22,17 @@ async function page() {
     .lean()) as IUser;
 
   return (
+    <MotionDiv
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
     <RequestRoleClient
       role={role}
       waitForAdmin={user?.waitForAdmin === true}
     />
+    </MotionDiv>
   );
 }
 

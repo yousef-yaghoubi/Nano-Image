@@ -18,3 +18,5 @@ declare module '@tanstack/react-table' {
     translationKey?: string;
   }
 }
+
+declare module '*.css';

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 import { FavoriteButton } from './FavoriteButton';
 import { PromptType } from '@/types/data';
-import { motion } from 'motion/react';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 function Card({ data }: { data: PromptType }) {
   const t = useTranslations('Product');
@@ -16,25 +16,19 @@ function Card({ data }: { data: PromptType }) {
   };
 
   return (
-    <motion.div
+    <MotionDiv
       className="bg-primary group relative h-52 w-full overflow-hidden rounded-lg rounded-tl-none! sm:h-64 md:h-96 md:w-72 md:rounded-3xl"
       dir="ltr"
-      initial={{
-        y: 100,
-        opacity: 0.5,
-      }}
-      whileInView={{
-        y: 0,
-        opacity: 1,
-        transition: { duration: 1 },
-      }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
     >
       <div className="likeBox absolute left-0 z-20! flex h-8 w-20 items-center justify-center gap-2 rounded-br-md bg-white text-sm font-medium">
         <span>{data.likes}</span>
         <FavoriteButton
           promptId={data._id}
-          promptIsFavorit={data.isFavorited}
+          promptIsFavorit={data.isFavorited ?? false}
         />
       </div>
       <Image
@@ -56,7 +50,7 @@ function Card({ data }: { data: PromptType }) {
         <Copy size={15} />
         <span>{t('copy')}</span>
       </button>
-    </motion.div>
+    </MotionDiv>
   );
 }
 

@@ -5,11 +5,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Card from '../Card/Card';
 import { FilterSort } from '../FilteringData/Filter';
 import { DataType, PromptType } from '@/types/data';
-import { MotionButton, MotionDiv } from '../MotionWarpper';
+
 import { useTranslations } from 'next-intl';
 import { Pagination } from '../Table/Pagination';
 import HeadPage from './HeadPage';
 import Link from 'next/link';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 interface ShowPromptsProps {
   gridClass?: string;
@@ -49,11 +50,17 @@ function ShowPrompts({
       )}
 
       {/* ─── گرید کارت‌ها ─── */}
-      <div
+      <MotionDiv
         className={cn(
           'mt-10 grid w-full justify-items-center gap-10',
           gridClass
         )}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+        }}
+        initial="hidden"
+        animate="visible"
       >
         {isLoading
           ? Array.from({ length: cardCount }).map((_, index) => (
@@ -63,9 +70,17 @@ function ShowPrompts({
               />
             ))
           : prompt?.data?.map((item: PromptType) => (
-              <Card data={item} key={String(item._id)} />
+              <MotionDiv
+                key={String(item._id)}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.85 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+              >
+                <Card data={item} />
+              </MotionDiv>
             ))}
-      </div>
+      </MotionDiv>
 
       {/* ─── صفحه‌بندی / دکمهٔ بیشتر ─── */}
       {!showSimple ? (
@@ -74,12 +89,7 @@ function ShowPrompts({
             <Skeleton className="h-10 w-40 md:h-12" />
           </div>
         ) : (
-          <MotionDiv
-            initial={{ y: 100, opacity: 0.5 }}
-            whileInView={{ y: 0, opacity: 1, transition: { duration: 1 } }}
-            viewport={{ once: true }}
-            className="mt-10 text-3xl"
-          >
+          <div className="mt-10 text-3xl">
             <div className="flex justify-center">
               <Pagination
                 page={prompt?.pagination?.currentPage as number}
@@ -99,20 +109,15 @@ function ShowPrompts({
                 className="mx-auto"
               />
             </div>
-          </MotionDiv>
+          </div>
         )
       ) : isLoading ? (
         <Skeleton className="m-auto mt-4 h-10 w-32 md:h-12 md:w-40" />
       ) : (
         <Link href={'/prompts'} className="mx-auto block w-fit">
-          <MotionButton
-            initial={{ y: 100, opacity: 0.5 }}
-            whileInView={{ y: 0, opacity: 1, transition: { duration: 1 } }}
-            viewport={{ once: true }}
-            className="border-primary text-primary m-auto mt-4 flex cursor-pointer rounded-md border px-10 py-2 text-base font-medium md:rounded-lg md:text-lg md:font-bold"
-          >
+          <button className="border-primary text-primary m-auto mt-4 flex cursor-pointer rounded-md border px-10 py-2 text-base font-medium md:rounded-lg md:text-lg md:font-bold">
             {t('more')}
-          </MotionButton>
+          </button>
         </Link>
       )}
     </div>

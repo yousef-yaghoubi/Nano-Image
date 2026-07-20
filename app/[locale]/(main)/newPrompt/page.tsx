@@ -1,5 +1,6 @@
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
 import SendPrompt from '@/components/shared/SendPrompt';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 import { auth } from '@clerk/nextjs/server';
 
 async function page() {
@@ -9,13 +10,15 @@ async function page() {
     return <NotAuthenticated isAuthenticated={isAuthenticated} />;
   }
 
-  // const publicMetadata =
-  //   sessionClaims?.public_metadata as SessionPublicMetadata;
-
   return (
-    <>
+    <MotionDiv
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
       <SendPrompt clerkId={userId} />
-    </>
+    </MotionDiv>
   );
 }
 

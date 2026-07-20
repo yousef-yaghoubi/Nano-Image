@@ -1,6 +1,6 @@
 import { SlideTextProps } from '@/types/slider';
 import React from 'react';
-import { classNames } from '../Slider';
+import { classNames } from './Slider';
 
 const SlideText: React.FC<SlideTextProps> = ({
   text,

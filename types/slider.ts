@@ -8,7 +8,6 @@ export interface SlideContent {
   customContent?: ReactNode;
   imageAlt?: string;
   imageSizes?: string;
-  imagePriority?: boolean;
   imageClassName?: string;
   className?: string;
   showSpotlight?: boolean;
@@ -38,6 +37,9 @@ export interface EmblaSlideProps {
   slideWidth?: string;
   isMultipleSlides: boolean;
   currentSlidesPerView: number;
+  priority?: boolean;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'auto';
 }
 
 export interface SlideTextProps {

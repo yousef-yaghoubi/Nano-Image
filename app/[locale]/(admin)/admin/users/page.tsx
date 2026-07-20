@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/shared/Table/Table';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 import { useLocale, useTranslations } from 'next-intl';
 import { getColumns } from './Columns';
 import HeadPage from '@/components/shared/Prompts/HeadPage';
@@ -70,21 +71,23 @@ export default function page() {
   });
 
   return (
-    <>
+    <MotionDiv
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
       <HeadPage head={tAdmin('users.users')} />
       <DataTable
         className="w-full"
         Columns={Columns}
         data={data?.data ?? []}
         isLoading={isLoading}
-        // Sorting
         sortingState={sorting}
         onSortingChange={handleSortingChange}
-        // Pagination
         enablePagination
         page={page}
         limit={limit}
-        // ✅ Fixed: allCount can be undefined, fall back to totalCount then 0
         totalCount={data?.pagination?.total ?? data?.allCount ?? 0}
         pageSizeOptions={[5, 10, 25, 50]}
         onPageChange={setPage}
@@ -92,17 +95,15 @@ export default function page() {
           setLimit(newLimit);
           setPage(1);
         }}
-        // Search
         enableSearch
         searchValue={searchInput}
         onSearchChange={setSearchInput}
         searchPlaceholder={t('searchPlaceholder', {
           value: `${t('firstName')} , ${t('lastName')}`,
         })}
-        // Empty state
         emptyMessage={tMessages('emptyMessageUsers')}
         enableSelectColumns
       />
-    </>
+    </MotionDiv>
   );
 }

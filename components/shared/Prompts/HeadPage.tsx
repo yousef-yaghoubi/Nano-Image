@@ -1,23 +1,17 @@
 'use client';
-import { useParams } from 'next/navigation';
-import { MotionH1, MotionP } from '../MotionWarpper';
+
+import { MotionH1, MotionP } from '@/components/shared/MotionWarpper';
 
 function HeadPage({ head, desc }: { head: string; desc?: string }) {
-  const params = useParams();
   return (
     <>
       {head && (
         <MotionH1
-          initial={{
-            x: params.locale == 'en' ? -100 : 100,
-            opacity: 0,
-          }}
-          animate={{
-            x: 0,
-            opacity: 1,
-            transition: { duration: 0.8 },
-          }}
           className="heading-1 text-primary mb-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
         >
           {head}
         </MotionH1>
@@ -25,16 +19,11 @@ function HeadPage({ head, desc }: { head: string; desc?: string }) {
 
       {desc && (
         <MotionP
-          initial={{
-            x: params.locale == 'en' ? -100 : 100,
-            opacity: 0,
-          }}
-          animate={{
-            x: 0,
-            opacity: 1,
-            transition: { duration: 0.8 },
-          }}
           className="heading-5 mb-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 }}
         >
           {desc}
         </MotionP>

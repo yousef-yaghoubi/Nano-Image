@@ -88,11 +88,6 @@ export interface FormBuilderProps<T extends FormikValues> {
   requireAnyDirty?: boolean;
   resetOnSuccess?: boolean;
   className?: string;
-  motionProps?: {
-    initial?: object;
-    animate?: object;
-    transition?: object;
-  };
   /** External pending state (e.g. from a mutation hook) — also disables the submit button */
   isPending?: boolean;
 }

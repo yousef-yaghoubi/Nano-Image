@@ -1,6 +1,5 @@
 'use client';
 
-import { MotionLi } from '@/components/shared/MotionWarpper';
 import LangSwicher from '@/components/shared/Navbar/LangSwicher';
 import Logo from '@/components/shared/Navbar/Logo';
 import { ModeToggle } from '@/components/shared/Navbar/ModeToggle';
@@ -19,6 +18,7 @@ import {
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MotionDiv, MotionLi, MotionUl, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
 
 const LINKS = [
   {
@@ -60,7 +60,6 @@ export default function Sidebar() {
     isMobile,
   } = useSidebar();
 
-  
   const showContent = isExpanded || isMobileOpen;
 
   const handleToggle = () => {
@@ -76,7 +75,10 @@ export default function Sidebar() {
     <>
       {/* Mobile Backdrop */}
       {isMobileOpen && (
-        <div
+        <MotionDiv
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
           onClick={toggleMobileSidebar}
         />
@@ -98,9 +100,15 @@ export default function Sidebar() {
             )
         )}
       >
-        <div>
+        <MotionDiv
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
           {/* Header */}
-          <div
+          <MotionDiv
+            variants={staggerItem}
             className={cn(
               'mb-6 flex items-center',
               showContent
@@ -108,7 +116,7 @@ export default function Sidebar() {
                 : 'flex-col-reverse justify-center gap-2'
             )}
           >
-            <Logo  />
+            <Logo />
 
             <Button variant="outline" size="icon" onClick={handleToggle}>
               {isMobileOpen ? (
@@ -119,23 +127,20 @@ export default function Sidebar() {
                 <PanelRight size={20} />
               )}
             </Button>
-          </div>
+          </MotionDiv>
 
           {/* Navigation */}
-          <ul className="space-y-2">
+          <MotionUl
+            variants={staggerContainer}
+            className="space-y-2"
+          >
             {LINKS.map((item) => {
               const active = pathname.replace(`/${locale}`, '') === item.href;
 
               const Icon = item.icon;
 
               return (
-                <MotionLi
-                  key={item.id}
-                  whileHover={{
-                    x: locale === 'en' ? 5 : -5,
-                    transition: { duration: 0.2 },
-                  }}
-                >
+                <MotionLi key={item.id} variants={staggerItem}>
                   <Link
                     href={item.href}
                     onClick={() => {
@@ -164,19 +169,27 @@ export default function Sidebar() {
                 </MotionLi>
               );
             })}
-          </ul>
-        </div>
+          </MotionUl>
+        </MotionDiv>
 
         {/* Footer */}
-        <div
+        <MotionDiv
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
           className={cn(
             'flex',
             showContent ? 'justify-center gap-2' : 'flex-col items-center gap-3'
           )}
         >
-          <LangSwicher />
-          <ModeToggle />
-        </div>
+          <MotionDiv variants={staggerItem}>
+            <LangSwicher />
+          </MotionDiv>
+          <MotionDiv variants={staggerItem}>
+            <ModeToggle />
+          </MotionDiv>
+        </MotionDiv>
       </aside>
     </>
   );

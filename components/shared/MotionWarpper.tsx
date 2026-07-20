@@ -1,29 +1,72 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { ElementType, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-const createMotion = <T extends ElementType>(Tag: T) => {
-  const Component = ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createMotionTag = (tag: any) => {
+  const MotionTag = motion(tag);
+
+  return function WrappedMotion({
     children,
     className,
     ...rest
-  }: PropsWithChildren<{ className?: string; [key: string]: unknown }>) => {
-    const TagComponent = Tag as ElementType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }: PropsWithChildren<Record<string, any>>) {
     return (
-      <TagComponent className={className} {...rest}>
+      <MotionTag className={className} {...rest}>
         {children}
-      </TagComponent>
+      </MotionTag>
     );
   };
-  Component.displayName = `Motion(${typeof Tag === 'string' ? Tag : Tag.displayName || Tag.name || 'Component'})`;
-  return Component;
 };
 
-export const MotionDiv = createMotion(motion.div);
-export const MotionButton = createMotion(motion.button);
-export const MotionSpan = createMotion(motion.span);
-export const MotionP = createMotion(motion.p);
-export const MotionH1 = createMotion(motion.h1);
-export const MotionH3 = createMotion(motion.h3);
-export const MotionLi = createMotion(motion.li);
+export const MotionDiv = createMotionTag('div');
+export const MotionMain = createMotionTag('main');
+export const MotionButton = createMotionTag('button');
+export const MotionSpan = createMotionTag('span');
+export const MotionP = createMotionTag('p');
+export const MotionH1 = createMotionTag('h1');
+export const MotionH3 = createMotionTag('h3');
+export const MotionLi = createMotionTag('li');
+export const MotionUl = createMotionTag('ul');
+
+export const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+};
+
+export const fadeLeft = {
+  initial: { opacity: 0, x: -20 },
+  animate: { opacity: 1, x: 0 },
+};
+
+export const fadeRight = {
+  initial: { opacity: 0, x: 20 },
+  animate: { opacity: 1, x: 0 },
+};
+
+export const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+};
+
+export const scaleUp = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+};
+
+export const staggerContainer = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const staggerItem = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};

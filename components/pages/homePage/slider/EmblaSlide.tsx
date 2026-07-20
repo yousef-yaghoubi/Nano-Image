@@ -1,6 +1,6 @@
 import React from 'react';
 import { EmblaSlideProps } from '@/types/slider';
-import { classNames, getPaddingClass, getTextSizeClass } from '../Slider';
+import { classNames, getPaddingClass, getTextSizeClass } from './Slider';
 import SlideImage from './SlideImage';
 import SlideText from './SlideText';
 
@@ -11,6 +11,9 @@ export const EmblaSlide: React.FC<EmblaSlideProps> = (props) => {
     slideWidth,
     isMultipleSlides,
     currentSlidesPerView,
+    priority,
+    loading,
+    fetchPriority,
   } = props;
 
   const { text, customContent, className = '', image } = slide || {};
@@ -40,7 +43,10 @@ export const EmblaSlide: React.FC<EmblaSlideProps> = (props) => {
           className
         )}
       >
-        <SlideImage slide={slide} />
+        <SlideImage
+          slide={slide}
+          options={{ priority, loading, fetchPriority }}
+        />
         {hasText && (
           <SlideText
             text={text}

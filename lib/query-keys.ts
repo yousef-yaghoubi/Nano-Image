@@ -9,6 +9,10 @@ export const queryKeys = {
       [...queryKeys.prompts.lists(), params] as const,
     detail: (id: string) => [...queryKeys.prompts.all, 'detail', id] as const,
   },
+  favorites: {
+    all: ['favorites'] as const,
+    ids: () => [...queryKeys.favorites.all, 'ids'] as const,
+  },
   quantities: {
     all: ['quantities'] as const,
   },

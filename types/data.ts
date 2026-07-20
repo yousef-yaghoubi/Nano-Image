@@ -28,7 +28,7 @@ export interface PromptType {
   tags: null | string[];
   isLiked: boolean;
   status: statusType;
-  isFavorited: boolean;
+  isFavorited?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -7,7 +7,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { EmblaSliderProps, SlideContent } from '@/types/slider';
 import { useContainerWidth } from '@/hooks/useContainerWidth';
 import { useResponsiveSlidesPerView } from '@/hooks/useResponsiveSlidesPerView';
-import { EmblaSlide } from './slider/EmblaSlide';
+import { EmblaSlide } from './EmblaSlide';
 
 // ==== Default Config ====
 const DEFAULTS = {
@@ -125,6 +125,9 @@ const EmblaSlider: React.FC<EmblaSliderProps> = ({
             slideWidth={slideWidth}
             isMultipleSlides={currentSlidesPerView > 1}
             currentSlidesPerView={currentSlidesPerView}
+            priority={idx === 0}
+            loading={idx === 0 ? 'eager' : 'lazy'}
+            fetchPriority={idx === 0 ? 'high' : 'auto'}
           />
         ))}
       </div>

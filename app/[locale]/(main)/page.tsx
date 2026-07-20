@@ -1,22 +1,22 @@
-import EmblaSlider from '@/components/pages/homePage/Slider';
 import { getTranslations } from 'next-intl/server';
 import { slides, slideTexts } from '@/lib/data';
 import { Suspense } from 'react';
 import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
+
+import dynamic from 'next/dynamic';
 import ParentCounterClient from '@/components/pages/homePage/ParentCounterClient';
-import ShowPromptsContainer from '@/components/shared/Prompts/ShowPromptsContainer';
-import HomeSkeleton from '@/components/pages/homePage/HomeSkeleton';
+import EmblaSlider from '@/components/pages/homePage/slider/Slider';
 
+const ShowPromptsContainer = dynamic(
+  () => import('@/components/shared/Prompts/ShowPromptsContainer')
+);
 
-
-async function HomeContent() {
+export default async function Home() {
   const t = await getTranslations('Pages.Home');
 
-
   return (
-    <>
-      {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
-      <section className="mb-5 flex h-fit w-full flex-col gap-5 md:justify-around xl:flex-row">
+    <section>
+      <div className="mb-5 flex h-fit w-full flex-col gap-5 md:justify-around xl:flex-row">
         <div className="my-5 flex w-full flex-col justify-around gap-5">
           <div className="flex flex-col gap-5">
             <h1
@@ -33,6 +33,7 @@ async function HomeContent() {
               {t('head')}
             </h3>
           </div>
+
           <ParentCounterClient
             promptsLabel={t('Badges.prompts')}
             tagsLabel={t('Badges.tags')}
@@ -40,7 +41,7 @@ async function HomeContent() {
           />
         </div>
         <EmblaSlider slides={slides} />
-      </section>
+      </div>
 
       <div className="backgroundSecond mx-auto my-20 flex w-full items-center justify-around rounded-3xl border border-gray-300 p-2 md:my-48 md:p-5 dark:border-gray-700">
         <EmblaSlider
@@ -65,21 +66,7 @@ async function HomeContent() {
           desc={t('descPopular')}
           limit={24}
         />
-        {/* <ShowPromptsWrapper
-            showSimple
-            head={t('headPopular')}
-            desc={t('descPopular')}
-          /> */}
       </Suspense>
-      {/* </HydrationBoundary> */}
-    </>
-  );
-}
-
-export default async function Home() {
-  return (
-    <Suspense fallback={<HomeSkeleton />}>
-      <HomeContent />
-    </Suspense>
+    </section>
   );
 }

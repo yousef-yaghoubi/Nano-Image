@@ -7,18 +7,16 @@ import { toast } from 'sonner';
 
 export function FavoriteButton({
   promptId,
-  promptIsFavorit,
+  promptIsFavorit = false,
 }: {
   promptId: ObjectId;
-  promptIsFavorit: boolean;
+  promptIsFavorit?: boolean;
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const { mutateAsync, isPending } = useToggleFavorite();
 
   useEffect(() => {
-    if (promptIsFavorit) {
-      setIsFavorite(promptIsFavorit);
-    }
+    setIsFavorite(promptIsFavorit);
   }, [promptIsFavorit]);
 
   const handleToggle = () => {

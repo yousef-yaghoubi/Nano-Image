@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { DrawerDialog } from '../../shared/DrawerDialog';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MotionDiv, MotionSpan } from '@/components/shared/MotionWarpper';
+import { MotionDiv, MotionLi, MotionUl, staggerContainer, staggerItem, fadeUp } from '@/components/shared/MotionWarpper';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -22,15 +22,26 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside
+      <MotionDiv
+        variants={fadeUp}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
         className="backgroundSecond sticky top-24 hidden h-fit w-full shrink-0 overflow-hidden rounded-3xl border border-gray-300 bg-linear-to-b shadow-xl md:w-64 lg:block dark:border-gray-700"
         style={{
           boxShadow:
             '0 10px 30px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03)',
         }}
       >
-        <div className="relative flex flex-col items-center gap-4 border-b border-gray-200 p-5 dark:border-gray-800">
-          <div className="relative">
+        <MotionDiv
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="relative flex flex-col items-center gap-4 border-b border-gray-200 p-5 dark:border-gray-800"
+        >
+          <MotionDiv variants={staggerItem}>
             <div className="from-primary/50 relative h-28 w-28 rounded-full bg-linear-to-br to-cyan-600 p-1">
               <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-white dark:bg-gray-900">
                 {isLoaded == false ? (
@@ -51,86 +62,94 @@ export default function Sidebar() {
                 )}
               </div>
             </div>
-          </div>
+          </MotionDiv>
 
-          <div className="text-center">
-            {isLoaded == false ? (
-              <Skeleton className="h-7 w-40" />
-            ) : (
-              <h3 className="mb-1 text-xl font-bold text-gray-800 dark:text-gray-100">
-                {user?.fullName}
-              </h3>
-            )}
-          </div>
-        </div>
+          <MotionDiv variants={staggerItem}>
+            <div className="text-center">
+              {isLoaded == false ? (
+                <Skeleton className="h-7 w-40" />
+              ) : (
+                <h3 className="mb-1 text-xl font-bold text-gray-800 dark:text-gray-100">
+                  {user?.fullName}
+                </h3>
+              )}
+            </div>
+          </MotionDiv>
+        </MotionDiv>
 
-        <ul className="p-3">
+        <MotionUl
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="p-3"
+        >
           {navItems.map((item) => {
             const isActive = pathname === item.link;
 
             return (
-              <Link
+              <MotionLi
                 key={item.link}
-                href={item.link}
-                className={`relative mb-2 flex items-center gap-3 rounded-xl p-2 transition-all ${
-                  isActive
-                    ? 'from-primary/10 dark:from-primary/30 bg-linear-to-r to-cyan-50/80 text-cyan-500 shadow-inner dark:to-cyan-200/20'
-                    : 'text-gray-600 hover:bg-gray-50/80 dark:text-gray-300 dark:hover:bg-gray-800/50'
-                }`}
-                aria-current={isActive ? 'page' : undefined}
+                variants={staggerItem}
               >
-                {isActive && (
-                  <div
-                    className={cn(
-                      'primaryGradient absolute top-0 bottom-0 w-1.5',
-                      locale == 'en'
-                        ? 'left-0 rounded-r-lg'
-                        : 'right-0 rounded-l-lg'
-                    )}
-                  />
-                )}
-
-                <div
-                  className={`rounded-lg p-2 ${
+                <Link
+                  href={item.link}
+                  className={`relative mb-2 flex items-center gap-3 rounded-xl p-2 transition-all ${
                     isActive
-                      ? 'from-primary/20 dark:from-primary/30 bg-linear-to-br to-cyan-200/20 dark:to-cyan-200/20'
-                      : 'bg-gray-100 dark:bg-gray-800'
+                      ? 'from-primary/10 dark:from-primary/30 bg-linear-to-r to-cyan-50/80 text-cyan-500 shadow-inner dark:to-cyan-200/20'
+                      : 'text-gray-600 hover:bg-gray-50/80 dark:text-gray-300 dark:hover:bg-gray-800/50'
                   }`}
-                  aria-hidden="true"
+                  aria-current={isActive ? 'page' : undefined}
                 >
-                  <item.icon />
-                </div>
+                  {isActive && (
+                    <div
+                      className={cn(
+                        'primaryGradient absolute top-0 bottom-0 w-1.5',
+                        locale == 'en'
+                          ? 'left-0 rounded-r-lg'
+                          : 'right-0 rounded-l-lg'
+                      )}
+                    />
+                  )}
 
-                <span className="font-medium">{t(item.title)}</span>
-
-                {isActive && (
-                  <MotionDiv
-                    className="m-auto"
-                    animate={{ x: [0, -3, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
+                  <div
+                    className={`rounded-lg p-2 ${
+                      isActive
+                        ? 'from-primary/20 dark:from-primary/30 bg-linear-to-br to-cyan-200/20 dark:to-cyan-200/20'
+                        : 'bg-gray-100 dark:bg-gray-800'
+                    }`}
+                    aria-hidden="true"
                   >
-                    {locale == 'en' ? (
-                      <ChevronRight size={16} className="text-primary" />
-                    ) : (
-                      <ChevronLeft size={16} className="text-primary" />
-                    )}
-                  </MotionDiv>
-                )}
-              </Link>
+                    <item.icon />
+                  </div>
+
+                  <span className="font-medium">{t(item.title)}</span>
+
+                  {isActive && (
+                    <div className="m-auto">
+                      {locale == 'en' ? (
+                        <ChevronRight size={16} className="text-primary" />
+                      ) : (
+                        <ChevronLeft size={16} className="text-primary" />
+                      )}
+                    </div>
+                  )}
+                </Link>
+              </MotionLi>
             );
           })}
-        </ul>
+        </MotionUl>
 
-        <div className="relative flex justify-center px-5 py-2">
+        <MotionDiv variants={staggerItem} className="relative flex justify-center px-5 py-2">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200 dark:border-gray-800" />
           </div>
           <div className="relative bg-white px-3 text-xs text-gray-500 dark:bg-gray-900 dark:text-gray-400">
             {t('myAccount')}
           </div>
-        </div>
+        </MotionDiv>
 
-        <div className="p-3">
+        <MotionDiv variants={staggerItem} className="p-3">
           <div className="relative z-10 flex items-center gap-2">
             <DrawerDialog
               trigger={
@@ -153,67 +172,54 @@ export default function Sidebar() {
               </div>
             </DrawerDialog>
           </div>
-        </div>
-      </aside>
+        </MotionDiv>
+      </MotionDiv>
 
       <MotionDiv
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        variants={staggerContainer}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
         className="fixed right-0 bottom-0 left-0 z-50! flex w-full justify-around gap-1 border-t border-gray-200 bg-linear-to-t from-white/95 to-white/80 px-4 py-3 shadow-2xl backdrop-blur-lg lg:hidden dark:border-gray-800 dark:from-gray-900/95 dark:to-gray-900/80"
       >
         {navItems.map((item) => {
           const isActive = pathname === item.link;
           return (
-            <Link
-              key={item.link}
-              href={item.link}
-              className="relative flex h-14 w-16 flex-col items-center justify-center rounded-xl"
-              aria-current={isActive ? 'page' : undefined}
-            >
-              <div className="z-10 flex flex-col items-center">
-                <MotionDiv
-                  className={`rounded-full p-1.5 ${
-                    isActive
-                      ? 'text-primary'
-                      : 'text-gray-500 dark:text-gray-400'
-                  }`}
-                  animate={{
-                    rotate: isActive ? [0, 10, -10, 0] : 0,
-                    scale: isActive ? [1, 1.1, 1] : 1,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  aria-hidden="true"
-                >
-                  <item.icon />
-                </MotionDiv>
+            <MotionDiv key={item.link} variants={staggerItem}>
+              <Link
+                href={item.link}
+                className="relative flex h-14 w-16 flex-col items-center justify-center rounded-xl"
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <div className="z-10 flex flex-col items-center">
+                  <div
+                    className={`rounded-full p-1.5 ${
+                      isActive
+                        ? 'text-primary'
+                        : 'text-gray-500 dark:text-gray-400'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <item.icon />
+                  </div>
 
-                <MotionSpan
-                  className={`mt-0.5 text-xs font-medium ${
-                    isActive
-                      ? 'text-primary'
-                      : 'text-gray-500 dark:text-gray-400'
-                  }`}
-                  animate={{
-                    y: isActive ? [0, -2, 0] : 0,
-                    scale: isActive ? [1, 1.1, 1] : 1,
-                  }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {item.title}
-                </MotionSpan>
-              </div>
+                  <span className={`mt-0.5 text-xs font-medium ${
+                      isActive
+                        ? 'text-primary'
+                        : 'text-gray-500 dark:text-gray-400'
+                    }`}>
+                    {item.title}
+                  </span>
+                </div>
 
-              {isActive && (
-                <MotionDiv
-                  layoutId="activeIndicator"
-                  className="bg-primary absolute top-0 h-1 w-10 rounded-full"
-                  initial={false}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  aria-hidden="true"
-                />
-              )}
-            </Link>
+                {isActive && (
+                  <div
+                    className="bg-primary absolute top-0 h-1 w-10 rounded-full"
+                    aria-hidden="true"
+                  />
+                )}
+              </Link>
+            </MotionDiv>
           );
         })}
       </MotionDiv>

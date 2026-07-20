@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db';
-import { Favorite, Prompts, Users, PromptFavorite } from '@/models';
-import { IFavorite, IUser } from '@/types/models';
+import { Prompts, Users } from '@/models';
 import { PromptType } from '@/types/data';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { promptsQuerySchema } from '@/validation/DTO';
@@ -11,15 +10,14 @@ import { CacheTags, bustCache, cacheLife, cacheTag } from '@/lib/cache';
 const getCachedPrompts = async (
   page: number,
   limit: number,
-  sortParam: string | undefined,
+  sortParam: string,
   rawTags: string | undefined,
   search: string | undefined,
-  status: string | undefined,
-  favoriteId: string | null
+  status: string | undefined
 ) => {
   'use cache';
 
-  cacheTag(CacheTags.prompts, CacheTags.favorites);
+  cacheTag(CacheTags.prompts);
   cacheLife('weeks');
 
   await dbConnect();
@@ -53,31 +51,10 @@ const getCachedPrompts = async (
   else if (sortParam === 'date asc') sort.createdAt = 1;
   else sort.likes = -1;
 
-  const [total, promptsRaw] = await Promise.all([
+  const [total, prompts] = await Promise.all([
     Prompts.countDocuments(where),
     Prompts.find(where).sort(sort).skip(skip).limit(limit).lean<PromptType[]>(),
   ]);
-
-  let prompts = promptsRaw;
-
-  if (favoriteId && prompts.length > 0) {
-    const promptIds = prompts.map((p) => p._id);
-    const favoritedEntries = await PromptFavorite.find({
-      favoriteId,
-      promptId: { $in: promptIds },
-    })
-      .select('promptId')
-      .lean();
-
-    const favoritedSet = new Set(
-      favoritedEntries.map((f) => f.promptId.toString())
-    );
-
-    prompts = prompts.map((p) => ({
-      ...p,
-      isFavorited: favoritedSet.has(p._id.toString()),
-    })) as typeof promptsRaw;
-  }
 
   const totalPages = Math.ceil(total / limit);
 
@@ -125,23 +102,6 @@ export async function GET(req: Request) {
       status,
     } = validatedData;
 
-    // Resolve favoriteId for the current user (not cached, per-request)
-    let favoriteId: string | null = null;
-    const { userId: clerkId } = await auth();
-
-    if (clerkId) {
-      await dbConnect();
-      const user = await Users.findOne({ clerkId })
-        .select('_id')
-        .lean<IUser | null>();
-      if (user) {
-        const favDoc = await Favorite.findOne({ userId: user._id })
-          .select('_id')
-          .lean<IFavorite | null>();
-        favoriteId = favDoc?._id?.toString() ?? null;
-      }
-    }
-
     const result = await getCachedPrompts(
       page,
       limit,
@@ -149,7 +109,6 @@ export async function GET(req: Request) {
       rawTags ?? undefined,
       search ?? undefined,
       status ?? undefined,
-      favoriteId
     );
 
     return NextResponse.json({

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/shared/Table/Table';
+import { MotionDiv } from '@/components/shared/MotionWarpper';
 import usePrompts from '@/hooks/queries/usePrompts';
 import type { MyPromptsResponse } from '@/services/prompts';
 import { useLocale, useTranslations } from 'next-intl';
@@ -75,21 +76,23 @@ export default function page() {
 
 
   return (
-    <>
+    <MotionDiv
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
       <HeadPage head={tAdmin('prompts')} />
       <DataTable
         className="w-full"
         Columns={Columns}
         data={data?.data ?? []}
         isLoading={isLoading}
-        // Sorting
         sortingState={sorting}
         onSortingChange={handleSortingChange}
-        // Pagination
         enablePagination
         page={page}
         limit={limit}
-        // ✅ Fixed: allCount can be undefined, fall back to totalCount then 0
         totalCount={data?.pagination?.total ?? data?.allCount ?? 0}
         pageSizeOptions={[5, 10, 25, 50]}
         onPageChange={setPage}
@@ -97,18 +100,16 @@ export default function page() {
           setLimit(newLimit);
           setPage(1);
         }}
-        // Search
         enableSearch
         searchValue={searchInput}
         onSearchChange={setSearchInput}
         searchPlaceholder={t('searchPlaceholder', {
           value: `${t('title')} , ${t('prompt')}`
         })}
-        // Empty state
         emptyMessage={tMessages('emptyMessagePrompts')}
         emptyDescription={tMessages('emptyDescriptionPrompts')}
         enableSelectColumns
       />
-    </>
+    </MotionDiv>
   );
 }

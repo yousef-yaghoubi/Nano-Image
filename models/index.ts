@@ -55,7 +55,8 @@ const promptsSchema = new Schema<IPrompt>(
 // Performance Indexes
 promptsSchema.index({ tags: 1, createdAt: -1 });
 promptsSchema.index({ likes: -1, createdAt: -1 });
-promptsSchema.index({ creatorName: 1, createdAt: -1 });
+promptsSchema.index({ status: 1, likes: -1 });
+promptsSchema.index({ creatorId: 1, createdAt: -1 });
 
 // Virtual: Count favorites
 promptsSchema.virtual('favoritesCount', {

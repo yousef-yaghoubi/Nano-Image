@@ -34,11 +34,9 @@ const yekanBakh = localFont({
       path: './font/YekanBakh-Light.ttf',
       weight: '300',
     },
-    {
-      path: './font/YekanBakh-Thin.ttf',
-      weight: '200',
-    },
   ],
+  display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -49,6 +47,7 @@ export const metadata: Metadata = {
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'fa' }, { locale: 'ar' }];
 }
+
 export default async function RootLayout({
   children,
   params,
@@ -56,7 +55,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale?: string }>;
 }>) {
-  const locale = (await params).locale;
+  const { locale } = await params;
 
   return (
     <Suspense>
