@@ -24,7 +24,6 @@ const initialValues: FormValues = {
 
 export default function SendPromptForm({ clerkId }: { clerkId: string }) {
   const tForm = useTranslations('Forms');
-  const tMessages = useTranslations('Messages');
   const { mutateAsync, isPending } = useAddPrompt();
 
   return (
@@ -48,15 +47,10 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
             },
           });
 
-          if (newPrompt.status) {
+          if (newPrompt.success) {
             setValues(initialValues);
             resetForm();
           }
-
-          return {
-            status: newPrompt.status,
-            message: tMessages(newPrompt.message),
-          };
         }}
         fields={[
           {

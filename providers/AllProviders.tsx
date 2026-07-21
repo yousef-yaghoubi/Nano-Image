@@ -16,9 +16,6 @@ function AllProviders({
 }) {
   return (
     <ClerkProvider
-      appearance={{
-        variables: { colorPrimary: '#00b487' },
-      }}
     >
       <QueryProvider>
         <ThemeProvider

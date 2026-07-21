@@ -15,11 +15,13 @@ import {
 import { FILTERING_OPTIONS } from '@/lib/data';
 import { useField } from 'formik';
 import { CheckIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
   const [field, , helpers] = useField<string[]>(name);
   const t = useTranslations('Filter.filter.tag');
+  const locale = useLocale();
+
   const handleRemove = (value: string) => {
     helpers.setValue(field.value.filter((v) => v !== value));
   };
@@ -27,10 +29,9 @@ const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
   const handleSelect = (value: string) => {
     if (field.value.includes(value)) {
       handleRemove(value);
-      return;
+    } else {
+      helpers.setValue([...field.value, value]);
     }
-
-    helpers.setValue([...field.value, value]);
   };
 
   const tags = FILTERING_OPTIONS.flatMap((filter) => filter.options);
@@ -46,20 +47,30 @@ const TagsShowInput = ({ name, label }: { name: string; label: string }) => {
         ))}
       </TagsTrigger>
 
-      <TagsContent dir="ltr">
-        <TagsInput placeholder="Search tag..." />
+      <TagsContent dir={locale === 'en' ? 'ltr' : 'rtl'}>
+        <TagsInput placeholder={'Search tag...'} />
 
         <TagsList>
-          <TagsEmpty />
+          {tags.length === 0 && <TagsEmpty />}
           <TagsGroup>
-            {tags.map((tag) => (
-              <TagsItem key={tag} onSelect={handleSelect} value={tag}>
-                {t(tag)}
-                {field.value.includes(tag) && (
-                  <CheckIcon className="text-muted-foreground" size={14} />
-                )}
-              </TagsItem>
-            ))}
+            {tags.map((tag) => {
+              const isSelected = field.value.includes(tag);
+              return (
+                <TagsItem
+                  key={tag}
+                  onSelect={() => handleSelect(tag)}
+                  value={tag}
+                  keywords={[t(tag)]}
+                >
+                  <div className="flex w-full items-center justify-between">
+                    {t(tag)}
+                    {isSelected && (
+                      <CheckIcon className="text-primary ml-2" size={14} />
+                    )}
+                  </div>
+                </TagsItem>
+              );
+            })}
           </TagsGroup>
         </TagsList>
       </TagsContent>

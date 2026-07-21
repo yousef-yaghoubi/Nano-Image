@@ -2,9 +2,9 @@
 
 import * as Yup from 'yup';
 import { useTranslations } from 'next-intl';
-import { ChangePassword } from '@/app/[locale]/actions/EditProfile';
 import { FormBuilder, type FieldConfig } from '@/components/shared/Form';
 import { SchemaChangePassword } from '@/validation/Form';
+import { useChangePassword } from '@/hooks/mutations/useProfile';
 
 type PasswordValues = Yup.InferType<typeof SchemaChangePassword>;
 
@@ -12,6 +12,7 @@ const initialValues: PasswordValues = { newPassword: '', confirmPassword: '' };
 
 function UpdatePassword() {
   const tPages = useTranslations('Pages.Profile.Password');
+  const { mutateAsync } = useChangePassword();
 
   const fields: FieldConfig[] = [
     {
@@ -35,12 +36,14 @@ function UpdatePassword() {
       validationSchema={SchemaChangePassword}
       submitLabel="submit"
       loadingMessageKey="loading"
-      onSubmit={async (values) => {
-        const res = await ChangePassword({
+      onSubmit={async (values, helpers) => {
+        await mutateAsync({
           newPassword: values.newPassword,
           confirmPassword: values.confirmPassword,
         });
-        return { status: res.status, message: res.message };
+
+        helpers.resetForm();
+        helpers.setValues(initialValues);
       }}
     />
   );

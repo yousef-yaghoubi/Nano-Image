@@ -1,8 +1,8 @@
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { FieldMeta, TextareaFieldConfig } from "@/types/form/types";
-import { useField } from "formik";
-import { errorRing } from ".";
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { FieldMeta, TextareaFieldConfig } from '@/types/form/types';
+import { useField } from 'formik';
+import { errorRing } from '.';
 
 export function TextareaField({
   field,
@@ -21,7 +21,7 @@ export function TextareaField({
       rows={field.rows ?? 4}
       aria-invalid={hasError}
       aria-describedby={hasError ? `${id}-error` : undefined}
-      className={cn(hasError && errorRing)}
+      className={cn(hasError && errorRing, "max-h-48")}
     />
   );
 }

@@ -24,7 +24,7 @@ interface AddPromptInput {
 export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
   try {
     if (!clerkId) {
-      return { status: false, message: 'isNotAuthenticated' };
+      return { success: false, message: 'isNotAuthenticated' };
     }
 
     const validatedPrompt = await SchemaSendPrompt.validate({
@@ -38,7 +38,7 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
 
     const user = (await Users.findOne({ clerkId }).lean()) as IUser | null;
     if (!user) {
-      return { status: false, message: 'userNotFound' };
+      return { success: false, message: 'userNotFound' };
     }
 
     const newPrompt = await Prompts.create({
@@ -53,15 +53,15 @@ export async function AddPrompt({ clerkId, prompt }: AddPromptInput) {
     bustCache(CacheTags.prompts, CacheTags.admin);
 
     return {
-      status: true,
+      success: true,
       message: 'createPrompt',
       data: JSON.parse(JSON.stringify(newPrompt)),
     };
   } catch (error) {
     if (error instanceof yup.ValidationError) {
-      return { status: false, message: error.message };
+      return { success: false, message: error.message };
     }
-    return { status: false, message: 'generic' };
+    return { success: false, message: 'generic' };
   }
 }
 

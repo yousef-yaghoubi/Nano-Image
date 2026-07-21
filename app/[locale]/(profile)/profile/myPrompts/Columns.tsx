@@ -19,6 +19,7 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
 import { DrawerDialog } from '@/components/shared/DrawerDialog';
+import { ImageModal } from '@/components/shared/ImageModal';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
 
@@ -63,17 +64,22 @@ export function getColumns({
     columnHelper.accessor('image', {
       header: t('image'),
       cell: (i) => (
-        <div className="border-border bg-muted relative block h-14 w-24 justify-self-center overflow-hidden rounded-lg border">
-          <Suspense fallback={<Skeleton className="h-14 w-24" />}>
-            <Image
-              alt="Prompt"
-              src={i.getValue()}
-              fill
-              className="object-cover"
-              sizes="96px"
-            />
-          </Suspense>
-        </div>
+        <ImageModal
+          src={i.getValue()}
+          trigger={
+            <div className="border-border bg-muted relative block h-14 w-24 justify-self-center overflow-hidden rounded-lg border">
+              <Suspense fallback={<Skeleton className="h-14 w-24" />}>
+                <Image
+                  alt="Prompt"
+                  src={i.getValue()}
+                  fill
+                  className="object-cover"
+                  sizes="96px"
+                />
+              </Suspense>
+            </div>
+          }
+        ></ImageModal>
       ),
       enableHiding: false,
       enableSorting: false,

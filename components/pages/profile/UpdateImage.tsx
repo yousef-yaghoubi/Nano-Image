@@ -1,39 +1,25 @@
 'use client';
 
-import { AddImage } from '@/app/[locale]/actions/EditProfile';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import UploadImage from '@/components/shared/UploadImage';
-import { useUser } from '@clerk/nextjs';
+import { useUpdateImage } from '@/hooks/mutations/useProfile';
 
 function UpdateImage() {
   const t = useTranslations('Messages');
   const tPages = useTranslations('Pages.Profile.Image');
 
   const [fileImage, setFileImage] = useState<File | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
-  const { user } = useUser();
+  const { mutateAsync, isPending } = useUpdateImage();
 
   const handleSubmit = async () => {
     if (!fileImage) return;
-    setUploading(true);
-
-    try {
-      const response = await AddImage({ file: fileImage });
-      if (response.status) {
-        user?.reload();
-        toast.success(response.message);
-        setFileImage(null);
-      } else {
-        toast.error(response && response.message);
-      }
-    } catch {
-      toast.error(t('generic'));
-    } finally {
-      setUploading(false);
+    
+    const response = await mutateAsync({ file: fileImage });
+    if (response.status) {
+      setFileImage(null);
     }
   };
 
@@ -47,11 +33,11 @@ function UpdateImage() {
       />
 
       <Button
-        disabled={!fileImage || uploading}
+        disabled={!fileImage || isPending}
         className="w-fit"
         onClick={handleSubmit}
       >
-        {uploading ? (
+        {isPending ? (
           <>
             <Loader2 className="size-4 animate-spin" />
             {t('loading')}

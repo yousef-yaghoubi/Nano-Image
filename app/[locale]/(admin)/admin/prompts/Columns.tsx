@@ -20,9 +20,12 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
 import EditStatusPromptAction from '@/components/shared/Prompts/EditStatusPromptAction';
+import dynamic from 'next/dynamic';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
-
+const ImageModal = dynamic(() =>
+  import('@/components/shared/ImageModal').then((m) => m.ImageModal)
+);
 export type TableTranslations = (key: string) => string;
 
 interface GetColumnsOptions {
@@ -64,17 +67,22 @@ export function getColumns({
     columnHelper.accessor('image', {
       header: t('image'),
       cell: (i) => (
-        <div className="border-border bg-muted relative block h-14 w-24 justify-self-center overflow-hidden rounded-lg border">
-          <Suspense fallback={<Skeleton className="h-14 w-24" />}>
-            <Image
-              alt="Prompt"
-              src={i.getValue()}
-              fill
-              className="object-cover"
-              sizes="96px"
-            />
-          </Suspense>
-        </div>
+        <ImageModal
+          trigger={
+            <div className="border-border bg-muted relative block h-14 w-24 cursor-pointer justify-self-center overflow-hidden rounded-lg border">
+              <Suspense fallback={<Skeleton className="h-14 w-24" />}>
+                <Image
+                  alt="Prompt"
+                  src={i.getValue()}
+                  fill
+                  className="object-cover"
+                  sizes="96px"
+                />
+              </Suspense>
+            </div>
+          }
+          src={i.getValue()}
+        ></ImageModal>
       ),
       enableHiding: false,
       enableSorting: false,

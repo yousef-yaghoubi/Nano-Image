@@ -18,13 +18,19 @@ interface AddPromptInput {
 
 export function useAddPrompt() {
   const queryClient = useQueryClient();
-
+  const t = useTranslations('Messages');
   return useMutation({
     mutationFn: (input: AddPromptInput) => AddPrompt(input),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.quantities.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.admin.overview });
+
+      if (data.success) {
+        toast.success(t(data.message));
+      } else {
+        toast.error(t(data.message));
+      }
     },
   });
 }
