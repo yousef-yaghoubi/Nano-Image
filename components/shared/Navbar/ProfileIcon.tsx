@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { getProfileMenuItems } from '@/lib/data';
-import { SignedOut, SignOutButton, UserAvatar, useUser } from '@clerk/nextjs';
+import { SignOutButton, UserAvatar, useUser } from '@clerk/nextjs';
 import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

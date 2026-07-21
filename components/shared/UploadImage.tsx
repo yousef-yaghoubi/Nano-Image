@@ -121,7 +121,7 @@ export default function UploadImage({
       const data = await UploadImage(fileItem);
 
       if (data.success) {
-        setValue(data.url);
+        setValue(data.url as string);
       }
     } catch (error) {
       console.error('Upload error:', error);

@@ -3,9 +3,6 @@ import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { ProfileIcon } from '../Navbar/ProfileIcon';
-import { Button } from '@/components/ui/button';
-import { User2 } from 'lucide-react';
-import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AuthButtons({

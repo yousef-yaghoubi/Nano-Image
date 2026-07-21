@@ -6,7 +6,6 @@ import QueryProvider from './QueryProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { dark, shadcn } from '@clerk/ui/themes';
 
 function AllProviders({
   children,
