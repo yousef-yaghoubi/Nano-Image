@@ -1,7 +1,6 @@
 import { AddImage, ChangePassword } from '@/app/[locale]/actions/EditProfile';
-import { queryKeys } from '@/lib/query-keys';
 import { useUser } from '@clerk/nextjs';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
