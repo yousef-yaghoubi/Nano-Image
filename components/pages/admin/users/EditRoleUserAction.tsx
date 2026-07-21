@@ -4,7 +4,6 @@ import { CircleCheckBig } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { roleUser } from '@/lib/data';
-import { toast } from 'sonner';
 import { DrawerDialog } from '@/components/shared/DrawerDialog';
 import { RoleType } from '@/models/enums';
 import { useEditRoleUser } from '@/hooks/mutations/useEditRoleUser';
@@ -22,7 +21,6 @@ function EditRoleUserAction({
 }) {
   const t = useTranslations('Actions');
   const tTable = useTranslations('Table');
-  const tMessages = useTranslations('Messages');
   const [openModal, setOpenModal] = useState(false);
   const { mutateAsync: editRole, isPending: isEditing } = useEditRoleUser();
   const { mutateAsync: rejectRequest, isPending: isRejecting } =
@@ -34,51 +32,18 @@ function EditRoleUserAction({
     title: string;
     value: RoleType;
   }) => {
-    try {
-      const response = await editRole({ userId, value: newRole.value });
-
-      if (response.status) {
-        toast.success(tMessages(response.message));
-      } else {
-        toast.error(response && tMessages(response.message));
-      }
-    } catch {
-      toast.error(tMessages('generic'));
-    } finally {
-      setOpenModal(false);
-    }
+    await editRole({ userId, value: newRole.value });
+    setOpenModal(false);
   };
 
   const handleAccept = async () => {
-    try {
-      const response = await editRole({ userId, value: 'ADMIN' });
-
-      if (response.status) {
-        toast.success(tMessages(response.message));
-      } else {
-        toast.error(response && tMessages(response.message));
-      }
-    } catch {
-      toast.error(tMessages('generic'));
-    } finally {
-      setOpenModal(false);
-    }
+    await editRole({ userId, value: 'ADMIN' });
+    setOpenModal(false);
   };
 
   const handleReject = async () => {
-    try {
-      const response = await rejectRequest(userId);
-
-      if (response.status) {
-        toast.success(tMessages(response.message));
-      } else {
-        toast.error(response && tMessages(response.message));
-      }
-    } catch {
-      toast.error(tMessages('generic'));
-    } finally {
-      setOpenModal(false);
-    }
+    await rejectRequest(userId);
+    setOpenModal(false);
   };
 
   if (waitForAdmin) {

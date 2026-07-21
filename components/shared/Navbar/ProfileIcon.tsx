@@ -9,14 +9,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { getProfileMenuItems } from '@/lib/data';
-import { SignOutButton, UserAvatar } from '@clerk/nextjs';
+import { SignedOut, SignOutButton, UserAvatar, useUser } from '@clerk/nextjs';
 import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { DrawerDialog } from '../DrawerDialog';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Loading } from '@/components/ui/loading';
 
-export function ProfileIcon({ children }: { children?: React.ReactNode }) {
+export function ProfileIcon({ showName = false }: { showName?: boolean }) {
   const params = useParams() as { locale: string };
   const locale = params.locale;
   const ITEM_PROFILES = getProfileMenuItems(locale);
@@ -24,18 +28,33 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
   const tAuth = useTranslations('Auth');
   const pathname = usePathname();
   const isActive = ITEM_PROFILES.find((item) => item.link === pathname);
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
-    <DropdownMenu dir={params.locale === 'en' ? 'ltr' : 'rtl'} modal={false}>
+    <DropdownMenu
+      dir={params.locale === 'en' ? 'ltr' : 'rtl'}
+      modal={false}
+      open={openModal}
+      onOpenChange={setOpenModal}
+    >
       <DropdownMenuTrigger
         className={cn(
-          'flex cursor-pointer items-center gap-2 outline-none',
+          'flex w-full cursor-pointer items-center gap-2 outline-none',
           isActive &&
             'border-primary ring-primary rounded-full border p-1 ring-1'
         )}
       >
-        <UserAvatar />
-        {children}
+        <UserAvatar fallback={<Skeleton className="h-7 w-7 rounded-full" />} />
+        {showName && (
+          <div className="flex flex-col items-start justify-start text-right">
+            <span className="text-sm font-medium">{user?.firstName}</span>
+            <span className="text-xs text-gray-500">
+              {user?.primaryEmailAddress?.emailAddress}
+            </span>
+          </div>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-100 w-56" align="start">
         <DropdownMenuLabel>{tProfile('myAccount')}</DropdownMenuLabel>
@@ -71,13 +90,29 @@ export function ProfileIcon({ children }: { children?: React.ReactNode }) {
           >
             <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
               <SignOutButton>
-                <button className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none">
-                  {tProfile('LogOut.logOut')}
-                </button>
+                <Button
+                  variant={'destructive'}
+                  onClick={() => setIsLoading(true)}
+                  disabled={isLoading}
+                  className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none"
+                >
+                  {isLoading ? (
+                    <Loading classNameLoading="text-background" />
+                  ) : (
+                    tProfile('LogOut.logOut')
+                  )}
+                </Button>
               </SignOutButton>
-              <button className="text-destructive border-destructive w-1/3 cursor-pointer rounded-sm border py-1 font-medium outline-none">
+              <Button
+                variant={'outline'}
+                className="min-w-24"
+                onClick={() => {
+                  setOpenModal(false);
+                  setIsLoading(false);
+                }}
+              >
                 {tProfile('LogOut.no')}
-              </button>
+              </Button>
             </div>
           </DrawerDialog>
         </DropdownMenuItem>

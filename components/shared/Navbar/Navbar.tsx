@@ -18,9 +18,9 @@ export default function Navbar() {
           <Logo />
           <NavList isDesktop />
           <div className="flex items-center gap-3">
-            <AuthButtons isAuthenticated={isSignedIn} />
             <LangSwicher />
             <ModeToggle />
+            <AuthButtons isAuthenticated={isSignedIn} />
           </div>
         </div>
         <div className="flex w-full items-center justify-between md:hidden">

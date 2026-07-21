@@ -1,58 +1,52 @@
 'use client';
 import useToggleFavorite from '@/hooks/mutations/useToggleFavorite';
-import { Heart, Loader2 } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
+import { Heart } from 'lucide-react';
 import { ObjectId } from 'mongoose';
-import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 export function FavoriteButton({
   promptId,
   promptIsFavorit = false,
+  likes,
 }: {
   promptId: ObjectId;
   promptIsFavorit?: boolean;
+  likes: number;
 }) {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const { mutateAsync, isPending } = useToggleFavorite();
-
-  useEffect(() => {
-    setIsFavorite(promptIsFavorit);
-  }, [promptIsFavorit]);
+  const { user } = useUser();
+  const { mutate } = useToggleFavorite();
+  const tMessages = useTranslations('Messages');
 
   const handleToggle = () => {
-    mutateAsync(
-      { promptId },
-      {
-        onSuccess: (result) => {
-          if (result.success) {
-            setIsFavorite(result.action === 'added');
-            toast.success(result.message);
-          } else {
-            toast.error(result.message);
-          }
-        },
-        onError: () => {
-          toast.error('An error occurred. Please try again.');
-        },
-      }
-    );
+    if (!user) {
+      toast.error(tMessages('isNotAuthenticated'));
+      return;
+    }
+    mutate({ promptId });
   };
 
   return (
-    <>
-      <button
-        onClick={handleToggle}
-        disabled={isPending}
-        className="cursor-pointer disabled:opacity-50"
+    <button
+      onClick={handleToggle}
+      className="group flex cursor-pointer items-center gap-2 transition-transform active:scale-95"
+      type="button"
+    >
+      <span
+        className={`text-sm font-medium ${promptIsFavorit ? 'text-red-600' : 'text-gray-600'}`}
       >
-        {isPending ? (
-          <Loader2 size={15} className="mb-1 animate-spin text-gray-500" />
-        ) : isFavorite ? (
-          <Heart size={15} className="mb-1 fill-red-600" />
-        ) : (
-          <Heart size={15} className="mb-1" />
-        )}
-      </button>
-    </>
+        {likes}
+      </span>
+
+      <Heart
+        size={18}
+        className={`transition-all ${
+          promptIsFavorit
+            ? 'fill-red-600 text-red-600'
+            : 'text-gray-500 group-hover:text-gray-700'
+        }`}
+      />
+    </button>
   );
 }

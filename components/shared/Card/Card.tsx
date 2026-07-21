@@ -25,10 +25,10 @@ function Card({ data }: { data: PromptType }) {
       transition={{ duration: 0.4 }}
     >
       <div className="likeBox absolute left-0 z-20! flex h-8 w-20 items-center justify-center gap-2 rounded-br-md bg-white text-sm font-medium">
-        <span>{data.likes}</span>
         <FavoriteButton
           promptId={data._id}
           promptIsFavorit={data.isFavorited ?? false}
+          likes={data.likes}
         />
       </div>
       <Image

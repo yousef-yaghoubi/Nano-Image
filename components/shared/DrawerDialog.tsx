@@ -7,10 +7,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  Dialog,
 } from '@/components/ui/dialog';
 import {
-  Drawer,
   DrawerTrigger,
   DrawerContent,
   DrawerHeader,
@@ -20,6 +18,20 @@ import {
 import { useParams } from 'next/navigation';
 import clsx from 'clsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import dynamic from 'next/dynamic';
+
+const Drawer = dynamic(
+  () => import('@/components/ui/drawer').then((mod) => mod.Drawer),
+  {
+    ssr: false,
+  }
+);
+const Dialog = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
+  {
+    ssr: false,
+  }
+);
 
 type DrawerDialogProps = {
   children?: React.ReactNode;
@@ -60,6 +72,7 @@ export function DrawerDialog({
 
     onOpenChange?.(value);
   };
+  
   if (isDesktop) {
     return (
       <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
@@ -97,7 +110,7 @@ export function DrawerDialog({
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent
         dir={locale === 'en' ? 'ltr' : 'rtl'}
-        className="no-scrollbar"
+        className="no-scrollbar p-4"
       >
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>

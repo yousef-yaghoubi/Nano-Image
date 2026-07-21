@@ -26,8 +26,6 @@ import {
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
-import { toast } from 'sonner';
-
 const STAT_CARDS: {
   key: string;
   icon: LucideIcon;
@@ -123,21 +121,7 @@ function Page() {
   const stats = overview?.data;
 
   const handleUpdatePrompts = async () => {
-    try {
-      const response = await mutateAsync();
-
-      if (response.success) {
-        toast.success(
-          tMessages(response.message, {
-            length: response.inserted as number,
-          })
-        );
-      } else {
-        toast.info(tMessages(response.message));
-      }
-    } catch {
-      // handled by mutation
-    }
+    await mutateAsync();
   };
 
   return (

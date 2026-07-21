@@ -54,7 +54,8 @@
   "Auth": {
     "signup": "Sign up",
     "signin": "Sign in",
-    "signout": "Sign out"
+    "signout": "Sign out",
+    "profile": "Profile"
   },
   "Footer": {
     "copyright": "Made with ❤️ by",
@@ -266,6 +267,7 @@
     "cancelRequestRole": "Admin role request cancelled.",
     "alreadyRequested": "You have already requested the admin role.",
     "rejectRoleRequest": "Admin role request rejected.",
+    "deletePrompt": "Prompt deleted successfully.",
     "passwordChanged": "Password changed successfully.",
     "passwordNotEnabled": "Password is not enabled for this account. Please use password sign-in."
   },

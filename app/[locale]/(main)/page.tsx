@@ -100,7 +100,7 @@ export default async function Home() {
           showSimple
           head={t('headPopular')}
           desc={t('descPopular')}
-          limit={24}
+          limit={12}
         />
       </Suspense>
     </section>

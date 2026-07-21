@@ -156,8 +156,7 @@ export async function EditStatusPrompt(prompt: EditStatusPromptType) {
       throw new Error();
     }
 
-    bustCache(CacheTags.prompts);
-    bustCache(CacheTags.admin);
+    bustCache(CacheTags.prompts, CacheTags.admin);
 
     return {
       status: true,

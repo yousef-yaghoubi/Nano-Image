@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { statusPrompt } from '@/lib/data';
 import { StatusPrompt } from '@/types/data';
-import { toast } from 'sonner';
 import { useEditStatusPrompt } from '@/hooks/mutations/useEditPrompt';
 import { Loading } from '@/components/ui/loading';
 
@@ -19,27 +18,15 @@ function EditStatusPromptAction({
 }) {
   const t = useTranslations('Actions');
   const tTable = useTranslations('Table');
-  const tMessages = useTranslations('Messages');
   const [openModal, setOpenModal] = useState(false);
   const { mutateAsync, isPending } = useEditStatusPrompt();
 
   const handleOnClick = async (newStatus: StatusPrompt) => {
-    try {
-      const response = await mutateAsync({
-        id: promptId,
-        value: newStatus.value,
-      });
-
-      if (response.status) {
-        toast.success(tMessages(response.message));
-      } else {
-        toast.error(response && tMessages(response.message));
-      }
-    } catch {
-      toast.error(tMessages('generic'));
-    } finally {
-      setOpenModal(false);
-    }
+    await mutateAsync({
+      id: promptId,
+      value: newStatus.value,
+    });
+    setOpenModal(false);
   };
 
   return (

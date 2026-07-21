@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db';
-import { Prompts, Users } from '@/models';
+import { Prompts } from '@/models';
 import { PromptType } from '@/types/data';
 import type { FilterQuery, SortOrder } from 'mongoose';
 import { promptsQuerySchema } from '@/validation/DTO';
-import { CacheTags, bustCache, cacheLife, cacheTag } from '@/lib/cache';
+import { CacheTags, cacheLife, cacheTag } from '@/lib/cache';
 
 const getCachedPrompts = async (
   page: number,
@@ -122,47 +121,5 @@ export async function GET(req: Request) {
       { success: false, message: 'Internal Server Error' },
       { status: 500 }
     );
-  }
-}
-
-export async function DELETE(req: Request) {
-  const { promptId } = await req.json();
-
-  try {
-    const { userId: clerkUserId } = await auth();
-    if (!clerkUserId) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' });
-    }
-
-    await dbConnect();
-
-    const user = await Users.findOne({ clerkId: clerkUserId });
-    if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: 'isNotAuthenticated',
-      });
-    }
-
-    const prompt = await Prompts.findById(promptId);
-    if (!prompt) {
-      return NextResponse.json({ success: false, message: 'Prompt not found' });
-    }
-
-    if (user._id.toString() !== prompt.creatorId.toString()) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' });
-    }
-
-    await Prompts.findByIdAndDelete(promptId);
-
-    bustCache(CacheTags.prompts, CacheTags.admin);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Prompt deleted successfully',
-    });
-  } catch (error) {
-    console.error('Delete prompt error:', error);
-    return NextResponse.json({ success: false, message: 'Prompt not found' });
   }
 }

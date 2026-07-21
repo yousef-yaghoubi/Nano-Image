@@ -6,5 +6,5 @@ export interface EditPromptType {
 
 export interface EditStatusPromptType {
   id: string;
-  value: 'True' | 'False' | 'Pending';
+  value: 'True' | 'False';
 }

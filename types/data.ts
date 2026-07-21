@@ -78,5 +78,5 @@ export interface ProfileMenuItem {
 
 export interface StatusPrompt {
   title: string;
-  value: 'True' | 'False' | 'Pending';
+  value: 'True' | 'False';
 }

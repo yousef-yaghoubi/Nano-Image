@@ -65,18 +65,3 @@ export async function fetchPrompts<T = PromptsResponse>(
   
   return res.json();
 }
-
-export async function deletePrompt(promptId: string) {
-  const res = await fetch('/api/prompts', {
-    method: 'DELETE',
-    body: JSON.stringify({ promptId }),
-  });
-
-  const data = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to delete prompt');
-  }
-
-  return data;
-}

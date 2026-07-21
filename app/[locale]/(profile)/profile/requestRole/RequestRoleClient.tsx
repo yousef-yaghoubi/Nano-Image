@@ -16,7 +16,6 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { toast } from 'sonner';
 import { MotionDiv, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
 
 interface RequestRoleClientProps {
@@ -36,22 +35,12 @@ const permissionKeys = ['panel', 'prompts', 'users', 'stats'] as const;
 function RequestRoleClient({ role, waitForAdmin }: RequestRoleClientProps) {
   const params = useParams();
   const locale = typeof params.locale === 'string' ? params.locale : 'fa';
-  const tMessage = useTranslations('Messages');
   const t = useTranslations('Pages.RequestRole');
   const tTable = useTranslations('Table');
   const { mutateAsync, isPending } = useRequestRole();
 
   const handleClick = async () => {
-    try {
-      const res = await mutateAsync();
-      if (res.status) {
-        toast.success(tMessage(res.message));
-      } else {
-        toast.error(tMessage(res.message));
-      }
-    } catch {
-      toast.error(tMessage('generic'));
-    }
+    await mutateAsync();
   };
 
   return (

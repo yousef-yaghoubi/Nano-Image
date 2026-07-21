@@ -109,7 +109,7 @@ export default function UploadImage({
   // Show preview of selected file or value of field (URL string)
   const previewUrl = files[0]?.preview || imageUrl;
 
-  // Upload to API (Cloudinary) - for "api" mode only
+  // Upload to Cloudinary via server action - for "api" mode only
   const handleUploadToCloudinary = async () => {
     const fileItem = files[0]?.file as File;
 
@@ -117,18 +117,12 @@ export default function UploadImage({
     setUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('file', fileItem);
+      const { UploadImage } = await import('@/app/[locale]/actions/UploadImage');
+      const data = await UploadImage(fileItem);
 
-      const response = await fetch('/api/upload/image', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error('Upload failed');
-
-      const data = await response.json();
-      setValue(data.url);
+      if (data.success) {
+        setValue(data.url);
+      }
     } catch (error) {
       console.error('Upload error:', error);
     } finally {

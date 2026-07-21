@@ -6,6 +6,7 @@ import QueryProvider from './QueryProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { dark, shadcn } from '@clerk/ui/themes';
 
 function AllProviders({
   children,
@@ -15,7 +16,11 @@ function AllProviders({
   locale?: string;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        variables: { colorPrimary: '#00b487' },
+      }}
+    >
       <QueryProvider>
         <ThemeProvider
           attribute="class"
@@ -25,7 +30,10 @@ function AllProviders({
         >
           <NextIntlClientProvider>
             <TooltipProvider>
-              <Toaster position={locale == 'en' ? 'top-left' : 'top-right'} />
+              <Toaster
+                position={locale == 'en' ? 'top-left' : 'top-right'}
+                richColors
+              />
               <NextTopLoader color="var(--primary)" showSpinner={false} />
               {children}
             </TooltipProvider>

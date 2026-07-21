@@ -116,7 +116,6 @@ export const slideTexts = [
 export const statusPrompt: StatusPrompt[] = [
   { title: 'status.True', value: 'True' },
   { title: 'status.False', value: 'False' },
-  { title: 'status.Pending', value: 'Pending' },
 ];
 
 export const roleUser: { title: string; value: RoleType }[] = [

@@ -43,7 +43,7 @@ export function Loading({
       />
 
       {text && (
-        <p className="text-muted-foreground text-sm font-medium">
+        <p className="text-background text-sm font-medium">
           {tMessages(text)}
         </p>
       )}

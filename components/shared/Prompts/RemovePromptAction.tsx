@@ -5,24 +5,18 @@ import useDeletePrompt from '@/hooks/mutations/useDeletePrompt';
 import { Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 function RemovePromptAction({ promptId }: { promptId: string }) {
   const t = useTranslations('Actions');
   const tButtons = useTranslations('Buttons');
-  const tMessages = useTranslations('Messages');
 
   const [openModal, setOpenModal] = useState(false);
   const { mutate, isPending } = useDeletePrompt();
 
   const handleRemove = () => {
     mutate(promptId, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         setOpenModal(false);
-        toast.success(tMessages(data.message));
-      },
-      onError: (error) => {
-        toast.error(tMessages(error.message));
       },
     });
   };

@@ -30,18 +30,9 @@ export default function AuthButtons({
       <div
         className={cn('flex items-center gap-3', mobile && 'w-full flex-col')}
       >
-        {!mobile ? (
-          <div className="flex items-center gap-2">
-            <ProfileIcon />
-          </div>
-        ) : (
-          <Link href={'/profile'}>
-            <Button>
-              <User2 />
-              ورود به حساب کاربری
-            </Button>
-          </Link>
-        )}
+        <div className="flex w-full gap-2">
+          <ProfileIcon showName={!!mobile} />
+        </div>
       </div>
     );
   }

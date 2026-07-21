@@ -54,7 +54,8 @@
   "Auth": {
     "signup": "ثبت نام",
     "signin": "ورود",
-    "signout": "خروج"
+    "signout": "خروج",
+    "profile": "پروفایل"
   },
   "Footer": {
     "copyright": "ساخته شده با ❤️ توسط",
@@ -266,6 +267,7 @@
     "cancelRequestRole": "درخواست نقش ادمین لغو شد.",
     "alreadyRequested": "شما قبلاً درخواست نقش ادمین داده‌اید.",
     "rejectRoleRequest": "درخواست نقش ادمین رد شد.",
+    "deletePrompt": "پرامپت با موفقیت حذف شد.",
     "passwordChanged": "رمز عبور با موفقیت تغییر کرد.",
     "passwordNotEnabled": "رمز عبور برای این حساب فعال نیست. لطفاً از ورود با رمز عبور استفاده کنید."
   },
