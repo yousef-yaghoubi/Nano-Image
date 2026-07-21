@@ -10,17 +10,14 @@ import { useTranslations } from 'next-intl';
 import { Pagination } from '../Table/Pagination';
 import HeadPage from './HeadPage';
 import Link from 'next/link';
-import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 interface ShowPromptsProps {
   gridClass?: string;
   showSimple?: boolean;
   head?: string;
   desc?: string;
-  // حالت لودینگ
   isLoading?: boolean;
   cardCount?: number;
-  // داده — وقتی isLoading=false باید پاس بشه
   prompt?: DataType<PromptType[]>;
 }
 
@@ -50,17 +47,11 @@ function ShowPrompts({
       )}
 
       {/* ─── گرید کارت‌ها ─── */}
-      <MotionDiv
+      <div
         className={cn(
           'mt-10 grid w-full justify-items-center gap-10',
           gridClass
         )}
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-        }}
-        initial="hidden"
-        animate="visible"
       >
         {isLoading
           ? Array.from({ length: cardCount }).map((_, index) => (
@@ -70,17 +61,9 @@ function ShowPrompts({
               />
             ))
           : prompt?.data?.map((item: PromptType) => (
-              <MotionDiv
-                key={String(item._id)}
-                variants={{
-                  hidden: { opacity: 0, scale: 0.85 },
-                  visible: { opacity: 1, scale: 1 },
-                }}
-              >
-                <Card data={item} />
-              </MotionDiv>
+                <Card data={item} key={String(item._id)}/>
             ))}
-      </MotionDiv>
+      </div>
 
       {/* ─── صفحه‌بندی / دکمهٔ بیشتر ─── */}
       {!showSimple ? (
