@@ -340,7 +340,7 @@ export function DataTable<TData>({
               rows.map((row, i) => (
                 <TableRow
                   key={row.id}
-                  className={`hover:bg-primary/20 dark:hover:bg-primary/20 text-center ${i % 2 === 0 ? 'bg-gray-50 dark:bg-transparent' : 'dark:bg-primary/10 bg-white'}`}
+                  className={`hover:bg-primary/20 dark:hover:bg-primary/20 text-center ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800/50' : 'dark:bg-primary/10 bg-white'}`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

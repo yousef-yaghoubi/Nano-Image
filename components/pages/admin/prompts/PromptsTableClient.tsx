@@ -8,11 +8,15 @@ import useUpdatePromptsStatusBulk from '@/hooks/mutations/useUpdatePromptsStatus
 import type { MyPromptsResponse } from '@/services/prompts';
 import { useLocale, useTranslations } from 'next-intl';
 import { getColumns } from './Columns';
-import { DrawerDialog } from '@/components/shared/DrawerDialog';
 import { Button } from '@/components/ui/button';
 import { Trash2, CircleCheckBig } from 'lucide-react';
 import { statusPrompt } from '@/lib/data';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const DrawerDialog = dynamic(() => import('@/components/shared/DrawerDialog').then((mod) => mod.DrawerDialog), {
+  ssr: false,
+});
 
 export default function PromptsTableClient() {
   const t = useTranslations('Table');

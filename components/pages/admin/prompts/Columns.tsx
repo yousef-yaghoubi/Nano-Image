@@ -23,8 +23,10 @@ import EditStatusPromptAction from '@/components/shared/Prompts/EditStatusPrompt
 import dynamic from 'next/dynamic';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
-const ImageModal = dynamic(() =>
-  import('@/components/shared/ImageModal').then((m) => m.ImageModal)
+
+const ImageModal = dynamic(
+  () => import('@/components/shared/ImageModal').then((m) => m.ImageModal),
+  { ssr: false, loading: () => <Skeleton className="h-14 w-24" /> }
 );
 export type TableTranslations = (key: string) => string;
 

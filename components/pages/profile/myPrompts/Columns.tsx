@@ -19,9 +19,14 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
 import { DrawerDialog } from '@/components/shared/DrawerDialog';
-import { ImageModal } from '@/components/shared/ImageModal';
+import dynamic from 'next/dynamic';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
+
+const ImageModal = dynamic(
+  () => import('@/components/shared/ImageModal').then((m) => m.ImageModal),
+  { ssr: false, loading: () => <Skeleton className="h-14 w-24" /> }
+);
 
 export type TableTranslations = (key: string) => string;
 
