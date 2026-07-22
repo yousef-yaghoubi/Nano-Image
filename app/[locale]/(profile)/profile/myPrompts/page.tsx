@@ -1,7 +1,10 @@
 import dynamic from 'next/dynamic';
 import { MotionDiv } from '@/components/shared/MotionWarpper';
 
-const PromptTableWrapper = dynamic(()=> import('./PromptTableWrapper'))
+const PromptTableWrapper = dynamic(
+  () =>
+    import('../../../../../components/pages/profile/myPrompts/PromptTableWrapper')
+);
 
 async function page() {
   return (
@@ -12,7 +15,7 @@ async function page() {
       transition={{ duration: 0.5 }}
     >
       <div className="w-full min-w-0">
-          <PromptTableWrapper />
+        <PromptTableWrapper />
       </div>
     </MotionDiv>
   );

@@ -1,9 +1,10 @@
 'use client';
 
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import { DataTable } from './Table';
 import type { TableState } from './useTableState';
 import HeadPage from '../Prompts/HeadPage';
+import type { ReactNode } from 'react';
 
 interface TablePageProps<TData> {
   state: TableState;
@@ -17,6 +18,17 @@ interface TablePageProps<TData> {
   emptyMessage?: string;
   emptyDescription?: string;
   className?: string;
+  // Row selection
+  enableRowSelection?: boolean;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (selection: RowSelectionState) => void;
+  getRowId?: (row: TData) => string;
+  // Custom toolbar actions
+  toolbarActions?: (helpers: {
+    selectedCount: number;
+    selectedIds: string[];
+    resetSelection: () => void;
+  }) => ReactNode;
 }
 
 export function TablePage<TData>({
@@ -30,6 +42,11 @@ export function TablePage<TData>({
   emptyMessage,
   emptyDescription,
   className = 'w-full',
+  enableRowSelection,
+  rowSelection,
+  onRowSelectionChange,
+  getRowId,
+  toolbarActions,
 }: TablePageProps<TData>) {
   return (
     <>
@@ -55,6 +72,11 @@ export function TablePage<TData>({
         emptyMessage={emptyMessage}
         emptyDescription={emptyDescription}
         enableSelectColumns
+        enableRowSelection={enableRowSelection}
+        rowSelection={rowSelection}
+        onRowSelectionChange={onRowSelectionChange}
+        getRowId={getRowId}
+        toolbarActions={toolbarActions}
       />
     </>
   );

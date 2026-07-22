@@ -7,12 +7,14 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  RowSelectionState,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { MoveDown, MoveUp } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 
+import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -65,6 +67,19 @@ interface Props<TData> {
   columnFilters?: ColumnFiltersState;
   onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
 
+  // Row selection
+  enableRowSelection?: boolean;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (selection: RowSelectionState) => void;
+  getRowId?: (row: TData) => string;
+
+  // Custom toolbar content (rendered next to the search box)
+  toolbarActions?: (helpers: {
+    selectedCount: number;
+    selectedIds: string[];
+    resetSelection: () => void;
+  }) => ReactNode;
+
   className?: string;
 }
 
@@ -92,10 +107,17 @@ export function DataTable<TData>({
   onLimitChange,
   columnFilters: externalColumnFilters,
   onColumnFiltersChange,
+  enableRowSelection = false,
+  rowSelection: externalRowSelection,
+  onRowSelectionChange,
+  getRowId,
+  toolbarActions,
   className = '',
 }: Props<TData>) {
-  // اگه onSortingChange پاس داده شده → server-side، وگرنه local state
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
+  const [localRowSelection, setLocalRowSelection] = useState<RowSelectionState>(
+    {}
+  );
   const [columnVisibility, setColumnVisibility] = useState({});
   const tTable = useTranslations('Table');
   const locale = useLocale();
@@ -103,6 +125,11 @@ export function DataTable<TData>({
   const sorting = isServerSideSorting ? (sortingState ?? []) : localSorting;
   const [localColumnFilters, setLocalColumnFilters] =
     useState<ColumnFiltersState>([]);
+
+  const isServerSideRowSelection = !!onRowSelectionChange;
+  const rowSelectionState = isServerSideRowSelection
+    ? (externalRowSelection ?? {})
+    : localRowSelection;
 
   const isControlledFilters = !!onColumnFiltersChange;
   const columnFilters = isControlledFilters
@@ -134,13 +161,61 @@ export function DataTable<TData>({
     }
   };
 
+  const handleRowSelectionChange = (
+    updater:
+      | RowSelectionState
+      | ((prev: RowSelectionState) => RowSelectionState)
+  ) => {
+    const next =
+      typeof updater === 'function' ? updater(rowSelectionState) : updater;
+    if (isServerSideRowSelection) {
+      onRowSelectionChange?.(next);
+    } else {
+      setLocalRowSelection(next);
+    }
+  };
+
+  const selectionColumn: ColumnDef<TData> = {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  };
+
+  const tableColumns = enableRowSelection
+    ? [selectionColumn, ...Columns]
+    : Columns;
+
   const table = useReactTable({
     data: data ?? [],
-    columns: Columns,
-    state: { sorting, columnFilters, columnVisibility },
+    columns: tableColumns,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      ...(enableRowSelection && { rowSelection: rowSelectionState }),
+    },
     onColumnFiltersChange: handleColumnFiltersChange,
     onSortingChange: handleSortingChange,
     onColumnVisibilityChange: setColumnVisibility,
+    ...(enableRowSelection && {
+      onRowSelectionChange: handleRowSelectionChange,
+      getRowId,
+      enableRowSelection: true,
+    }),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: isServerSideSorting ? undefined : getSortedRowModel(),
@@ -148,21 +223,33 @@ export function DataTable<TData>({
   });
 
   const rows = table.getRowModel().rows;
-  const colCount = Columns.length;
+  const colCount = tableColumns.length;
+  const selectedIds = Object.keys(rowSelectionState).filter(
+    (id) => rowSelectionState[id]
+  );
+  const selectedCount = selectedIds.length;
+
+  const resetSelection = () => {
+    setLocalRowSelection({});
+  };
 
   return (
     <div
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
-      {/* Search */}
+      {/* Search & Actions */}
       <div className="flex flex-col justify-between gap-2 sm:flex-row">
-        {enableSearch && (
-          <SearchBox
-            value={searchValue}
-            placeholder={searchPlaceholder}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-          />
-        )}
+        <div className="flex items-center gap-3">
+          {enableSearch && (
+            <SearchBox
+              value={searchValue}
+              placeholder={searchPlaceholder}
+              onChange={(e) => onSearchChange?.(e.target.value)}
+            />
+          )}
+
+          {toolbarActions?.({ selectedCount, selectedIds, resetSelection })}
+        </div>
 
         {enableSelectColumns && (
           <DropdownMenu modal={false}>
