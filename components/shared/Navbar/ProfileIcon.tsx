@@ -23,7 +23,7 @@ const DrawerDialog = dynamic(
 
 const DropdownMenu = dynamic(
   () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
-  { ssr: false }
+  { ssr: false , loading: () => <Skeleton className="h-7 w-7 rounded-full" />}
 );
 
 import { useState } from 'react';

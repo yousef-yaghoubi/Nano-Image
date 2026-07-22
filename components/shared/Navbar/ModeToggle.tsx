@@ -1,10 +1,11 @@
 'use client';
-import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
+import { Loader2, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -12,13 +13,6 @@ import {
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Skeleton } from '@/components/ui/skeleton';
-import dynamic from 'next/dynamic';
-
-const DropdownMenu = dynamic(
-  () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
-  { ssr: false }
-);
 
 const themes = [
   { id: 1, title: 'light', icon: SunIcon },
@@ -38,7 +32,16 @@ export function ModeToggle() {
   }, []);
 
   if (!mounted) {
-    return <Skeleton className="h-10 w-10" />;
+    return (
+      <Button
+        variant="outline"
+        size="icon"
+        className="h-10 w-10 cursor-pointer bg-white/50 dark:bg-transparent"
+      >
+        <Loader2 className="animate-spin" />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
+    );
   }
 
   const currentTheme = activeTheme || 'light';

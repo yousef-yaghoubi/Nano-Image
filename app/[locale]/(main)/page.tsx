@@ -21,6 +21,8 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'SEO.home' });
   const path = `/${locale}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const ogImage = `${baseUrl}/images/slide1.webp`;
 
   return {
     title: t('title'),
@@ -30,10 +32,19 @@ export async function generateMetadata({
       description: t('description'),
       url: path,
       locale: locale === 'fa' ? 'fa_IR' : locale === 'ar' ? 'ar_SA' : 'en_US',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: 'Nano Image',
+        },
+      ],
     },
     twitter: {
       title: t('title'),
       description: t('description'),
+      images: [ogImage],
     },
     alternates: {
       canonical: path,

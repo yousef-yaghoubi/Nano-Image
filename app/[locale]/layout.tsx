@@ -40,6 +40,7 @@ const yekanBakh = localFont({
 });
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+const ogImage = `${baseUrl}/images/slide1.webp`;
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -71,12 +72,21 @@ export const metadata: Metadata = {
     description:
       'Discover and share AI image prompts. Browse thousands of creative prompts for AI image generation.',
     url: baseUrl,
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: 'Nano Image',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Nano Image',
     description:
       'Discover and share AI image prompts. Browse thousands of creative prompts for AI image generation.',
+    images: [ogImage],
   },
   robots: {
     index: true,

@@ -11,6 +11,8 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'SEO.prompts' });
   const path = `/${locale}/prompts`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const ogImage = `${baseUrl}/images/slide1.webp`;
 
   return {
     title: t('title'),
@@ -20,6 +22,14 @@ export async function generateMetadata({
       description: t('description'),
       url: path,
       locale: locale === 'fa' ? 'fa_IR' : locale === 'ar' ? 'ar_SA' : 'en_US',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: 'Nano Image',
+        },
+      ],
     },
     alternates: {
       canonical: path,
