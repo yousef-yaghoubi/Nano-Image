@@ -1,10 +1,14 @@
+import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import dbConnect from '@/lib/db';
 import { Users } from '@/models';
-import RequestRoleClient from '../../../../../components/pages/profile/requestRole/RequestRoleClient';
 import { MotionDiv } from '@/components/shared/MotionWarpper';
-import { IUser } from '@/types/models';
+import type { IUser } from '@/types/models';
+
+const RequestRoleClient = dynamic(
+  () => import('@/components/pages/profile/requestRole/RequestRoleClient')
+);
 
 async function page() {
   const { sessionClaims, userId } = await auth();

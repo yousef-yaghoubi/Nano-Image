@@ -1,5 +1,4 @@
 import {
-  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -14,8 +13,19 @@ import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { DrawerDialog } from '../DrawerDialog';
+import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+
+const DrawerDialog = dynamic(
+  () => import('../DrawerDialog').then((mod) => mod.DrawerDialog),
+  { ssr: false, loading: () => <Skeleton className="h-8 w-full" /> }
+);
+
+const DropdownMenu = dynamic(
+  () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
+  { ssr: false }
+);
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';

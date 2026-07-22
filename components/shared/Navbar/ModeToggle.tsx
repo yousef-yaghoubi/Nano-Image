@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -14,6 +13,12 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+import dynamic from 'next/dynamic';
+
+const DropdownMenu = dynamic(
+  () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
+  { ssr: false }
+);
 
 const themes = [
   { id: 1, title: 'light', icon: SunIcon },

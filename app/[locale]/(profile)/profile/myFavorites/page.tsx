@@ -1,10 +1,14 @@
+import dynamic from 'next/dynamic';
 import ShowPromptsSkeleton from '@/components/pages/homePage/ShowPromptsSkeleton';
 import NotAuthenticated from '@/components/shared/Auth/NotAuthenticated';
-import ShowPromptsContainer from '@/components/shared/Prompts/ShowPromptsContainer';
 import { MotionDiv } from '@/components/shared/MotionWarpper';
 import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
+
+const ShowPromptsContainer = dynamic(
+  () => import('@/components/shared/Prompts/ShowPromptsContainer')
+);
 
 async function page() {
   const { isAuthenticated } = await auth();

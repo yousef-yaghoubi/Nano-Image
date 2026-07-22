@@ -1,11 +1,16 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { NextIntlClientProvider } from 'next-intl';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import { ThemeProvider } from './ThemeProvider';
 import QueryProvider from './QueryProvider';
-import { Toaster } from 'sonner';
-import NextTopLoader from 'nextjs-toploader';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import NextTopLoader from "nextjs-toploader"
+
+const Toaster = dynamic(
+  () => import('sonner').then((mod) => ({ default: mod.Toaster }))
+);
+
 
 function AllProviders({
   children,
@@ -15,8 +20,7 @@ function AllProviders({
   locale?: string;
 }) {
   return (
-    <ClerkProvider
-    >
+    <ClerkProvider>
       <QueryProvider>
         <ThemeProvider
           attribute="class"

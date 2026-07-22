@@ -10,7 +10,6 @@ import NavList from './Nav';
 import { useParams } from 'next/navigation';
 import AuthButtons from '../Auth/AuthButtons';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 export function MobileMenu({
   isAuthenticated,
@@ -33,27 +32,18 @@ export function MobileMenu({
       >
         <SheetHeader>
           <SheetTitle className="border-b pb-4">
-            <MotionDiv
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div>
               <span className="shrink-0 text-2xl font-extrabold text-gray-600 lg:text-3xl dark:text-gray-100">
                 Nano Image
               </span>
-            </MotionDiv>
+            </div>
           </SheetTitle>
 
           <div className="flex h-[89dvh] flex-col justify-between">
             <NavList isDesktop={false} />
 
             {/* Auth */}
-            <MotionDiv
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-              className="flex w-full flex-col gap-3"
-            >
+            <div className="flex w-full flex-col gap-3">
               {isAuthenticated === true ? (
                 <>
                   <AuthButtons isAuthenticated={true} mobile />
@@ -63,7 +53,7 @@ export function MobileMenu({
               ) : (
                 <Skeleton className="h-10 w-10 rounded-full" />
               )}
-            </MotionDiv>
+            </div>
           </div>
         </SheetHeader>
       </SheetContent>

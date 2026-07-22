@@ -1,9 +1,17 @@
-import FormUpdateUser from '@/components/pages/profile/FormUpdateUser';
+import dynamic from 'next/dynamic';
 import Head3Client from '@/components/pages/profile/Head3Client';
-import UpdateImage from '@/components/pages/profile/UpdateImage';
-import UpdatePassword from '@/components/pages/profile/UpdatePassword';
 import { MotionDiv, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
 import { getTranslations } from 'next-intl/server';
+
+const FormUpdateUser = dynamic(
+  () => import('@/components/pages/profile/FormUpdateUser')
+);
+const UpdatePassword = dynamic(
+  () => import('@/components/pages/profile/UpdatePassword')
+);
+const UpdateImage = dynamic(
+  () => import('@/components/pages/profile/UpdateImage')
+);
 
 export default async function Page() {
   const t = await getTranslations('Pages.Profile');

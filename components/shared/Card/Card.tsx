@@ -31,13 +31,17 @@ function Card({ data }: { data: PromptType }) {
           likes={data.likes}
         />
       </div>
-      <Image
-        src={data.image}
-        alt={data.title}
-        loading="lazy"
-        fill
-        className="z-10 flex w-1/2! items-center justify-center object-cover text-center text-white transition duration-700 md:w-full! md:group-hover:scale-110 md:group-hover:blur-sm"
-      />
+
+      <div className="absolute top-0 h-full w-1/2 md:w-full">
+        <Image
+          src={data.image}
+          alt={data.title}
+          loading="lazy"
+          fill
+          sizes="(max-width: 767px) 50vw, 288px"
+          className="absolute top-0 left-0 z-10 flex items-center justify-center object-cover text-center text-white transition duration-700 md:group-hover:scale-110 md:group-hover:blur-sm"
+        />
+      </div>
 
       <div className="absolute top-3 right-2 bottom-4 left-1/2 z-40 m-auto mx-auto h-fit w-fit max-w-1/2 rounded-sm p-1 text-center text-sm font-normal text-white transition-all duration-700 md:top-auto md:-bottom-8 md:left-0 md:max-w-4/5 md:bg-white md:text-lg md:text-black md:opacity-0 md:shadow-[0_0_10px_white] md:group-hover:bottom-4 md:group-hover:opacity-85">
         {data.title}
