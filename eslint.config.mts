@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import vitest from 'eslint-plugin-vitest';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
@@ -17,6 +18,19 @@ export default defineConfig([
   {
     rules: {
       'react/react-in-jsx-scope': 'off',
+    },
+  },
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/__tests__/**'],
+    plugins: { vitest },
+    rules: {
+      ...vitest.configs.recommended.rules,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
   },
 ]);
