@@ -1,3 +1,4 @@
+'use client';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -15,6 +16,9 @@ import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Loading } from '@/components/ui/loading';
 
 const DrawerDialog = dynamic(
   () => import('../DrawerDialog').then((mod) => mod.DrawerDialog),
@@ -23,12 +27,8 @@ const DrawerDialog = dynamic(
 
 const DropdownMenu = dynamic(
   () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
-  { ssr: false , loading: () => <Skeleton className="h-7 w-7 rounded-full" />}
+  { ssr: false, loading: () => <Skeleton className="h-7 w-7 rounded-full" /> }
 );
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Loading } from '@/components/ui/loading';
 
 export function ProfileIcon({ showName = false }: { showName?: boolean }) {
   const params = useParams() as { locale: string };

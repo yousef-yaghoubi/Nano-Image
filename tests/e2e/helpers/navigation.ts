@@ -26,15 +26,8 @@ export async function waitForAppReady(page: Page) {
   await page.locator('nav').waitFor({ state: 'visible' });
   await page.waitForFunction(
     () => {
-      const triggers = document.querySelectorAll(
-        '[data-slot="dropdown-menu-trigger"]'
-      );
-      const visible = Array.from(triggers).filter((el) => {
-        const style = window.getComputedStyle(el);
-        return style.display !== 'none' && style.visibility !== 'hidden';
-      });
-      if (visible.length === 0) return false;
-      return visible.every((el) => el.hasAttribute('data-state'));
+      const btn = document.querySelector('button[aria-label="Select language"]');
+      return btn?.hasAttribute('data-state') ?? false;
     },
     { timeout: 15_000 }
   );
@@ -58,30 +51,20 @@ export async function waitForAppUrl(
 }
 
 export async function openLocaleMenu(page: Page) {
-  const trigger = page
-    .locator('[data-slot="dropdown-menu-trigger"]:visible')
-    .first();
+  const trigger = page.getByRole('button', { name: 'Select language' });
   await expect(trigger).toBeVisible();
   await trigger.click();
-  const menu = page.locator('[data-slot="dropdown-menu-content"]');
+  const menu = page.locator('[role="menu"]');
   await expect(menu).toBeVisible({ timeout: 10_000 });
   return menu;
 }
 
 export async function openMobileMenu(page: Page) {
-  await page.waitForFunction(
-    () => {
-      const trigger = document.querySelector('[data-slot="sheet-trigger"]');
-      return trigger?.hasAttribute('data-state') ?? false;
-    },
-    { timeout: 15_000 }
-  );
-
   const trigger = page.getByRole('button', { name: 'Open menu' });
   await expect(trigger).toBeVisible();
   await trigger.click();
 
-  const sheet = page.locator('[data-slot="sheet-content"]');
+  const sheet = page.getByRole('dialog');
   await expect(sheet).toBeVisible({ timeout: 10_000 });
   return sheet;
 }

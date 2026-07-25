@@ -34,7 +34,7 @@ async function page() {
   const { isAuthenticated, userId } = await auth();
 
   if (!isAuthenticated) {
-    return <NotAuthenticated isAuthenticated={isAuthenticated} />;
+    return <NotAuthenticated />;
   }
 
   return (

@@ -47,3 +47,5 @@ next-env.d.ts
 /.mimocode
 
 /AGENTS.md
+/playwright-report
+/test-results

@@ -24,6 +24,15 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+vi.mock('next-intl/server', () => ({
+  getTranslations: () => Promise.resolve((key: string) => key),
+  getLocale: () => Promise.resolve('en'),
+}));
+
+vi.mock('@clerk/nextjs/server', () => ({
+  auth: () => Promise.resolve({ isAuthenticated: false, userId: null }),
+}));
+
 afterEach(() => {
   cleanup();
 });

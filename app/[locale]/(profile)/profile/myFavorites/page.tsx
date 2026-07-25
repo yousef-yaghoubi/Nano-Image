@@ -15,7 +15,7 @@ async function page() {
   const t = await getTranslations('Pages.MyFavorites');
 
   if (!isAuthenticated) {
-    return <NotAuthenticated isAuthenticated={isAuthenticated} />;
+    return <NotAuthenticated/>;
   }
 
   return (

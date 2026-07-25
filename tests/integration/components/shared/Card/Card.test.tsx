@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Card from '@/components/shared/Card/Card';
-import { mockPrompts } from '@/__tests__/helpers/data';
+import { mockPrompts } from '@/tests/helpers/data';
 
 vi.mock('@/hooks/mutations/useToggleFavorite', () => ({
   default: () => ({ mutate: vi.fn() }),

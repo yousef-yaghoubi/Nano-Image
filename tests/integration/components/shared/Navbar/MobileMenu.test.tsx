@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import { Suspense } from 'react';
 import { MobileMenu } from '@/components/shared/Navbar/MobileMenu';
 
 vi.mock('@/components/shared/Navbar/ProfileIcon', () => ({
@@ -7,31 +8,26 @@ vi.mock('@/components/shared/Navbar/ProfileIcon', () => ({
 }));
 
 vi.mock('@/components/shared/Auth/AuthButtons', () => ({
-  default: ({ isAuthenticated }: { isAuthenticated?: boolean }) =>
-    isAuthenticated ? (
-      <div data-testid="auth-authenticated" />
-    ) : (
-      <div data-testid="auth-unauthenticated">
-        <span>signin</span>
-        <span>signup</span>
-      </div>
-    ),
+  default: ({ mobile }: { mobile?: boolean }) => (
+    <div data-testid="auth-buttons" data-mobile={mobile}>
+      <span>signin</span>
+      <span>signup</span>
+    </div>
+  ),
 }));
 
 describe('MobileMenu', () => {
-  it('renders menu trigger icon', () => {
-    render(<MobileMenu isAuthenticated={false} />);
-    expect(screen.getByTestId('sheet')).toBeInTheDocument();
-  });
-
-  it('renders auth buttons when isAuthenticated is false', () => {
-    render(<MobileMenu isAuthenticated={false} />);
-    expect(screen.getByText('signin')).toBeInTheDocument();
-    expect(screen.getByText('signup')).toBeInTheDocument();
-  });
-
-  it('renders sheet when isAuthenticated is true', () => {
-    render(<MobileMenu isAuthenticated={true} />);
+  it('renders auth buttons and sheet', async () => {
+    await act(async () => {
+      render(
+        <Suspense fallback={<div>Loading...</div>}>
+          <MobileMenu />
+        </Suspense>
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId('auth-buttons')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('sheet')).toBeInTheDocument();
   });
 });

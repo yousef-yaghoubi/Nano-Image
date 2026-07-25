@@ -29,7 +29,7 @@ export default function LangSwicher() {
           <Button
             size="icon"
             variant="outline"
-            aria-label="Select locale"
+            aria-label="Select language"
             className="h-10 w-10 cursor-pointer bg-white/50 dark:bg-transparent"
           >
             <Globe />

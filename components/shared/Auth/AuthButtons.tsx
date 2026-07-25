@@ -1,18 +1,17 @@
-'use client';
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
-import { useTranslations } from 'next-intl';
 import { ProfileIcon } from '../Navbar/ProfileIcon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getTranslations } from 'next-intl/server';
+import { auth } from '@clerk/nextjs/server';
 
-export default function AuthButtons({
-  isAuthenticated,
+export default async function AuthButtons({
   mobile = false,
 }: {
-  isAuthenticated: boolean | undefined;
   mobile?: boolean;
 }) {
-  const t = useTranslations('Auth');
+  const t = await getTranslations('Auth');
+  const { isAuthenticated } = await auth();
 
   if (isAuthenticated === undefined) {
     return (
