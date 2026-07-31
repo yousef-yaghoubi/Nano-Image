@@ -29,11 +29,7 @@ async function layout({
     redirect(`/${locale}`);
   }
 
-  return (
-    <SidebarProvider>
-      {children}
-    </SidebarProvider>
-  );
+  return <SidebarProvider>{children}</SidebarProvider>;
 }
 
 export default layout;

@@ -1,13 +1,16 @@
 'use client';
-import { DrawerDialog } from '../DrawerDialog';
 import { Button } from '@/components/ui/button';
 import { CircleCheckBig } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import { statusPrompt } from '@/lib/data';
-import { StatusPrompt } from '@/types/data';
 import { useEditStatusPrompt } from '@/hooks/mutations/useEditPrompt';
 import { Loading } from '@/components/ui/loading';
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 
 function EditStatusPromptAction({
   promptId,
@@ -18,48 +21,54 @@ function EditStatusPromptAction({
 }) {
   const t = useTranslations('Actions');
   const tTable = useTranslations('Table');
-  const [openModal, setOpenModal] = useState(false);
   const { mutateAsync, isPending } = useEditStatusPrompt();
-
-  const handleOnClick = async (newStatus: StatusPrompt) => {
-    await mutateAsync({
-      id: promptId,
-      value: newStatus.value,
-    });
-    setOpenModal(false);
-  };
+  const { openDialog, closeDialog } = useDrawerDialog();
 
   return (
-    <DrawerDialog
-      open={openModal}
-      onOpenChange={setOpenModal}
-      tooltipContent={t('editStatus.editStatus')}
-      trigger={<CircleCheckBig size={24} className="cursor-pointer" />}
-      title={t('editStatus.editStatus')}
-      desc={t('editStatus.title')}
-      className="flex flex-wrap gap-2"
-    >
-      {isPending ? (
-        <Loading size="md" fullScreen />
-      ) : (
-        statusPrompt.map((newStatus) => (
-          <Button
-            onClick={() => handleOnClick(newStatus)}
-            disabled={isPending || newStatus.value == status}
-            key={newStatus.value}
-            variant={
-              newStatus.value == 'True'
-                ? 'default'
-                : newStatus.value == 'False'
-                  ? 'destructive'
-                  : 'outline'
-            }
-          >
-            {tTable(newStatus.title)}
-          </Button>
-        ))
-      )}
-    </DrawerDialog>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <CircleCheckBig
+          size={24}
+          className="cursor-pointer"
+          onClick={() =>
+            openDialog({
+              title: t('editStatus.editStatus'),
+              desc: t('editStatus.title'),
+              className: 'flex flex-wrap gap-2',
+              content: isPending ? (
+                <Loading size="md" fullScreen />
+              ) : (
+                statusPrompt.map((newStatus) => (
+                  <Button
+                    onClick={async () => {
+                      await mutateAsync({
+                        id: promptId,
+                        value: newStatus.value,
+                      });
+                      closeDialog();
+                    }}
+                    disabled={isPending || newStatus.value == status}
+                    key={newStatus.value}
+                    variant={
+                      newStatus.value == 'True'
+                        ? 'default'
+                        : newStatus.value == 'False'
+                          ? 'destructive'
+                          : 'outline'
+                    }
+                  >
+                    {tTable(newStatus.title)}
+                  </Button>
+                ))
+              ),
+            })
+          }
+        />
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{t('editStatus.editStatus')}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 

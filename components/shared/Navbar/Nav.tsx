@@ -5,7 +5,13 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-function NavList({ isDesktop }: { isDesktop: boolean }) {
+function NavList({
+  isDesktop,
+  onLinkClick,
+}: {
+  isDesktop: boolean;
+  onLinkClick?: () => void;
+}) {
   const t = useTranslations('Navbar');
   const locale = useLocale();
   const navDetail = [
@@ -33,6 +39,7 @@ function NavList({ isDesktop }: { isDesktop: boolean }) {
             <li key={li.id}>
               <Link
                 href={li.link}
+                onClick={onLinkClick}
                 className={cn(
                   'flex w-full gap-1 rounded-sm px-2 py-4',
                   isDesktop

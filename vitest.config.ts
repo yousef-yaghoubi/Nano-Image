@@ -9,7 +9,12 @@ export default defineConfig({
     setupFiles: ['./lib/test-utils.tsx'],
     globals: true,
     css: true,
-    exclude: ['node_modules/**', '__tests__/e2e/**', 'tests/e2e/**', '.mimocode/**'],
+    exclude: [
+      'node_modules/**',
+      '__tests__/e2e/**',
+      'tests/e2e/**',
+      '.mimocode/**',
+    ],
   },
   resolve: {
     alias: {

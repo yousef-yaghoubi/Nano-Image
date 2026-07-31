@@ -137,7 +137,7 @@ export async function AddPromptsList(): Promise<{
     // ========= FIX #1 — smaller batch size =========
     const batchSize = 200;
 
-  let inserted = 0;
+    let inserted = 0;
 
     for (let i = 0; i < prompts.length; i += batchSize) {
       const batch = prompts.slice(i, i + batchSize);

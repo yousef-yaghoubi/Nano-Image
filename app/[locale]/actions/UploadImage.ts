@@ -26,7 +26,8 @@ export async function UploadImage(file: File) {
         },
         (error, result) => {
           if (error) reject(error);
-          if (!result) return reject(new Error('Cloudinary returned no result'));
+          if (!result)
+            return reject(new Error('Cloudinary returned no result'));
           resolve(result);
         }
       );

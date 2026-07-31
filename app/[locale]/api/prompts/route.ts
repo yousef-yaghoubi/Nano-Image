@@ -107,7 +107,7 @@ export async function GET(req: Request) {
       sortParam ?? 'likes desc',
       rawTags ?? undefined,
       search ?? undefined,
-      status ?? undefined,
+      status ?? undefined
     );
 
     return NextResponse.json({

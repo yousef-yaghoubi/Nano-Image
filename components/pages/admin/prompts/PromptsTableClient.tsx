@@ -11,12 +11,7 @@ import { getColumns } from './Columns';
 import { Button } from '@/components/ui/button';
 import { Trash2, CircleCheckBig } from 'lucide-react';
 import { statusPrompt } from '@/lib/data';
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
-const DrawerDialog = dynamic(() => import('@/components/shared/DrawerDialog').then((mod) => mod.DrawerDialog), {
-  ssr: false,
-});
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 
 export default function PromptsTableClient() {
   const t = useTranslations('Table');
@@ -25,6 +20,7 @@ export default function PromptsTableClient() {
   const tAdmin = useTranslations('Pages.Admin.prompts');
   const tTags = useTranslations('Filter.filter.tag');
   const locale = useLocale();
+  const { openDialog, closeDialog } = useDrawerDialog();
 
   const state = useTableState();
 
@@ -40,9 +36,6 @@ export default function PromptsTableClient() {
   const { mutateAsync: deleteBulk } = useDeletePromptsBulk();
   const { mutateAsync: updateStatusBulk } = useUpdatePromptsStatusBulk();
 
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [statusOpen, setStatusOpen] = useState(false);
-
   const columns = getColumns({
     t,
     tTags,
@@ -51,6 +44,7 @@ export default function PromptsTableClient() {
     locale,
     statusFilter: state.filterValue ?? 'All',
     onStatusFilterChange: (v) => state.onFilterChange('status', v),
+    openDialog,
   });
 
   const prompts = data?.data ?? [];
@@ -79,80 +73,74 @@ export default function PromptsTableClient() {
         toolbarActions={({ selectedCount, selectedIds, resetSelection }) => (
           <>
             {selectedCount > 0 && (
-              <DrawerDialog
-                open={deleteOpen}
-                onOpenChange={setDeleteOpen}
-                trigger={
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => setDeleteOpen(true)}
-                  >
-                    <Trash2 className="mr-1 h-4 w-4" />
-                    {tActions('remove.remove')} ({selectedCount})
-                  </Button>
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  openDialog({
+                    title: tActions('remove.remove'),
+                    desc: tActions('remove.title'),
+                    className: 'flex flex-wrap gap-2',
+                    content: (
+                      <>
+                        <Button
+                          variant="destructive"
+                          onClick={async () => {
+                            await deleteBulk(selectedIds);
+                            resetSelection();
+                            closeDialog();
+                          }}
+                        >
+                          {tActions('remove.yes')}
+                        </Button>
+                        <Button variant="outline" onClick={closeDialog}>
+                          {tActions('remove.no')}
+                        </Button>
+                      </>
+                    ),
+                  })
                 }
-                title={tActions('remove.remove')}
-                desc={tActions('remove.title')}
-                className="flex flex-wrap gap-2"
               >
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    deleteBulk(selectedIds);
-                    resetSelection();
-                    setDeleteOpen(false);
-                  }}
-                >
-                  {tActions('remove.yes')}
-                </Button>
-                <Button variant="outline" onClick={() => setDeleteOpen(false)}>
-                  {tActions('remove.no')}
-                </Button>
-              </DrawerDialog>
+                <Trash2 className="mr-1 h-4 w-4" />
+                {tActions('remove.remove')} ({selectedCount})
+              </Button>
             )}
 
             {selectedCount > 0 && (
-              <DrawerDialog
-                open={statusOpen}
-                onOpenChange={setStatusOpen}
-                trigger={
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setStatusOpen(true)}
-                  >
-                    <CircleCheckBig className="mr-1 h-4 w-4" />
-                    {t('status.status')} ({selectedCount})
-                  </Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  openDialog({
+                    title: tActions('editStatus.editStatus'),
+                    desc: tActions('editStatus.title'),
+                    className: 'flex flex-wrap gap-2',
+                    content: statusPrompt.map((s) => (
+                      <Button
+                        key={s.value}
+                        variant={
+                          s.value === 'True'
+                            ? 'default'
+                            : s.value === 'False'
+                              ? 'destructive'
+                              : 'outline'
+                        }
+                        onClick={async () => {
+                          await updateStatusBulk({
+                            promptIds: selectedIds,
+                            value: s.value,
+                          });
+                          resetSelection();
+                          closeDialog();
+                        }}
+                      >
+                        {t(s.title)}
+                      </Button>
+                    )),
+                  })
                 }
-                title={tActions('editStatus.editStatus')}
-                desc={tActions('editStatus.title')}
-                className="flex flex-wrap gap-2"
               >
-                {statusPrompt.map((s) => (
-                  <Button
-                    key={s.value}
-                    variant={
-                      s.value === 'True'
-                        ? 'default'
-                        : s.value === 'False'
-                          ? 'destructive'
-                          : 'outline'
-                    }
-                    onClick={() => {
-                      updateStatusBulk({
-                        promptIds: selectedIds,
-                        value: s.value,
-                      });
-                      resetSelection();
-                      setStatusOpen(false);
-                    }}
-                  >
-                    {t(s.title)}
-                  </Button>
-                ))}
-              </DrawerDialog>
+                <CircleCheckBig className="mr-1 h-4 w-4" />
+                {t('status.status')} ({selectedCount})
+              </Button>
             )}
           </>
         )}

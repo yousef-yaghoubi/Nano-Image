@@ -7,7 +7,10 @@ vi.mock('@/components/shared/Navbar/ProfileIcon', () => ({
   ProfileIcon: () => <div data-testid="profile-icon" />,
 }));
 
-const clerkAuthState = { isAuthenticated: false as boolean | undefined, userId: null as string | null };
+const clerkAuthState = {
+  isAuthenticated: false as boolean | undefined,
+  userId: null as string | null,
+};
 vi.mock('@clerk/nextjs/server', () => ({
   auth: () => Promise.resolve(clerkAuthState),
 }));

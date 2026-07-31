@@ -16,7 +16,11 @@ describe('queryKeys', () => {
   });
 
   it('prompts.detail returns detail key', () => {
-    expect(queryKeys.prompts.detail('id123')).toEqual(['prompts', 'detail', 'id123']);
+    expect(queryKeys.prompts.detail('id123')).toEqual([
+      'prompts',
+      'detail',
+      'id123',
+    ]);
   });
 
   it('favorites.all returns base key', () => {

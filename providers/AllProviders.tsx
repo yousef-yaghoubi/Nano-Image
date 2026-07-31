@@ -4,13 +4,13 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { ThemeProvider } from './ThemeProvider';
 import QueryProvider from './QueryProvider';
+import { DrawerDialogProvider } from './DrawerDialogProvider';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import NextTopLoader from "nextjs-toploader"
+import NextTopLoader from 'nextjs-toploader';
 
-const Toaster = dynamic(
-  () => import('sonner').then((mod) => ({ default: mod.Toaster }))
+const Toaster = dynamic(() =>
+  import('sonner').then((mod) => ({ default: mod.Toaster }))
 );
-
 
 function AllProviders({
   children,
@@ -35,7 +35,7 @@ function AllProviders({
                 richColors
               />
               <NextTopLoader color="var(--primary)" showSpinner={false} />
-              {children}
+              <DrawerDialogProvider>{children}</DrawerDialogProvider>
             </TooltipProvider>
           </NextIntlClientProvider>
         </ThemeProvider>

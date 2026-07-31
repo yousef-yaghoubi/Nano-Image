@@ -28,7 +28,9 @@
     "noFallthroughCasesInSwitch": true, // Error on fallthrough cases in switch
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["vitest.config.ts", "playwright.config.ts",
+  "include": [
+    "vitest.config.ts",
+    "playwright.config.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

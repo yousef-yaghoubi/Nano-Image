@@ -76,7 +76,7 @@ export async function EditRoleUser(userInput: EditRoleUserType) {
       status: true,
       message: 'editRole',
     };
-      } catch {
+  } catch {
     return {
       status: false,
       message: 'generic',

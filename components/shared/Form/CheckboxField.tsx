@@ -1,8 +1,8 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { CheckboxFieldConfig, FieldMeta } from "@/types/form/types";
-import { useField } from "formik";
-import { RequiredMark } from "./FormFieldRenderer";
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { CheckboxFieldConfig, FieldMeta } from '@/types/form/types';
+import { useField } from 'formik';
+import { RequiredMark } from './FormFieldRenderer';
 
 export function CheckboxField({
   field,

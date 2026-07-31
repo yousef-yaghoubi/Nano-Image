@@ -1,8 +1,8 @@
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { FieldMeta, InputFieldConfig } from "@/types/form/types";
-import { useField } from "formik";
-import { errorRing } from ".";
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { FieldMeta, InputFieldConfig } from '@/types/form/types';
+import { useField } from 'formik';
+import { errorRing } from '.';
 
 export function InputField({
   field,

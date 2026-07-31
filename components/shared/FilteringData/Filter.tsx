@@ -1,6 +1,6 @@
 'use client';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { DrawerDialog } from '../DrawerDialog';
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 import ChildFilter from './ChildFilter';
 import ButtonFilter from './ButtonFilter';
 import SearchBox from '../Form/SearchBox';
@@ -31,45 +31,47 @@ function FilterDrawer({
     [setSearchQuery]
   );
   const tFilter = useTranslations('Filter.filter');
+  const { openDialog } = useDrawerDialog();
 
   return (
-    <DrawerDialog
-      title={tFilter('name')}
-      desc={tFilter('description')}
-      trigger={
-        <button
-          className="flex cursor-pointer items-center gap-2 text-lg font-medium"
-          aria-label="Open filters"
-        >
-          <FilterIcon size={20} />
-          {tFilter('name')}
-          {activeFiltersCount > 0 && (
-            <span className="bg-primary text-primary-foreground ml-1 rounded-full px-2 py-0.5 text-xs">
-              {activeFiltersCount}
-            </span>
-          )}
-        </button>
+    <button
+      className="flex cursor-pointer items-center gap-2 text-lg font-medium"
+      aria-label="Open filters"
+      onClick={() =>
+        openDialog({
+          title: tFilter('name'),
+          desc: tFilter('description'),
+          content: (
+            <section className="z-10 overflow-scroll px-10 py-6">
+              <SearchBox
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder={tFilter('searchPlaceholder')}
+              />
+              <div className="mt-6 space-y-6">
+                {FILTERING_OPTIONS.map((filterGroup) => (
+                  <ChildFilter
+                    key={filterGroup.id}
+                    filter={filterGroup}
+                    tags={selectedTags}
+                    setTags={setSelectedTags}
+                  />
+                ))}
+              </div>
+              {children}
+            </section>
+          ),
+        })
       }
     >
-      <section className="z-10 overflow-scroll px-10 py-6">
-        <SearchBox
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder={tFilter('searchPlaceholder')}
-        />
-        <div className="mt-6 space-y-6">
-          {FILTERING_OPTIONS.map((filterGroup) => (
-            <ChildFilter
-              key={filterGroup.id}
-              filter={filterGroup}
-              tags={selectedTags}
-              setTags={setSelectedTags}
-            />
-          ))}
-        </div>
-        {children}
-      </section>
-    </DrawerDialog>
+      <FilterIcon size={20} />
+      {tFilter('name')}
+      {activeFiltersCount > 0 && (
+        <span className="bg-primary text-primary-foreground ml-1 rounded-full px-2 py-0.5 text-xs">
+          {activeFiltersCount}
+        </span>
+      )}
+    </button>
   );
 }
 

@@ -35,7 +35,7 @@ const Dialog = dynamic(
 
 type DrawerDialogProps = {
   children?: React.ReactNode;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   title?: React.ReactNode;
   desc?: React.ReactNode;
   className?: string;
@@ -72,24 +72,26 @@ export function DrawerDialog({
 
     onOpenChange?.(value);
   };
-  
+
   if (isDesktop) {
     return (
       <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
-        <DialogTrigger asChild>
-          {tooltipContent ? (
-            <Tooltip>
-              <TooltipTrigger asChild onClick={() => handleOpenChange(true)}>
-                {trigger}
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{tooltipContent}</p>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            trigger
-          )}
-        </DialogTrigger>
+        {trigger && (
+          <DialogTrigger asChild>
+            {tooltipContent ? (
+              <Tooltip>
+                <TooltipTrigger asChild onClick={() => handleOpenChange(true)}>
+                  {trigger}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{tooltipContent}</p>
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              trigger
+            )}
+          </DialogTrigger>
+        )}
 
         <DialogContent
           className={'no-scrollbar max-h-4/5 w-full overflow-scroll'}
@@ -107,7 +109,7 @@ export function DrawerDialog({
 
   return (
     <Drawer open={dialogOpen} onOpenChange={handleOpenChange}>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent
         dir={locale === 'en' ? 'ltr' : 'rtl'}
         className="no-scrollbar p-4"

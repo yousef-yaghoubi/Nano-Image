@@ -2,13 +2,17 @@
 
 import * as Yup from 'yup';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { DrawerDialog } from '../DrawerDialog';
 import { FormBuilder } from '@/components/shared/Form';
 import { SchemaEditPrompt } from '@/validation/Form';
 import type { FieldConfig } from '@/components/shared/Form';
 import { useEditPrompt } from '@/hooks/mutations/useEditPrompt';
 import { SquarePen } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 
 type PromptValues = Yup.InferType<typeof SchemaEditPrompt>;
 
@@ -24,7 +28,7 @@ function EditPromptAction({
   const t = useTranslations('Actions');
   const tForm = useTranslations('Forms');
   const { mutateAsync, isPending } = useEditPrompt();
-  const [openModal, setOpenModal] = useState(false);
+  const { openDialog, closeDialog } = useDrawerDialog();
 
   const fields: FieldConfig[] = [
     {
@@ -41,43 +45,46 @@ function EditPromptAction({
   ];
 
   return (
-    <DrawerDialog
-      tooltipContent={t('edit.edit')}
-      trigger={
+    <Tooltip>
+      <TooltipTrigger asChild>
         <SquarePen
           size={24}
           className="cursor-pointer"
-          onClick={() => setOpenModal(true)}
+          onClick={() =>
+            openDialog({
+              title: t('edit.edit'),
+              className: 'flex flex-wrap gap-2',
+              content: (
+                <FormBuilder<PromptValues>
+                  fields={fields}
+                  initialValues={{ promptText: prompt, namePrompt: title }}
+                  validationSchema={SchemaEditPrompt}
+                  submitLabel="submit"
+                  loadingMessageKey="loading"
+                  isPending={isPending}
+                  requireAnyDirty
+                  onSubmit={async (values) => {
+                    const result = await mutateAsync({
+                      title: values.namePrompt,
+                      prompt: values.promptText,
+                      id: promptId,
+                    });
+                    closeDialog();
+                    return {
+                      status: result.status,
+                      message: result.message,
+                    };
+                  }}
+                />
+              ),
+            })
+          }
         />
-      }
-      title={t('edit.edit')}
-      className="flex flex-wrap gap-2"
-      open={openModal}
-      onOpenChange={setOpenModal}
-    >
-      <FormBuilder<PromptValues>
-        fields={fields}
-        initialValues={{ promptText: prompt, namePrompt: title }}
-        validationSchema={SchemaEditPrompt}
-        submitLabel="submit"
-        loadingMessageKey="loading"
-        isPending={isPending}
-        requireAnyDirty
-        onSubmit={async (values) => {
-          const result = await mutateAsync({
-            title: values.namePrompt,
-            prompt: values.promptText,
-            id: promptId,
-          });
-
-          setOpenModal(false);
-          return {
-            status: result.status,
-            message: result.message,
-          };
-        }}
-      />
-    </DrawerDialog>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{t('edit.edit')}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 

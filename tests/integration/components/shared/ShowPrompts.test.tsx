@@ -9,7 +9,14 @@ vi.mock('@/hooks/mutations/useToggleFavorite', () => ({
 
 const stableSearchParams = new URLSearchParams();
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn(), prefetch: vi.fn(), back: vi.fn(), forward: vi.fn() }),
+  useRouter: () => ({
+    replace: vi.fn(),
+    push: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
   usePathname: () => '/en/prompts',
   useSearchParams: () => stableSearchParams,
   useParams: () => ({ locale: 'en' }),
@@ -17,6 +24,10 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/hooks/useMediaQuery', () => ({
   useMediaQuery: () => true,
+}));
+
+vi.mock('@/providers/DrawerDialogProvider', () => ({
+  useDrawerDialog: () => ({ openDialog: vi.fn(), closeDialog: vi.fn() }),
 }));
 
 const mockPromptResponse = {

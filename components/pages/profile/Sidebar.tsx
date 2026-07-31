@@ -7,10 +7,17 @@ import Image from 'next/image';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 import { getProfileMenuItems } from '@/lib/data';
 import { useTranslations } from 'next-intl';
-import { DrawerDialog } from '../../shared/DrawerDialog';
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MotionDiv, MotionLi, MotionUl, staggerContainer, staggerItem, fadeUp } from '@/components/shared/MotionWarpper';
+import {
+  MotionDiv,
+  MotionLi,
+  MotionUl,
+  staggerContainer,
+  staggerItem,
+  fadeUp,
+} from '@/components/shared/MotionWarpper';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -18,6 +25,7 @@ export default function Sidebar() {
   const params = useParams();
   const locale = typeof params.locale === 'string' ? params.locale : undefined;
   const navItems = getProfileMenuItems(locale ?? '');
+  const { openDialog, closeDialog } = useDrawerDialog();
   const t = useTranslations('Profile');
 
   return (
@@ -88,10 +96,7 @@ export default function Sidebar() {
             const isActive = pathname === item.link;
 
             return (
-              <MotionLi
-                key={item.link}
-                variants={staggerItem}
-              >
+              <MotionLi key={item.link} variants={staggerItem}>
                 <Link
                   href={item.link}
                   className={`relative mb-2 flex items-center gap-3 rounded-xl p-2 transition-all ${
@@ -140,7 +145,10 @@ export default function Sidebar() {
           })}
         </MotionUl>
 
-        <MotionDiv variants={staggerItem} className="relative flex justify-center px-5 py-2">
+        <MotionDiv
+          variants={staggerItem}
+          className="relative flex justify-center px-5 py-2"
+        >
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200 dark:border-gray-800" />
           </div>
@@ -151,26 +159,32 @@ export default function Sidebar() {
 
         <MotionDiv variants={staggerItem} className="p-3">
           <div className="relative z-10 flex items-center gap-2">
-            <DrawerDialog
-              trigger={
-                <div className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-200 bg-linear-to-r from-white to-gray-50 p-3 text-gray-700 transition-all hover:border-red-300 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900 dark:text-gray-200 dark:hover:border-red-500">
-                  <LogOut size={16} />
-                  {t('LogOut.logOut')}
-                </div>
+            <div
+              onClick={() =>
+                openDialog({
+                  title: t('LogOut.title'),
+                  content: (
+                    <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
+                      <SignOutButton>
+                        <button className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none">
+                          {t('LogOut.logOut')}
+                        </button>
+                      </SignOutButton>
+                      <button
+                        onClick={closeDialog}
+                        className="text-destructive border-destructive w-1/3 cursor-pointer rounded-sm border py-1 font-medium outline-none"
+                      >
+                        {t('LogOut.no')}
+                      </button>
+                    </div>
+                  ),
+                })
               }
-              title={t('LogOut.title')}
+              className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-200 bg-linear-to-r from-white to-gray-50 p-3 text-gray-700 transition-all hover:border-red-300 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900 dark:text-gray-200 dark:hover:border-red-500"
             >
-              <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
-                <SignOutButton>
-                  <button className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none">
-                    {t('LogOut.logOut')}
-                  </button>
-                </SignOutButton>
-                <button className="text-destructive border-destructive w-1/3 cursor-pointer rounded-sm border py-1 font-medium outline-none">
-                  {t('LogOut.no')}
-                </button>
-              </div>
-            </DrawerDialog>
+              <LogOut size={16} />
+              {t('LogOut.logOut')}
+            </div>
           </div>
         </MotionDiv>
       </MotionDiv>
@@ -180,7 +194,7 @@ export default function Sidebar() {
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        className="fixed right-0 bottom-0 left-0 z-50! flex w-full justify-around gap-1 border-t border-gray-200 bg-linear-to-t from-white/95 to-white/80 px-4 py-3 shadow-2xl backdrop-blur-lg lg:hidden dark:border-gray-800 dark:from-gray-900/95 dark:to-gray-900/80"
+        className="fixed bottom-4 left-1/2 z-50! flex w-5/6 -translate-x-1/2 justify-around gap-1 rounded-3xl border-t border-gray-200 bg-linear-to-t from-white/95 to-white/80 px-4 py-3 shadow-2xl backdrop-blur-lg lg:hidden dark:border-gray-800 dark:from-gray-900/95 dark:to-gray-900/80"
       >
         {navItems.map((item) => {
           const isActive = pathname === item.link;
@@ -203,11 +217,13 @@ export default function Sidebar() {
                     <item.icon />
                   </div>
 
-                  <span className={`mt-0.5 text-xs font-medium ${
+                  <span
+                    className={`mt-0.5 text-xs font-medium ${
                       isActive
                         ? 'text-primary'
                         : 'text-gray-500 dark:text-gray-400'
-                    }`}>
+                    }`}
+                  >
                     {item.title}
                   </span>
                 </div>

@@ -18,7 +18,13 @@ import {
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MotionDiv, MotionLi, MotionUl, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
+import {
+  MotionDiv,
+  MotionLi,
+  MotionUl,
+  staggerContainer,
+  staggerItem,
+} from '@/components/shared/MotionWarpper';
 
 const LINKS = [
   {
@@ -130,10 +136,7 @@ export default function Sidebar() {
           </MotionDiv>
 
           {/* Navigation */}
-          <MotionUl
-            variants={staggerContainer}
-            className="space-y-2"
-          >
+          <MotionUl variants={staggerContainer} className="space-y-2">
             {LINKS.map((item) => {
               const active = pathname.replace(`/${locale}`, '') === item.href;
 

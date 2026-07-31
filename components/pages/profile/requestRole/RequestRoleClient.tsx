@@ -16,7 +16,11 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { MotionDiv, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
+import {
+  MotionDiv,
+  staggerContainer,
+  staggerItem,
+} from '@/components/shared/MotionWarpper';
 
 interface RequestRoleClientProps {
   role: string;
@@ -52,21 +56,20 @@ function RequestRoleClient({ role, waitForAdmin }: RequestRoleClientProps) {
       className="flex w-full flex-col gap-10"
     >
       <MotionDiv variants={staggerItem}>
-        <h1 className="heading-1 text-primary mb-3">
-          {t('head')}
-        </h1>
+        <h1 className="heading-1 text-primary mb-3">{t('head')}</h1>
       </MotionDiv>
       <MotionDiv
         variants={staggerItem}
         className="backgroundSecond rounded-3xl border border-gray-300 p-6 shadow-xl md:p-8 dark:border-gray-700"
       >
         <MotionDiv variants={staggerItem}>
-          <p className="text-muted-foreground mb-6">
-            {t('description')}
-          </p>
+          <p className="text-muted-foreground mb-6">{t('description')}</p>
         </MotionDiv>
 
-        <MotionDiv variants={staggerItem} className="mb-6 flex items-center gap-3">
+        <MotionDiv
+          variants={staggerItem}
+          className="mb-6 flex items-center gap-3"
+        >
           <span className="text-sm font-medium">{t('currentRole')}:</span>
           <span className="bg-primary/10 text-primary inline-block rounded-full px-4 py-1.5 text-sm font-bold">
             {tTable(`role.${role}`)}
@@ -74,8 +77,14 @@ function RequestRoleClient({ role, waitForAdmin }: RequestRoleClientProps) {
         </MotionDiv>
 
         {role !== 'MEMBER' ? (
-          <MotionDiv variants={staggerContainer} className="flex flex-col gap-4">
-            <MotionDiv variants={staggerItem} className="flex items-center gap-3 rounded-xl bg-green-50 p-4 dark:bg-green-900/20">
+          <MotionDiv
+            variants={staggerContainer}
+            className="flex flex-col gap-4"
+          >
+            <MotionDiv
+              variants={staggerItem}
+              className="flex items-center gap-3 rounded-xl bg-green-50 p-4 dark:bg-green-900/20"
+            >
               <ShieldCheck size={24} className="shrink-0 text-green-600" />
               <span className="font-medium text-green-700 dark:text-green-400">
                 {t('adminApproval')}
@@ -116,8 +125,14 @@ function RequestRoleClient({ role, waitForAdmin }: RequestRoleClientProps) {
             </MotionDiv>
 
             {waitForAdmin ? (
-              <MotionDiv variants={staggerContainer} className="flex flex-col gap-4">
-                <MotionDiv variants={staggerItem} className="flex items-center gap-2 rounded-xl bg-amber-50 p-4 dark:bg-amber-900/20">
+              <MotionDiv
+                variants={staggerContainer}
+                className="flex flex-col gap-4"
+              >
+                <MotionDiv
+                  variants={staggerItem}
+                  className="flex items-center gap-2 rounded-xl bg-amber-50 p-4 dark:bg-amber-900/20"
+                >
                   <Clock size={20} className="shrink-0 text-amber-600" />
                   <span className="font-medium text-amber-700 dark:text-amber-400">
                     {t('pending')}

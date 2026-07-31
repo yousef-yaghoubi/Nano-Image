@@ -15,7 +15,7 @@ async function page() {
   const t = await getTranslations('Pages.MyFavorites');
 
   if (!isAuthenticated) {
-    return <NotAuthenticated/>;
+    return <NotAuthenticated />;
   }
 
   return (
@@ -25,21 +25,21 @@ async function page() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-    <Suspense
-      fallback={
-        <ShowPromptsSkeleton
-          showHead
-          cardCount={12}
+      <Suspense
+        fallback={
+          <ShowPromptsSkeleton
+            showHead
+            cardCount={12}
+            gridClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+          />
+        }
+      >
+        <ShowPromptsContainer
+          head={t('head')}
+          forApi="favorites"
           gridClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
         />
-      }
-    >
-      <ShowPromptsContainer
-        head={t('head')}
-        forApi="favorites"
-        gridClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-      />
-    </Suspense>
+      </Suspense>
     </MotionDiv>
   );
 }

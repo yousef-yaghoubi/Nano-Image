@@ -1,10 +1,6 @@
 import { ShieldCheck } from 'lucide-react';
 
-function AdminStatusCard({
-  message,
-}: {
-  message: string;
-}) {
+function AdminStatusCard({ message }: { message: string }) {
   return (
     <div className="flex items-center gap-3 rounded-xl bg-green-50 p-4 dark:bg-green-900/20">
       <ShieldCheck size={24} className="shrink-0 text-green-600" />

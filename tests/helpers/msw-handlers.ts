@@ -1,5 +1,10 @@
 import { http, HttpResponse } from 'msw';
-import { mockPrompts, mockUsers, mockAdminOverview, mockQuantities } from './data';
+import {
+  mockPrompts,
+  mockUsers,
+  mockAdminOverview,
+  mockQuantities,
+} from './data';
 
 const BASE = 'http://localhost:3000';
 
@@ -40,7 +45,9 @@ export const handlers = [
       const [field, dir] = sort.split(' ');
       filtered.sort((a, b) => {
         let cmp = 0;
-        if (field === 'date') cmp = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        if (field === 'date')
+          cmp =
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         if (field === 'likes') cmp = a.likes - b.likes;
         if (field === 'title') cmp = a.title.localeCompare(b.title);
         return dir === 'asc' ? cmp : -cmp;
@@ -143,7 +150,9 @@ export const handlers = [
   http.get(`${BASE}/api/favorites/ids`, () =>
     HttpResponse.json({
       success: true,
-      data: mockPrompts.filter((p) => p.isFavorited).map((p) => p._id.toString()),
+      data: mockPrompts
+        .filter((p) => p.isFavorited)
+        .map((p) => p._id.toString()),
     })
   ),
 
@@ -152,7 +161,9 @@ export const handlers = [
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '24');
 
-    const userPrompts = mockPrompts.filter((p) => p.creatorName === 'Test User');
+    const userPrompts = mockPrompts.filter(
+      (p) => p.creatorName === 'Test User'
+    );
     const total = userPrompts.length;
     const totalPages = Math.ceil(total / limit);
     const start = (page - 1) * limit;

@@ -4,7 +4,14 @@ import { FilterSort } from '@/components/shared/FilteringData/Filter';
 
 const stableSearchParams = new URLSearchParams();
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn(), prefetch: vi.fn(), back: vi.fn(), forward: vi.fn() }),
+  useRouter: () => ({
+    replace: vi.fn(),
+    push: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
   usePathname: () => '/en/prompts',
   useSearchParams: () => stableSearchParams,
   useParams: () => ({ locale: 'en' }),
@@ -14,13 +21,14 @@ vi.mock('@/hooks/useMediaQuery', () => ({
   useMediaQuery: () => true,
 }));
 
-vi.mock('@/components/shared/DrawerDialog', () => ({
-  DrawerDialog: ({ children, trigger }: { children: React.ReactNode; trigger: React.ReactNode }) => (
-    <div>
-      {trigger}
-      <div data-testid="drawer-content">{children}</div>
-    </div>
+vi.mock('@/providers/DrawerDialogProvider', () => ({
+  DrawerDialogProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
   ),
+  useDrawerDialog: () => ({
+    openDialog: vi.fn(),
+    closeDialog: vi.fn(),
+  }),
 }));
 
 describe('FilterSort', () => {

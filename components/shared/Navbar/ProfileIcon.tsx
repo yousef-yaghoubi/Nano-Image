@@ -19,18 +19,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';
-
-const DrawerDialog = dynamic(
-  () => import('../DrawerDialog').then((mod) => mod.DrawerDialog),
-  { ssr: false, loading: () => <Skeleton className="h-8 w-full" /> }
-);
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 
 const DropdownMenu = dynamic(
   () => import('@/components/ui/dropdown-menu').then((m) => m.DropdownMenu),
   { ssr: false, loading: () => <Skeleton className="h-7 w-7 rounded-full" /> }
 );
 
-export function ProfileIcon({ showName = false }: { showName?: boolean }) {
+export function ProfileIcon({
+  showName = false,
+  closeSheet,
+}: {
+  showName?: boolean;
+  closeSheet?: () => void;
+}) {
   const params = useParams() as { locale: string };
   const locale = params.locale;
   const ITEM_PROFILES = getProfileMenuItems(locale);
@@ -40,6 +42,7 @@ export function ProfileIcon({ showName = false }: { showName?: boolean }) {
   const isActive = ITEM_PROFILES.find((item) => item.link === pathname);
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const { openDialog, closeDialog } = useDrawerDialog();
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -79,6 +82,7 @@ export function ProfileIcon({ showName = false }: { showName?: boolean }) {
             >
               <Link
                 href={item.link}
+                onClick={closeSheet}
                 className="flex h-full w-full items-center gap-2"
               >
                 {item.icon && <item.icon />}
@@ -89,42 +93,48 @@ export function ProfileIcon({ showName = false }: { showName?: boolean }) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" asChild>
-          <DrawerDialog
-            trigger={
-              <div className="text-destructive hover:bg-destructive/10 flex h-full w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm">
-                <LogOut size={16} />
-                {tAuth('signout')}
-              </div>
-            }
-            title={tProfile('LogOut.title')}
+          <div
+            className="text-destructive hover:bg-destructive/10 flex h-full w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm"
+            onClick={() => {
+              closeSheet?.();
+              openDialog({
+                title: tProfile('LogOut.title'),
+                content: (
+                  <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
+                    <SignOutButton>
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          (setIsLoading(true), closeDialog());
+                        }}
+                        disabled={isLoading}
+                        className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none"
+                      >
+                        {isLoading ? (
+                          <Loading classNameLoading="text-background" />
+                        ) : (
+                          tProfile('LogOut.logOut')
+                        )}
+                      </Button>
+                    </SignOutButton>
+                    <Button
+                      variant="outline"
+                      className="min-w-24"
+                      onClick={() => {
+                        closeDialog();
+                        setIsLoading(false);
+                      }}
+                    >
+                      {tProfile('LogOut.no')}
+                    </Button>
+                  </div>
+                ),
+              });
+            }}
           >
-            <div className="mb-10 flex w-full justify-around gap-2 md:m-0">
-              <SignOutButton>
-                <Button
-                  variant={'destructive'}
-                  onClick={() => setIsLoading(true)}
-                  disabled={isLoading}
-                  className="bg-destructive/90 text-background w-1/3 cursor-pointer rounded-sm py-1 font-medium outline-none"
-                >
-                  {isLoading ? (
-                    <Loading classNameLoading="text-background" />
-                  ) : (
-                    tProfile('LogOut.logOut')
-                  )}
-                </Button>
-              </SignOutButton>
-              <Button
-                variant={'outline'}
-                className="min-w-24"
-                onClick={() => {
-                  setOpenModal(false);
-                  setIsLoading(false);
-                }}
-              >
-                {tProfile('LogOut.no')}
-              </Button>
-            </div>
-          </DrawerDialog>
+            <LogOut size={16} />
+            {tAuth('signout')}
+          </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -20,7 +20,11 @@ describe('DrawerDialog', () => {
 
   it('renders description when provided', async () => {
     render(
-      <DrawerDialog trigger={<span>Open</span>} title="Title" desc="Description text">
+      <DrawerDialog
+        trigger={<span>Open</span>}
+        title="Title"
+        desc="Description text"
+      >
         <div>Content</div>
       </DrawerDialog>
     );

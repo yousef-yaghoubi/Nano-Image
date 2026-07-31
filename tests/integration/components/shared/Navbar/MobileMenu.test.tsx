@@ -3,21 +3,24 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import { Suspense } from 'react';
 import { MobileMenu } from '@/components/shared/Navbar/MobileMenu';
 
-vi.mock('@/components/shared/Navbar/ProfileIcon', () => ({
-  ProfileIcon: () => <div data-testid="profile-icon" />,
-}));
-
-vi.mock('@/components/shared/Auth/AuthButtons', () => ({
-  default: ({ mobile }: { mobile?: boolean }) => (
-    <div data-testid="auth-buttons" data-mobile={mobile}>
-      <span>signin</span>
-      <span>signup</span>
-    </div>
+vi.mock('@/components/shared/Navbar/MobileMenuClient', () => ({
+  MobileMenuClient: ({
+    locale,
+    isAuthenticated,
+  }: {
+    locale: string;
+    isAuthenticated: boolean | null;
+  }) => (
+    <div
+      data-testid="mobile-menu-client"
+      data-locale={locale}
+      data-authenticated={String(isAuthenticated)}
+    />
   ),
 }));
 
 describe('MobileMenu', () => {
-  it('renders auth buttons and sheet', async () => {
+  it('renders MobileMenuClient with locale and auth state', async () => {
     await act(async () => {
       render(
         <Suspense fallback={<div>Loading...</div>}>
@@ -26,8 +29,10 @@ describe('MobileMenu', () => {
       );
     });
     await waitFor(() => {
-      expect(screen.getByTestId('auth-buttons')).toBeInTheDocument();
+      const el = screen.getByTestId('mobile-menu-client');
+      expect(el).toBeInTheDocument();
+      expect(el).toHaveAttribute('data-locale');
+      expect(el).toHaveAttribute('data-authenticated');
     });
-    expect(screen.getByTestId('sheet')).toBeInTheDocument();
   });
 });

@@ -26,7 +26,9 @@ export async function waitForAppReady(page: Page) {
   await page.locator('nav').waitFor({ state: 'visible' });
   await page.waitForFunction(
     () => {
-      const btn = document.querySelector('button[aria-label="Select language"]');
+      const btn = document.querySelector(
+        'button[aria-label="Select language"]'
+      );
       return btn?.hasAttribute('data-state') ?? false;
     },
     { timeout: 15_000 }

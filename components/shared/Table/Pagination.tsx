@@ -45,8 +45,7 @@ interface PaginationPropsWithoutUrlChange extends BasePaginationProps {
 }
 
 export type PaginationProps =
-  | PaginationPropsWithUrlChange
-  | PaginationPropsWithoutUrlChange;
+  PaginationPropsWithUrlChange | PaginationPropsWithoutUrlChange;
 
 export function Pagination({
   page,

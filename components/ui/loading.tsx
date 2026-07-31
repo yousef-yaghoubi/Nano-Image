@@ -43,9 +43,7 @@ export function Loading({
       />
 
       {text && (
-        <p className="text-background text-sm font-medium">
-          {tMessages(text)}
-        </p>
+        <p className="text-background text-sm font-medium">{tMessages(text)}</p>
       )}
     </div>
   );

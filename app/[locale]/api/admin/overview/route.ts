@@ -27,12 +27,8 @@ const getCachedOverview = async () => {
       { $group: { _id: null, totalLikes: { $sum: '$likes' } } },
     ]),
     Users.countDocuments(),
-    Prompts.aggregate([
-      { $group: { _id: '$status', count: { $sum: 1 } } },
-    ]),
-    Users.aggregate([
-      { $group: { _id: '$role', count: { $sum: 1 } } },
-    ]),
+    Prompts.aggregate([{ $group: { _id: '$status', count: { $sum: 1 } } }]),
+    Users.aggregate([{ $group: { _id: '$role', count: { $sum: 1 } } }]),
     Users.countDocuments({ waitForAdmin: true }),
     Prompts.find()
       .sort({ createdAt: -1 })

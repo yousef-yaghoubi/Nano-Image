@@ -32,10 +32,10 @@ async function page() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-    <RequestRoleClient
-      role={role}
-      waitForAdmin={user?.waitForAdmin === true}
-    />
+      <RequestRoleClient
+        role={role}
+        waitForAdmin={user?.waitForAdmin === true}
+      />
     </MotionDiv>
   );
 }

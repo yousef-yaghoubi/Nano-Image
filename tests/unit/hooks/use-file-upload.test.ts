@@ -53,9 +53,11 @@ describe('useFileUpload', () => {
 
   it('adds a file', () => {
     const file = createMockFile('test.jpg', 100, 'image/jpeg');
-    const { result } = renderHook(() => useFileUpload({
-      maxSize: 1024 * 1024,
-    }));
+    const { result } = renderHook(() =>
+      useFileUpload({
+        maxSize: 1024 * 1024,
+      })
+    );
 
     act(() => {
       result.current[1].addFiles([file]);
@@ -67,9 +69,11 @@ describe('useFileUpload', () => {
 
   it('rejects file exceeding max size', () => {
     const file = createMockFile('large.jpg', 10 * 1024 * 1024, 'image/jpeg');
-    const { result } = renderHook(() => useFileUpload({
-      maxSize: 1024 * 1024,
-    }));
+    const { result } = renderHook(() =>
+      useFileUpload({
+        maxSize: 1024 * 1024,
+      })
+    );
 
     act(() => {
       result.current[1].addFiles([file]);
@@ -81,9 +85,11 @@ describe('useFileUpload', () => {
 
   it('removes a file by id', () => {
     const file = createMockFile('test.jpg', 100, 'image/jpeg');
-    const { result } = renderHook(() => useFileUpload({
-      maxSize: 1024 * 1024,
-    }));
+    const { result } = renderHook(() =>
+      useFileUpload({
+        maxSize: 1024 * 1024,
+      })
+    );
 
     act(() => {
       result.current[1].addFiles([file]);
@@ -100,9 +106,11 @@ describe('useFileUpload', () => {
 
   it('clears all files', () => {
     const file = createMockFile('test.jpg', 100, 'image/jpeg');
-    const { result } = renderHook(() => useFileUpload({
-      maxSize: 1024 * 1024,
-    }));
+    const { result } = renderHook(() =>
+      useFileUpload({
+        maxSize: 1024 * 1024,
+      })
+    );
 
     act(() => {
       result.current[1].addFiles([file]);

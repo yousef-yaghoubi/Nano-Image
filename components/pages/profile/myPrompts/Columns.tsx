@@ -18,7 +18,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { formatDate } from '@/lib/FormatDate';
-import { DrawerDialog } from '@/components/shared/DrawerDialog';
 import dynamic from 'next/dynamic';
 
 const columnHelper = createColumnHelper<PromptType & { buttons: string }>();
@@ -36,8 +35,14 @@ interface GetColumnsOptions {
   page: number;
   limit: number;
   locale?: string;
-  onStatusFilterChange: (value: string) => void; // ← new
-  statusFilter: string; // ← new
+  onStatusFilterChange: (value: string) => void;
+  statusFilter: string;
+  openDialog: (config: {
+    title?: React.ReactNode;
+    desc?: React.ReactNode;
+    content?: React.ReactNode;
+    className?: string;
+  }) => void;
 }
 
 const items = [
@@ -55,6 +60,7 @@ export function getColumns({
   locale,
   onStatusFilterChange,
   statusFilter,
+  openDialog,
 }: GetColumnsOptions) {
   return [
     columnHelper.accessor((_row, index) => index, {
@@ -78,7 +84,7 @@ export function getColumns({
                   alt="Prompt"
                   src={i.getValue()}
                   fill
-                  className="object-cover"
+                  className="cursor-pointer object-cover"
                   sizes="96px"
                 />
               </Suspense>
@@ -106,17 +112,20 @@ export function getColumns({
         const tags = i.getValue();
         if (!tags?.length) return null;
         return (
-          <DrawerDialog
-            trigger={
-              <Button className="bg-primary px-4 py-2">{t('seeTags')}</Button>
+          <Button
+            className="bg-primary px-4 py-2"
+            onClick={() =>
+              openDialog({
+                title: t('tags'),
+                className: 'flex flex-wrap gap-2',
+                content: tags.map((tag) => (
+                  <Badge key={tag}>{tTags(tag)}</Badge>
+                )),
+              })
             }
-            title={t('tags')}
-            className="flex flex-wrap gap-2"
           >
-            {tags.map((tag) => (
-              <Badge key={tag}>{tTags(tag)}</Badge>
-            ))}
-          </DrawerDialog>
+            {t('seeTags')}
+          </Button>
         );
       },
       enableSorting: false,

@@ -7,15 +7,23 @@ vi.mock('@clerk/nextjs', () => ({
     user: { id: 'test_user_1', firstName: 'Test', lastName: 'User' },
   }),
   useAuth: () => ({ userId: 'test_user_1', isSignedIn: true, isLoaded: true }),
-  SignInButton: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
-  SignUpButton: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
+  SignInButton: ({ children }: { children: React.ReactNode }) => (
+    <button type="button">{children}</button>
+  ),
+  SignUpButton: ({ children }: { children: React.ReactNode }) => (
+    <button type="button">{children}</button>
+  ),
   UserButton: () => <div data-testid="user-button" />,
-  ClerkProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  ClerkProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 describe('MSW Integration', () => {
   it('fetches prompts from API', async () => {
-    const res = await fetch('http://localhost:3000/api/prompts?page=1&limit=10');
+    const res = await fetch(
+      'http://localhost:3000/api/prompts?page=1&limit=10'
+    );
     const json = await res.json();
     expect(json.success).toBe(true);
     expect(json.data.length).toBeGreaterThan(0);
@@ -31,7 +39,9 @@ describe('MSW Integration', () => {
   });
 
   it('fetches favorites from API', async () => {
-    const res = await fetch('http://localhost:3000/api/favorites?page=1&limit=10');
+    const res = await fetch(
+      'http://localhost:3000/api/favorites?page=1&limit=10'
+    );
     const json = await res.json();
     expect(json.success).toBe(true);
   });

@@ -23,7 +23,7 @@ function ShowPromptsSkeleton({
 
       {!showSimple && (
         <div className="flex w-full items-center justify-between border-b pb-5">
-          <div className="w-full flex items-center justify-between gap-4">
+          <div className="flex w-full items-center justify-between gap-4">
             <Skeleton className="h-10 w-32 md:w-40" />
             <Skeleton className="h-10 w-32 md:w-40" />
           </div>

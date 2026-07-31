@@ -11,8 +11,7 @@ export type {
   FormikBag,
   SubmitResult,
   ToastConfig,
-  FieldMeta
+  FieldMeta,
 } from '@/types/form/types';
-
 
 export const errorRing = 'border-destructive focus-visible:ring-destructive';

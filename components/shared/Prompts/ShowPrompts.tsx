@@ -61,7 +61,7 @@ function ShowPrompts({
               />
             ))
           : prompt?.data?.map((item: PromptType) => (
-                <Card data={item} key={String(item._id)}/>
+              <Card data={item} key={String(item._id)} />
             ))}
       </div>
 

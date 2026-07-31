@@ -1,8 +1,14 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { FieldMeta, SelectFieldConfig } from "@/types/form/types";
-import { useField } from "formik";
-import { errorRing } from ".";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { FieldMeta, SelectFieldConfig } from '@/types/form/types';
+import { useField } from 'formik';
+import { errorRing } from '.';
 
 export function SelectField({
   field,

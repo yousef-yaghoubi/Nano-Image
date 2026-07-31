@@ -1,13 +1,7 @@
-import {
-  cacheLife,
-  cacheTag,
-  revalidatePath,
-  updateTag,
-} from 'next/cache';
+import { cacheLife, cacheTag, revalidatePath, updateTag } from 'next/cache';
 
 // Re-export cache primitives for use inside `"use cache"` functions
 export { cacheLife, cacheTag, revalidatePath };
-
 
 export const CacheTags = {
   prompts: 'prompts',
@@ -36,11 +30,7 @@ export const CacheLife = {
 } as const;
 
 export type CacheLifeProfile =
-  | (typeof CacheLife)[keyof typeof CacheLife]
-  | 'default'
-  | 'days'
-  | 'weeks';
-
+  (typeof CacheLife)[keyof typeof CacheLife] | 'default' | 'days' | 'weeks';
 
 export function bustCache(...tags: CacheTag[]) {
   tags.forEach((tag) => {

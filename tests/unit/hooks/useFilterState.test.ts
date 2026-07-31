@@ -5,12 +5,23 @@ import { useFilterState } from '@/hooks/useFilterState';
 const mockReplace = vi.fn();
 const searchParams = new URLSearchParams();
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: mockReplace, push: vi.fn(), refresh: vi.fn(), prefetch: vi.fn(), back: vi.fn(), forward: vi.fn() }),
+  useRouter: () => ({
+    replace: mockReplace,
+    push: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
   usePathname: () => '/en/prompts',
   useSearchParams: () => searchParams,
   useParams: () => ({ locale: 'en' }),
-  notFound: () => { throw new Error('notFound called'); },
-  redirect: () => { throw new Error('redirect called'); },
+  notFound: () => {
+    throw new Error('notFound called');
+  },
+  redirect: () => {
+    throw new Error('redirect called');
+  },
 }));
 
 describe('useFilterState', () => {

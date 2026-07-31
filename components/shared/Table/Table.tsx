@@ -138,8 +138,7 @@ export function DataTable<TData>({
 
   const handleColumnFiltersChange = (
     updater:
-      | ColumnFiltersState
-      | ((prev: ColumnFiltersState) => ColumnFiltersState)
+      ColumnFiltersState | ((prev: ColumnFiltersState) => ColumnFiltersState)
   ) => {
     const next =
       typeof updater === 'function' ? updater(columnFilters) : updater;
@@ -163,8 +162,7 @@ export function DataTable<TData>({
 
   const handleRowSelectionChange = (
     updater:
-      | RowSelectionState
-      | ((prev: RowSelectionState) => RowSelectionState)
+      RowSelectionState | ((prev: RowSelectionState) => RowSelectionState)
   ) => {
     const next =
       typeof updater === 'function' ? updater(rowSelectionState) : updater;
@@ -238,17 +236,20 @@ export function DataTable<TData>({
       className={`backgroundSecond space-y-4 rounded-2xl border border-gray-200 p-5 shadow dark:border-gray-700 ${className}`}
     >
       {/* Search & Actions */}
-      <div className="flex flex-col justify-between gap-2 sm:flex-row">
-        <div className="flex items-center gap-3">
-          {enableSearch && (
-            <SearchBox
-              value={searchValue}
-              placeholder={searchPlaceholder}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-            />
-          )}
-
-          {toolbarActions?.({ selectedCount, selectedIds, resetSelection })}
+      <div className="flex flex-col justify-between gap-2 lg:flex-row">
+        <div className="flex w-full flex-col gap-2 lg:flex-row">
+          <div className="flex items-center gap-2">
+            {enableSearch && (
+              <SearchBox
+                value={searchValue}
+                placeholder={searchPlaceholder}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+              />
+            )}
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {toolbarActions?.({ selectedCount, selectedIds, resetSelection })}
+          </div>
         </div>
 
         {enableSelectColumns && (
@@ -280,7 +281,7 @@ export function DataTable<TData>({
 
       {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
-        <Table>
+        <Table className="px-8">
           <TableHeader className="bg-primary text-white">
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id} className="hover:bg-primary">

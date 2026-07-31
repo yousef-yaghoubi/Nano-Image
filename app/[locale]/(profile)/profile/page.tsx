@@ -1,6 +1,10 @@
 import dynamic from 'next/dynamic';
 import Head3Client from '@/components/pages/profile/Head3Client';
-import { MotionDiv, staggerContainer, staggerItem } from '@/components/shared/MotionWarpper';
+import {
+  MotionDiv,
+  staggerContainer,
+  staggerItem,
+} from '@/components/shared/MotionWarpper';
 import { getTranslations } from 'next-intl/server';
 
 const FormUpdateUser = dynamic(
@@ -23,7 +27,12 @@ export default async function Page() {
   ];
 
   return (
-    <MotionDiv variants={staggerContainer} initial="initial" whileInView="animate" viewport={{ once: true }}>
+    <MotionDiv
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+    >
       <MotionDiv variants={staggerItem} className="flex w-full flex-col gap-10">
         {sections.map((section) => (
           <MotionDiv key={section.title} variants={staggerItem}>

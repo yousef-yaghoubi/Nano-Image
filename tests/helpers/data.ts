@@ -4,7 +4,8 @@ export const mockPrompts: PromptType[] = [
   {
     _id: '507f1f77bcf86cd799439011' as unknown as PromptType['_id'],
     title: 'Cinematic Sunset',
-    prompt: 'A beautiful cinematic sunset over the ocean with vibrant colors and dramatic clouds',
+    prompt:
+      'A beautiful cinematic sunset over the ocean with vibrant colors and dramatic clouds',
     image: 'https://res.cloudinary.com/test/image1.jpg',
     likes: 42,
     layout: 'portrait',
@@ -21,7 +22,8 @@ export const mockPrompts: PromptType[] = [
   {
     _id: '507f1f77bcf86cd799439012' as unknown as PromptType['_id'],
     title: 'Cyberpunk City',
-    prompt: 'A dark cyberpunk cityscape with neon lights reflecting on wet streets',
+    prompt:
+      'A dark cyberpunk cityscape with neon lights reflecting on wet streets',
     image: 'https://res.cloudinary.com/test/image2.jpg',
     likes: 28,
     layout: 'landscape',

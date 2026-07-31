@@ -11,8 +11,7 @@ export default function useDeletePromptsBulk() {
   const tMessages = useTranslations('Messages');
 
   return useMutation({
-    mutationFn: (promptIds: string[]) =>
-      DeletePromptsBulk({ promptIds }),
+    mutationFn: (promptIds: string[]) => DeletePromptsBulk({ promptIds }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.prompts.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.quantities.all });

@@ -97,8 +97,14 @@ export async function POST(req: Request) {
       }
 
       case 'user.updated': {
-        const { id, email_addresses, image_url, first_name, last_name, public_metadata } =
-          evt.data;
+        const {
+          id,
+          email_addresses,
+          image_url,
+          first_name,
+          last_name,
+          public_metadata,
+        } = evt.data;
 
         // Update email, image, firstName, and lastName
         const updateData: {

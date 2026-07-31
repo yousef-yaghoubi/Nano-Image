@@ -117,7 +117,8 @@ export default function UploadImage({
     setUploading(true);
 
     try {
-      const { UploadImage } = await import('@/app/[locale]/actions/UploadImage');
+      const { UploadImage } =
+        await import('@/app/[locale]/actions/UploadImage');
       const data = await UploadImage(fileItem);
 
       if (data.success) {

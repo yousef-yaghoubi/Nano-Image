@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { useTableState } from '@/components/shared/Table/useTableState';
 import { TablePage } from '@/components/shared/Table/TablePage';
 import usePrompts from '@/hooks/queries/usePrompts';
@@ -9,14 +8,7 @@ import { getColumns } from './Columns';
 import useDeletePromptsBulk from '@/hooks/mutations/useDeletePromptsBulk';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const DrawerDialog = dynamic(
-  () => import('@/components/shared/DrawerDialog').then((m) => m.DrawerDialog),
-  {
-    ssr: false,
-  }
-);
+import { useDrawerDialog } from '@/providers/DrawerDialogProvider';
 
 export default function PromptsWrapper() {
   const t = useTranslations('Table');
@@ -29,7 +21,7 @@ export default function PromptsWrapper() {
 
   const { mutateAsync: deleteBulk } = useDeletePromptsBulk();
 
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const { openDialog, closeDialog } = useDrawerDialog();
 
   const { data, isLoading } = usePrompts<MyPromptsResponse>({
     page: String(state.page),
@@ -48,6 +40,7 @@ export default function PromptsWrapper() {
     locale,
     statusFilter: state.filterValue ?? 'All',
     onStatusFilterChange: (v) => state.onFilterChange('status', v),
+    openDialog,
   });
 
   return (
@@ -67,37 +60,37 @@ export default function PromptsWrapper() {
       getRowId={(row) => String(row._id)}
       toolbarActions={({ selectedCount, selectedIds, resetSelection }) =>
         selectedCount > 0 ? (
-          <DrawerDialog
-            open={deleteOpen}
-            onOpenChange={setDeleteOpen}
-            trigger={
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => setDeleteOpen(true)}
-              >
-                <Trash2 className="mr-1 h-4 w-4" />
-                {tActions('remove.remove')} ({selectedCount})
-              </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() =>
+              openDialog({
+                title: tActions('remove.remove'),
+                desc: tActions('remove.title'),
+                className: 'flex flex-wrap gap-2',
+                content: (
+                  <>
+                    <Button
+                      variant="destructive"
+                      onClick={async () => {
+                        await deleteBulk(selectedIds);
+                        resetSelection();
+                        closeDialog();
+                      }}
+                    >
+                      {tActions('remove.yes')}
+                    </Button>
+                    <Button variant="outline" onClick={closeDialog}>
+                      {tActions('remove.no')}
+                    </Button>
+                  </>
+                ),
+              })
             }
-            title={tActions('remove.remove')}
-            desc={tActions('remove.title')}
-            className="flex flex-wrap gap-2"
           >
-            <Button
-              variant="destructive"
-              onClick={() => {
-                deleteBulk(selectedIds);
-                resetSelection();
-                setDeleteOpen(false);
-              }}
-            >
-              {tActions('remove.yes')}
-            </Button>
-            <Button variant="outline" onClick={() => setDeleteOpen(false)}>
-              {tActions('remove.no')}
-            </Button>
-          </DrawerDialog>
+            <Trash2 className="mr-1 h-4 w-4" />
+            {tActions('remove.remove')} ({selectedCount})
+          </Button>
         ) : null
       }
     />

@@ -5,9 +5,7 @@ import { auth } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
-const SendPrompt = dynamic(
-  () => import('@/components/shared/SendPrompt')
-);
+const SendPrompt = dynamic(() => import('@/components/shared/SendPrompt'));
 
 export async function generateMetadata({
   params,

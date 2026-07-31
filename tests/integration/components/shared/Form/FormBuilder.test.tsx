@@ -72,7 +72,10 @@ describe('FormBuilder', () => {
     );
 
     await user.type(screen.getByPlaceholderText('Enter name'), 'John');
-    await user.type(screen.getByPlaceholderText('Enter email'), 'john@test.com');
+    await user.type(
+      screen.getByPlaceholderText('Enter email'),
+      'john@test.com'
+    );
     await user.click(screen.getByRole('button', { name: /submit/i }));
 
     await waitFor(() => {

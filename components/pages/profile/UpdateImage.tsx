@@ -16,7 +16,7 @@ function UpdateImage() {
 
   const handleSubmit = async () => {
     if (!fileImage) return;
-    
+
     const response = await mutateAsync({ file: fileImage });
     if (response.status) {
       setFileImage(null);

@@ -29,9 +29,9 @@ function PermissionList({
         {permissions.map(({ key, icon: Icon }) => (
           <div
             key={key}
-            className="flex items-center gap-3 rounded-xl border border-gray-200 bg-muted/50 p-3 dark:border-gray-700"
+            className="bg-muted/50 flex items-center gap-3 rounded-xl border border-gray-200 p-3 dark:border-gray-700"
           >
-            <span className="shrink-0 text-primary">
+            <span className="text-primary shrink-0">
               <Icon size={20} />
             </span>
             <span className="text-sm">{premissions[key]}</span>

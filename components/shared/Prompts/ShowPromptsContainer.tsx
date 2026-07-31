@@ -43,9 +43,12 @@ function ShowPromptsContainer({
       ? (searchParams.get('sort') as string)
       : '';
 
-  const { data: promptsData, isLoading, isError, error } = usePrompts<
-    DataType<PromptType[]>
-  >({
+  const {
+    data: promptsData,
+    isLoading,
+    isError,
+    error,
+  } = usePrompts<DataType<PromptType[]>>({
     page,
     tags,
     search,

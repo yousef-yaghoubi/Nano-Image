@@ -62,6 +62,6 @@ export async function fetchPrompts<T = PromptsResponse>(
   if (!res.ok) {
     throw new Error('generic');
   }
-  
+
   return res.json();
 }

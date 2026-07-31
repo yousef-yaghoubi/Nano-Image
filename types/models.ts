@@ -141,8 +141,4 @@ export interface CountResult {
 export type SortField = 'likes' | 'createdAt';
 export type SortOrder = 1 | -1;
 export type SortParam =
-  | 'likes asc'
-  | 'likes desc'
-  | 'date asc'
-  | 'date desc'
-  | null;
+  'likes asc' | 'likes desc' | 'date asc' | 'date desc' | null;

@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  gotoPage,
-  openMobileMenu,
-  waitForAppUrl,
-} from './helpers/navigation';
+import { gotoPage, openMobileMenu, waitForAppUrl } from './helpers/navigation';
 
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page }) => {

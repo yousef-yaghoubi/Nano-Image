@@ -21,8 +21,13 @@ function PendingRequestCard({
           {message}
         </span>
       </div>
-      
-      <Button onClick={onCancel} disabled={isPending} variant="outline" className="w-fit">
+
+      <Button
+        onClick={onCancel}
+        disabled={isPending}
+        variant="outline"
+        className="w-fit"
+      >
         {isPending ? <Loading size="sm" /> : cancelLabel}
       </Button>
     </div>

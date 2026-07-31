@@ -11,7 +11,7 @@ const createMotionTag = (tag: any) => {
     children,
     className,
     ...rest
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }: PropsWithChildren<Record<string, any>>) {
     return (
       <MotionTag className={className} {...rest}>

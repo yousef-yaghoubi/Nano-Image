@@ -2,6 +2,8 @@ import ShowPromptsContainer from '@/components/shared/Prompts/ShowPromptsContain
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
+import PrefetchBoundary from '@/components/shared/PrefetchBoundary';
+import { prefetchPrompts } from '@/lib/query-prefetch';
 
 export async function generateMetadata({
   params,
@@ -34,22 +36,42 @@ export async function generateMetadata({
     alternates: {
       canonical: path,
       languages: {
-        ...Object.fromEntries(
-          routing.locales.map((l) => [l, `/${l}/prompts`])
-        ),
+        ...Object.fromEntries(routing.locales.map((l) => [l, `/${l}/prompts`])),
         'x-default': `/${routing.defaultLocale}/prompts`,
       },
     },
   };
 }
 
-async function page() {
+async function page({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    tags?: string;
+    sort?: string;
+  }>;
+}) {
   const t = await getTranslations('Pages.MyPrompts');
+  const params = await searchParams;
+
+  const promptsParams = {
+    page: params.page || '1',
+    tags: params.tags && params.tags !== 'undefined' ? params.tags : '',
+    search: params.search && params.search !== 'undefined' ? params.search : '',
+    sort: params.sort && params.sort !== 'undefined' ? params.sort : '',
+    forApi: 'prompts',
+    limit: 24,
+    status: 'True',
+  } as const;
 
   return (
-    <section>
-      <ShowPromptsContainer head={t('head')} />
-    </section>
+    <PrefetchBoundary prefetchers={[prefetchPrompts(promptsParams)]}>
+      <section>
+        <ShowPromptsContainer head={t('head')} />
+      </section>
+    </PrefetchBoundary>
   );
 }
 

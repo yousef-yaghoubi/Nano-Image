@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 function layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="mb-24 lg:mb-0">
       <Navbar />
       <div className="container">
         <div className="flex w-full flex-col gap-4 md:flex-row md:justify-between md:gap-6 lg:gap-10">
@@ -22,7 +22,7 @@ function layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

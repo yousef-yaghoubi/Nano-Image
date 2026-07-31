@@ -12,17 +12,16 @@ function RequestButton({
   onClick: () => void;
 }) {
   return (
-      <Button onClick={onClick} disabled={isPending}>
-        {isPending ? (
-          <Loading size="sm" />
-        ) : (
-          <span className="flex items-center gap-2">
-            <Shield size={16} />
-            {label}
-          </span>
-        )}
-      </Button>
-
+    <Button onClick={onClick} disabled={isPending}>
+      {isPending ? (
+        <Loading size="sm" />
+      ) : (
+        <span className="flex items-center gap-2">
+          <Shield size={16} />
+          {label}
+        </span>
+      )}
+    </Button>
   );
 }
 

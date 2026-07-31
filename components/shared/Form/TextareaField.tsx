@@ -21,7 +21,7 @@ export function TextareaField({
       rows={field.rows ?? 4}
       aria-invalid={hasError}
       aria-describedby={hasError ? `${id}-error` : undefined}
-      className={cn(hasError && errorRing, "max-h-48")}
+      className={cn(hasError && errorRing, 'max-h-48')}
     />
   );
 }

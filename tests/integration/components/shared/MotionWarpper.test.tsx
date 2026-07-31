@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MotionDiv, MotionButton, MotionSpan, MotionP, fadeUp, fadeIn } from '@/components/shared/MotionWarpper';
+import {
+  MotionDiv,
+  MotionButton,
+  MotionSpan,
+  MotionP,
+  fadeUp,
+  fadeIn,
+} from '@/components/shared/MotionWarpper';
 
 describe('MotionWarpper', () => {
   it('MotionDiv renders children', () => {

@@ -5,10 +5,7 @@ import type { FormikHelpers, FormikValues } from 'formik';
 // ─── Field config ─────────────────────────────────────────────────────────────
 
 export type FieldType =
-  | HTMLInputTypeAttribute
-  | 'textarea'
-  | 'select'
-  | 'checkbox';
+  HTMLInputTypeAttribute | 'textarea' | 'select' | 'checkbox';
 
 interface BaseFieldConfig {
   name: string;

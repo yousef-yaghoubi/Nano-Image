@@ -2,8 +2,7 @@ import dynamic from 'next/dynamic';
 import { MotionDiv } from '@/components/shared/MotionWarpper';
 
 const PromptTableWrapper = dynamic(
-  () =>
-    import('../../../../../components/pages/profile/myPrompts/PromptTableWrapper')
+  () => import('@/components/pages/profile/myPrompts/PromptTableWrapper')
 );
 
 async function page() {
