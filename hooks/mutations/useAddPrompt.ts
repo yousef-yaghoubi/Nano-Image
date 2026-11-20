@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 
 interface AddPromptInput {
-  clerkId: string;
   prompt: {
     title: string;
     prompt: string;

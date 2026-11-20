@@ -22,7 +22,7 @@ const initialValues: FormValues = {
   tags: [],
 };
 
-export default function SendPromptForm({ clerkId }: { clerkId: string }) {
+export default function SendPromptForm() {
   const tForm = useTranslations('Forms');
   const { mutateAsync, isPending } = useAddPrompt();
 
@@ -38,7 +38,6 @@ export default function SendPromptForm({ clerkId }: { clerkId: string }) {
         className="space-y-6"
         onSubmit={async (values, { resetForm, setValues }) => {
           const newPrompt = await mutateAsync({
-            clerkId,
             prompt: {
               title: values.namePrompt,
               prompt: values.promptText,

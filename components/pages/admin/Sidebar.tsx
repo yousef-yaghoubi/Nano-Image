@@ -30,25 +30,25 @@ const LINKS = [
   {
     id: 1,
     title: 'overview',
-    href: '/admin',
+    href: 'admin',
     icon: LayoutDashboard,
   },
   {
     id: 2,
     title: 'users',
-    href: '/admin/users',
+    href: 'admin/users',
     icon: UsersRound,
   },
   {
     id: 3,
     title: 'prompts',
-    href: '/admin/prompts',
+    href: 'admin/prompts',
     icon: Files,
   },
   {
     id: 4,
     title: 'back',
-    href: '/',
+    href: '',
     icon: Undo2,
   },
 ];
@@ -138,14 +138,15 @@ export default function Sidebar() {
           {/* Navigation */}
           <MotionUl variants={staggerContainer} className="space-y-2">
             {LINKS.map((item) => {
-              const active = pathname.replace(`/${locale}`, '') === item.href;
+              const href = `/${locale}/${item.href}`;
+              const active = pathname === href;
 
               const Icon = item.icon;
 
               return (
                 <MotionLi key={item.id} variants={staggerItem}>
                   <Link
-                    href={item.href}
+                    href={href}
                     onClick={() => {
                       if (isMobileOpen) {
                         toggleMobileSidebar();

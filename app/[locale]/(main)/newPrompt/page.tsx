@@ -29,7 +29,7 @@ export async function generateMetadata({
 }
 
 async function page() {
-  const { isAuthenticated, userId } = await auth();
+  const { isAuthenticated } = await auth();
 
   if (!isAuthenticated) {
     return <NotAuthenticated />;
@@ -42,7 +42,7 @@ async function page() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <SendPrompt clerkId={userId} />
+      <SendPrompt />
     </MotionDiv>
   );
 }

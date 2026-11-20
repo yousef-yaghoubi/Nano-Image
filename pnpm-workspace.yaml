@@ -1,0 +1,6 @@
+allowBuilds:
+  '@clerk/shared': false
+  '@parcel/watcher': false
+  '@swc/core': false
+  msw: false
+  sharp: false

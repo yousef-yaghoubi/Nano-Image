@@ -18,7 +18,7 @@ function layout({ children }: { children: React.ReactNode }) {
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
         className={cn(
-          'w-full px-10 py-10 transition-all duration-300',
+          'relative my-10 h-fit w-full px-10 py-10 transition-all duration-300',
           locale == 'en'
             ? isExpanded
               ? 'pl-96'
